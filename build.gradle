@@ -1,10 +1,6 @@
 plugins {
 	id 'java'
-<<<<<<< HEAD
-	id 'org.springframework.boot' version '3.5.7'
-=======
 	id 'org.springframework.boot' version '2.7.13'
->>>>>>> 6ba0f3451525c517a89ead12f7bbeef59dae20ed
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -31,18 +27,12 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.5'
-<<<<<<< HEAD
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
-=======
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'javax.servlet:jstl:1.2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
->>>>>>> 6ba0f3451525c517a89ead12f7bbeef59dae20ed
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.5'

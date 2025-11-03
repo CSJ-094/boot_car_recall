@@ -3,7 +3,8 @@ package com.boot.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,7 @@ import com.boot.dto.BoardDTO;
 import com.boot.dto.MemDTO;
 import com.boot.service.BoardService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
