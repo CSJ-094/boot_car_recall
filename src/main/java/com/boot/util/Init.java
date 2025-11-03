@@ -2,6 +2,7 @@ package com.boot.util;
 
 import com.boot.dao.RecallDAO;
 import com.boot.dto.RecallDTO;
+import com.boot.service.RecallService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -15,19 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Init implements CommandLineRunner {
     private final CsvParser csvParser;
-    private final RecallDAO recallDAO;
+    private final RecallService recallService;
+
     @Override
     public void run(String... args) throws Exception {
-        if(recallDAO.count()>0){
-            log.info("db에 데이터가 존재");
-            return;
-        }
         List<RecallDTO> recallList = csvParser.getRecallList();
         if(recallList.isEmpty()){
             log.info("csv파일 x");
             return;
         }
-        recallDAO.insertRecallList(recallList);
+        recallService.insertRecallList(recallList);
         log.info("성공");
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class CsvParser {
     @PostConstruct
     public void loadCsv() {
         try (CSVReader csvReader = new CSVReader(
-                new InputStreamReader(csvFile.getInputStream(), StandardCharsets.UTF_8))) {
+                new InputStreamReader(csvFile.getInputStream(), Charset.forName("EUC-KR")))) {
 
             String[] nextLine;
             csvReader.readNext();

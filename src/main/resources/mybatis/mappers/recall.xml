@@ -4,15 +4,14 @@
 
 <mapper namespace="com.boot.dao.RecallDAO">
 
-    <insert id="insertRecallList">
+    <insert id="insertRecall" parameterType="com.boot.dto.RecallDTO">
         INSERT INTO RECALL (
-        ID, MAKER, MODEL_NAME, RECALL_START, RECALL_END,
+        ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END,
         RECALL_DATE, RECALL_REASON
-        )
-        VALUES (
+        ) VALUES (
         RECALL_SEQ.NEXTVAL,
-        #{maker}, #{modelName}, #{recallStart}, #{recallEnd},
-        #{recallDate}, #{recallReason}
+        #{recall.maker}, #{recall.modelName}, #{recall.makeStart}, #{recall.makeEnd},
+        #{recall.recallDate}, #{recall.recallReason}
         )
     </insert>
 
