@@ -1,16 +1,17 @@
 package com.boot.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.boot.dao.BoardDAO;
+import com.boot.dto.BoardDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.boot.dao.BoardDAO;
-import com.boot.dto.BoardDTO;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
+@Slf4j
 public class BoardServiceImpl implements BoardService{
 
 	@Autowired
@@ -45,8 +46,13 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public void delete(HashMap<String, String> param) {
+		log.info("@# BoardServiceImpl @# delete()");
+		log.info("@# boardNo=>"+param.get("boardNo"));
 		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
+
 		dao.delete(param);
+
+                                                                                                                                                                                                                        ;
 	}
 
 }

@@ -5,9 +5,7 @@
 <mapper namespace="com.boot.dao.BoardDAO">
 
     <select id="list" resultType="com.boot.dto.BoardDTO">
-        select boardNo, boardName, boardTitle, boardContent, boardDate
-        , DATE_FORMAT(boardDate, '%Y-%m-%d %h:%i') AS boardDate2
-        , boardHit from tbl_board
+        select id, maker, model_name, recall_date from recall order by id desc;
     </select>
     
     <insert id="write">

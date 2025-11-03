@@ -1,9 +1,9 @@
 package com.boot.dao;
 
+import com.boot.dto.BoardDTO;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.boot.dto.BoardDTO;
 
 public interface BoardDAO {
 	public ArrayList<BoardDTO> list();

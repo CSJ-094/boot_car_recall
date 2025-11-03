@@ -1,10 +1,10 @@
 package com.boot.dto;
 
-import java.sql.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
@@ -17,4 +17,9 @@ public class BoardDTO {
 	private Timestamp boardDate;
 	private String boardDate2;
 	private int boardHit;
+
+	private Long id;
+	private String maker;
+	private String modelName;
+	private String recallDate;
 }
