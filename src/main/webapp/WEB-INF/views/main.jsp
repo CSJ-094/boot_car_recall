@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>차량 리콜 조회 시스템</title>
+<<<<<<< HEAD
   <link rel="stylesheet" href="header.css" />
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="footer.css" />
