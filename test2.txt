@@ -1,4 +1,4 @@
-- 리콜 기본 정보 테이블 RECALL -
+- 리콜 기본 정보 테이블 RECALL --
 
 CREATE TABLE RECALL (
     ID NUMBER PRIMARY KEY,
