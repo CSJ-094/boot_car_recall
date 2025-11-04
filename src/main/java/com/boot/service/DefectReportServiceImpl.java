@@ -30,7 +30,7 @@ public class DefectReportServiceImpl implements DefectReportService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    // 단일 파일 저장 로직 (여러 파일 처리를 위해 List<MultipartFile>로 변경 예정)
+    // 단일 파일 저장 로직
     private String saveFile(MultipartFile file) throws IOException {
         if (file == null || file.isEmpty()) {
             return null;
@@ -84,7 +84,7 @@ public class DefectReportServiceImpl implements DefectReportService {
 
     @Override
     public List<DefectReportDTO> getAllReports(Criteria cri) {
-        List<DefectReportDTO> reports = defectReportDAO.selectAll(cri.getOffset(), cri.getAmount());
+        List<DefectReportDTO> reports = defectReportDAO.selectAll(cri.getOffset(), cri.getAmount(), cri.getKeyword());
         // 각 신고에 이미지 목록을 추가
         for (DefectReportDTO report : reports) {
             report.setImages(defectImageDAO.selectImagesByReportId(report.getId()));
@@ -92,9 +92,14 @@ public class DefectReportServiceImpl implements DefectReportService {
         return reports;
     }
 
+    // @Override // 인터페이스에 없는 메소드이므로 @Override 제거
+    // public int getTotalCount() {
+    //     return defectReportDAO.count(null); // 검색 조건 없이 전체 카운트
+    // }
+
     @Override
-    public int getTotalCount() {
-        return defectReportDAO.count();
+    public int getTotalCount(Criteria cri) {
+        return defectReportDAO.count(cri.getKeyword()); // 검색 조건에 따른 카운트
     }
 
     @Override
@@ -158,9 +163,8 @@ public class DefectReportServiceImpl implements DefectReportService {
                 deleteFile(image.getFileName());
             }
         }
-        // 2. DB에서 이미지 레코드 삭제 (DEFECT_REPORT_IMAGES 테이블)
-        // DEFECT_REPORT 테이블의 FK에 ON DELETE CASCADE가 설정되어 있으므로,
-        // DEFECT_REPORT 레코드만 삭제하면 DEFECT_REPORT_IMAGES 레코드는 자동으로 삭제됩니다.
+        // 2. DB에서 이미지 레코드 삭제 (DEFECT_REPORT 테이블의 FK에 ON DELETE CASCADE가 설정되어 있으므로,
+        // DEFECT_REPORT 레코드만 삭제하면 DEFECT_REPORT_IMAGES 레코드는 자동으로 삭제됩니다.)
         // defectImageDAO.deleteImagesByReportId(id); // 이 라인은 필요 없을 수 있습니다.
 
         // 3. DB에서 신고 레코드 삭제 (DEFECT_REPORT 테이블)
