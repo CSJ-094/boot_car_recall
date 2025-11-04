@@ -12,9 +12,37 @@
         header h1 { margin: 0; font-size: 2rem; }
         nav { background: #1565c0; padding: 10px; text-align: center; }
         nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 500; }
-        .search-container { padding: 20px; background: #fff; margin-top: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .search-container input[type="text"] { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        .search-container button { padding: 10px 20px; background: #0d47a1; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        .search-container { 
+            padding: 20px; 
+            background: #fff; 
+            margin-top: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            text-align: center; /* 폼 자체를 중앙 정렬하기 위함 */
+        }
+        .search-container form { 
+            display: flex; /* flexbox를 사용하여 내부 요소 정렬 */
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center; /* 세로 중앙 정렬 */
+            max-width: 500px; /* 폼의 최대 너비 제한 */
+            margin: 0 auto; /* 폼 자체를 부모 요소 내에서 중앙 정렬 */
+        }
+        .search-container input[type="text"] { 
+            flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            margin-right: 10px; /* 입력 필드와 버튼 사이 간격 */
+            min-width: 150px; /* 최소 너비 지정 */
+        }
+        .search-container button { 
+            padding: 10px 20px; 
+            background: #0d47a1; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 4px; 
+        }
         table { 
             width: 100%; 
             margin-top: 20px; 
@@ -63,8 +91,10 @@
         </c:if>
 
         <div class="search-container">
-            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="제조사 또는 차종으로 검색...">
-            <button onclick="filterTable()">검색</button>
+            <form action="/recall-status" method="get">
+                <input type="text" id="searchInput" name="keyword" placeholder="제조사 또는 차종으로 검색..." value="${pageMaker.cri.keyword}">
+                <button type="submit">검색</button>
+            </form>
         </div>
 
         <c:choose>
@@ -93,7 +123,7 @@
                 <!-- Pagination -->
                 <div class="pagination">
                     <c:if test="${pageMaker.prev}">
-                        <a href="/recall-status?pageNum=${pageMaker.startPage - 1}">&laquo;</a>
+                        <a href="/recall-status?pageNum=${pageMaker.startPage - 1}&keyword=${pageMaker.cri.keyword}">&laquo;</a>
                     </c:if>
 
                     <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
@@ -102,13 +132,13 @@
                                 <strong>${num}</strong>
                             </c:when>
                             <c:otherwise>
-                                <a href="/recall-status?pageNum=${num}">${num}</a>
+                                <a href="/recall-status?pageNum=${num}&keyword=${pageMaker.cri.keyword}">${num}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
 
                     <c:if test="${pageMaker.next}">
-                        <a href="/recall-status?pageNum=${pageMaker.endPage + 1}">&raquo;</a>
+                        <a href="/recall-status?pageNum=${pageMaker.endPage + 1}&keyword=${pageMaker.cri.keyword}">&raquo;</a>
                     </c:if>
                 </div>
 
@@ -125,8 +155,7 @@
     </footer>
 
     <script>
-    // 클라이언트 사이드 검색은 페이징과 함께 사용하기 복잡하므로, 우선 비활성화합니다.
-    // function filterTable() { ... }
+    // 클라이언트 사이드 검색 기능은 서버 사이드 검색으로 대체되었으므로 제거합니다.
     </script>
 </body>
 </html>

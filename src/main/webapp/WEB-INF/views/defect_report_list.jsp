@@ -34,6 +34,7 @@
         <a href="/recall-status">리콜 현황</a>
         <a href="/defect-report">결함 신고</a>
         <a href="/defect-report-list">신고 목록</a>
+        <a href="#">고객 문의</a>
     </nav>
 
     <div class="container">

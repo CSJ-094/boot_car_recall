@@ -38,7 +38,7 @@ public class MainController {
         List<RecallDTO> recallList = recallService.getAllRecalls(cri);
         model.addAttribute("recallList", recallList);
 
-        int total = recallService.getRecallCount();
+        int total = recallService.getRecallCount(cri); // 검색 조건이 반영된 전체 개수
 
         PageDTO pageDTO = new PageDTO(cri, total);
         model.addAttribute("pageMaker", pageDTO);
