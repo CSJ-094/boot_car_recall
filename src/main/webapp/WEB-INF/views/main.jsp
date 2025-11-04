@@ -15,15 +15,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css" />
 </head>
 <body>
-  <header>
-    <h1>차량 리콜 조회</h1>
-    <nav>
-      <a href="#">홈</a>
-      <a href="#">리콜 안내</a>
-      <a href="#">고객 지원</a>
-      <a href="#">문의하기</a>
-    </nav>
-  </header>
+  <jsp:include page="/WEB-INF/views/header.jsp" />
 
   <div class="hero">
     <h2>내 차량이 리콜 대상인지 확인하세요</h2>
