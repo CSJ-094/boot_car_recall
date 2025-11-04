@@ -9,4 +9,7 @@ public interface DefectReportService {
     void saveReport(DefectReportDTO report);
     List<DefectReportDTO> getAllReports(Criteria cri);
     int getTotalCount();
+    DefectReportDTO getReportById(Long id);
+    void updateReport(DefectReportDTO report);
+    void deleteReport(Long id);
 }

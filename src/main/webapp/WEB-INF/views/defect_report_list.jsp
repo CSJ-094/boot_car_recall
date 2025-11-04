@@ -19,9 +19,21 @@
         tr:hover { background-color: #f1f1f1; }
         .col-small { width: 10%; }
         .col-medium { width: 15%; }
+        .col-action { width: 10%; text-align: center; } /* 상세보기 버튼 컬럼 너비 및 정렬 */
+        .col-id { text-align: center; } /* 신고번호 컬럼 가운데 정렬 */
         .pagination { text-align: center; margin-top: 20px; }
         .pagination a, .pagination strong { display: inline-block; padding: 5px 10px; margin: 0 2px; border: 1px solid #ddd; background-color: #fff; text-decoration: none; color: #337ab7; }
         .pagination strong { background-color: #337ab7; color: white; border-color: #337ab7; }
+        .detail-btn { 
+            display: inline-block; 
+            padding: 5px 10px; 
+            background-color: #0d47a1; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-size: 0.9em;
+        }
+        .detail-btn:hover { background-color: #1565c0; }
         footer { background: #263238; color: #ccc; text-align: center; padding: 20px; margin-top: 30px; }
     </style>
 </head>
@@ -34,30 +46,32 @@
         <a href="/recall-status">리콜 현황</a>
         <a href="/defect-report">결함 신고</a>
         <a href="/defect-report-list">신고 목록</a>
-        <a href="#">고객 문의</a>
+        <a href="#">고객 지원</a> <!-- 고객 문의를 고객 지원으로 변경 -->
     </nav>
 
     <div class="container">
         <table id="reportTable">
             <thead>
                 <tr>
-                    <th class="col-small">신고번호</th>
+                    <th class="col-small col-id">신고번호</th>
                     <th class="col-small">신고인</th>
                     <th class="col-medium">차량 모델</th>
                     <th class="col-medium">차대번호</th>
                     <th>결함 내용</th>
                     <th class="col-medium">신고일</th>
+                    <th class="col-action"></th> <!-- 상세보기 버튼을 위한 컬럼 -->
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${reportList}" var="report">
                     <tr>
-                        <td>${report.id}</td>
+                        <td class="col-id">${report.id}</td>
                         <td>${report.reporterName}</td>
                         <td>${report.carModel}</td>
                         <td>${report.vin}</td>
                         <td>${report.defectDetails}</td>
                         <td><fmt:formatDate value="${report.reportDate}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td class="col-action"><a href="/defect-report-detail?id=${report.id}" class="detail-btn">상세보기</a></td>
                     </tr>
                 </c:forEach>
             </tbody>

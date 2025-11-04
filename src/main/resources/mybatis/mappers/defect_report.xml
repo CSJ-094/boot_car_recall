@@ -30,4 +30,29 @@
         SELECT COUNT(*) FROM DEFECT_REPORT
     </select>
 
+    <!-- ID로 단일 결함 신고 조회 -->
+    <select id="selectById" parameterType="long" resultType="com.boot.dto.DefectReportDTO">
+        SELECT
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE
+        FROM DEFECT_REPORT
+        WHERE ID = #{id}
+    </select>
+
+    <!-- 결함 신고 수정 -->
+    <update id="updateReport" parameterType="com.boot.dto.DefectReportDTO">
+        UPDATE DEFECT_REPORT
+        SET
+            REPORTER_NAME = #{reporterName},
+            CONTACT = #{contact},
+            CAR_MODEL = #{carModel},
+            VIN = #{vin},
+            DEFECT_DETAILS = #{defectDetails}
+        WHERE ID = #{id}
+    </update>
+
+    <!-- 결함 신고 삭제 -->
+    <delete id="deleteReport" parameterType="long">
+        DELETE FROM DEFECT_REPORT WHERE ID = #{id}
+    </delete>
+
 </mapper>

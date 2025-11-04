@@ -11,4 +11,7 @@ public interface DefectReportDAO {
     void insertReport(DefectReportDTO report);
     List<DefectReportDTO> selectAll(@Param("offset") int offset, @Param("amount") int amount);
     int count();
+    DefectReportDTO selectById(Long id);
+    void updateReport(DefectReportDTO report);
+    void deleteReport(Long id);
 }
