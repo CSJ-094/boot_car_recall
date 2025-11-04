@@ -4,6 +4,7 @@ import com.boot.dto.Criteria;
 import com.boot.dto.DefectReportDTO;
 import com.boot.dto.PageDTO;
 import com.boot.dto.RecallDTO;
+import com.boot.dto.SearchResultsDTO;
 import com.boot.service.DefectReportService;
 import com.boot.service.RecallService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,7 +32,12 @@ public class MainController {
     private final DefectReportService defectReportService;
 
     @GetMapping("/")
-    public String main() {
+    public String main(Model model, @RequestParam(value = "query", required = false) String query) {
+        if (query != null && !query.trim().isEmpty()) {
+            List<RecallDTO> searchResults = recallService.searchRecallsByModelName(query.trim());
+            model.addAttribute("searchQuery", query);
+            model.addAttribute("searchResults", new SearchResultsDTO(query, searchResults));
+        }
         return "main";
     }
 

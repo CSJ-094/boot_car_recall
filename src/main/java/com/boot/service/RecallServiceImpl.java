@@ -28,11 +28,16 @@ public class RecallServiceImpl implements RecallService {
 
     @Override
     public int getRecallCount() {
-        return recallDAO.count(null); // 검색 조건 없이 전체 카운트
+        return recallDAO.count(null); 
     }
 
     @Override
     public int getRecallCount(Criteria cri) {
-        return recallDAO.count(cri.getKeyword()); // 검색 조건에 따른 카운트
+        return recallDAO.count(cri.getKeyword()); 
+    }
+
+    @Override
+    public List<RecallDTO> searchRecallsByModelName(String modelName) {
+        return recallDAO.searchByModelName(modelName);
     }
 }

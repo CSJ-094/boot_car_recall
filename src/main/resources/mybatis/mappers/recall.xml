@@ -22,8 +22,8 @@
         FROM RECALL
         <where>
             <if test="keyword != null and keyword != ''">
-                MAKER LIKE '%' || #{keyword} || '%'
-                OR MODEL_NAME LIKE '%' || #{keyword} || '%'
+                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
             </if>
         </where>
         ORDER BY ID DESC
@@ -35,10 +35,19 @@
         SELECT COUNT(*) FROM RECALL
         <where>
             <if test="keyword != null and keyword != ''">
-                MAKER LIKE '%' || #{keyword} || '%'
-                OR MODEL_NAME LIKE '%' || #{keyword} || '%'
+                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
             </if>
         </where>
+    </select>
+
+    <!-- 차량 모델명으로 리콜 정보 검색 -->
+    <select id="searchByModelName" parameterType="string" resultType="com.boot.dto.RecallDTO">
+        SELECT
+            ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+        FROM RECALL
+        WHERE UPPER(MODEL_NAME) LIKE '%' || UPPER(#{modelName}) || '%'
+        ORDER BY RECALL_DATE DESC
     </select>
 
 </mapper>

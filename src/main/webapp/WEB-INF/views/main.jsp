@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -120,6 +121,27 @@
       padding: 30px;
       font-size: 0.9rem;
     }
+
+    /* 검색 결과 스타일 */
+    .search-results {
+        margin-top: 40px;
+        text-align: left;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #333; /* 검색 결과 텍스트 색상 명시적 지정 */
+    }
+    .search-results h3 { color: #0d47a1; margin-bottom: 20px; text-align: center; }
+    .search-results ul { list-style: none; padding: 0; }
+    .search-results li { border-bottom: 1px solid #eee; padding: 15px 0; }
+    .search-results li:last-child { border-bottom: none; }
+    .search-results li strong { color: #1565c0; }
+    .search-results p { margin: 5px 0; }
+    .no-results { text-align: center; color: #dc3545; font-weight: bold; padding: 20px; }
   </style>
 </head>
 <body>
@@ -137,13 +159,34 @@
 
   <div class="hero">
     <h2>내 차량이 리콜 대상인지 확인하세요</h2>
-    <p>차량번호나 VIN(차대번호)를 입력하세요</p>
+    <p>차량 모델명이나 VIN(차대번호)를 입력하세요</p>
     <br />
-    <div class="search-box">
-      <input type="text" id="vinInput" placeholder="예: 12가3456 또는 KMHAB81...">
-      <button onclick="searchRecall()">조회하기</button>
-    </div>
-    <p id="result" style="margin-top: 20px; font-size: 1.1rem;"></p>
+    <form action="/" method="get" class="search-box">
+      <input type="text" id="vinInput" name="query" placeholder="예: 쏘나타, 포터2..." value="${searchQuery}">
+      <button type="submit">조회하기</button>
+    </form>
+    
+    <c:if test="${not empty searchResults}">
+        <div class="search-results">
+            <h3>'${searchQuery}' 검색 결과</h3>
+            <c:if test="${empty searchResults.recallList}">
+                <p class="no-results">'${searchQuery}'에 대한 리콜 정보가 없습니다.</p>
+            </c:if>
+            <c:if test="${not empty searchResults.recallList}">
+                <ul>
+                    <c:forEach items="${searchResults.recallList}" var="recall">
+                        <li>
+                            <p><strong>제조사:</strong> ${recall.maker}</p>
+                            <p><strong>차종:</strong> ${recall.modelName}</p>
+                            <p><strong>리콜 날짜:</strong> ${recall.recallDate}</p>
+                            <p><strong>리콜 사유:</strong> ${recall.recallReason}</p>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </c:if>
+        </div>
+    </c:if>
+
   </div>
 
   <section>
@@ -169,22 +212,7 @@
   </footer>
 
   <script>
-    function searchRecall() {
-      const vin = document.getElementById('vinInput').value.trim();
-      const result = document.getElementById('result');
-      
-      if (!vin) {
-        result.textContent = "⚠️ 차량번호나 VIN을 입력해주세요.";
-        return;
-      }
-
-      // 예시 로직 (실제 서비스에서는 API 연동 필요)
-      if (vin.includes("123") || vin.startsWith("KMH")) {
-        result.textContent = "🔴 리콜 대상 차량입니다. 가까운 서비스센터를 방문하세요.";
-      } else {
-        result.textContent = "✅ 해당 차량은 리콜 대상이 아닙니다.";
-      }
-    }
+    // 메인 페이지 검색은 서버 사이드에서 처리하므로 클라이언트 스크립트는 제거합니다.
   </script>
 </body>
 </html>
