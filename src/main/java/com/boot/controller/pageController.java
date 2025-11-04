@@ -29,7 +29,7 @@ public class pageController {
         log.info("@# total => " + total);
 
         model.addAttribute("list", list);
-        model.addAttribute("pageMaker", new PageDTO(total, cri));
+        model.addAttribute("pageMaker", new PageDTO(cri, total));
         return "recallInfo";
     }
 }

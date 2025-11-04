@@ -11,7 +11,7 @@ public class PageDTO {
 	private int total;
 	private Criteria cri;
 	
-	public PageDTO(int total, Criteria cri) {
+	public PageDTO(Criteria cri, int total) {
 		this.total = total;
 		this.cri = cri;
 		
