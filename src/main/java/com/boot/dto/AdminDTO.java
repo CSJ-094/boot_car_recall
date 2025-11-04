@@ -11,6 +11,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class AdminDTO {
     private String admin_id;
-    private String password_hash;
+    private String admin_pw;
     private Timestamp created_at;
 }

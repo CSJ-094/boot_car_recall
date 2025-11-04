@@ -25,7 +25,7 @@ public class AdminController {
     @GetMapping("/login")
     public String loginForm() {
         log.info("@# Admin login form");
-        return "admin/login";
+        return "admin_login";
     }
 
     @PostMapping("/login")
@@ -36,10 +36,16 @@ public class AdminController {
         if (admin != null) {
             HttpSession session = request.getSession();
             session.setAttribute("admin", admin);
-            return "redirect:/"; // 로그인 성공 시 메인 페이지로 이동
+            return "redirect:/admin/main"; // 로그인 성공 시 관리자 메인 페이지로 이동
         } else {
             rttr.addFlashAttribute("error", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "redirect:/admin/login"; // 로그인 실패 시 다시 로그인 폼으로
         }
+    }
+
+    @GetMapping("/main")
+    public String adminMain() {
+        log.info("@# Admin main page");
+        return "admin_main";
     }
 }

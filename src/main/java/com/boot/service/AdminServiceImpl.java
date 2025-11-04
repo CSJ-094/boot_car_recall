@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
 
         AdminDTO admin = adminDAO.login(param.get("admin_id"));
 
-        if (admin != null && admin.getPassword_hash().equals(param.get("admin_pw"))) {
+        if (admin != null && admin.getAdmin_pw().equals(param.get("admin_pw"))) {
             return admin;
         }
         return null;
