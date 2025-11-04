@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -83,9 +84,9 @@ public class MainController {
     }
 
     @PostMapping("/defect-report")
-    public String defectReportSubmit(DefectReportDTO report, Model model) {
+    public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, Model model) {
         try {
-            defectReportService.saveReport(report);
+            defectReportService.saveReport(report, files);
             model.addAttribute("message", "결함 신고가 성공적으로 접수되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,34 +116,42 @@ public class MainController {
 
     // 결함 신고 수정 폼 요청
     @GetMapping("/defect-report-edit")
-    public String defectReportEditForm(@RequestParam("id") Long id, Model model) {
+    public String defectReportEditForm(@RequestParam("id") Long id, @RequestParam("password") String password, Model model, RedirectAttributes rttr) {
+        if (!defectReportService.checkPassword(id, password)) {
+            rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/defect-report-detail?id=" + id;
+        }
         DefectReportDTO report = defectReportService.getReportById(id);
         model.addAttribute("report", report);
         return "defect_report_edit";
     }
 
-    // 결함 신고 수정 처리
+    // 결함 신고 수정 처리 (비밀번호 검증 제거)
     @PostMapping("/defect-report-edit")
-    public String defectReportEditSubmit(DefectReportDTO report, RedirectAttributes rttr) {
+    public String defectReportEditSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> newFiles, @RequestParam(value = "existingImageFileNames", required = false) List<String> existingFileNames, RedirectAttributes rttr) {
         try {
-            defectReportService.updateReport(report);
+            defectReportService.updateReport(report, newFiles, existingFileNames);
             rttr.addFlashAttribute("message", "결함 신고가 성공적으로 수정되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
-            rttr.addFlashAttribute("message", "오류가 발생하여 신고 수정에 실패했습니다: " + e.getMessage());
+            rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고 수정에 실패했습니다: " + e.getMessage());
         }
         return "redirect:/defect-report-detail?id=" + report.getId();
     }
 
     // 결함 신고 삭제 처리
     @PostMapping("/defect-report-delete")
-    public String defectReportDelete(@RequestParam("id") Long id, RedirectAttributes rttr) {
+    public String defectReportDelete(@RequestParam("id") Long id, @RequestParam("password") String password, RedirectAttributes rttr) {
         try {
+            if (!defectReportService.checkPassword(id, password)) {
+                rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않아 삭제에 실패했습니다.");
+                return "redirect:/defect-report-detail?id=" + id;
+            }
             defectReportService.deleteReport(id);
             rttr.addFlashAttribute("message", "결함 신고가 성공적으로 삭제되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
-            rttr.addFlashAttribute("message", "오류가 발생하여 신고 삭제에 실패했습니다: " + e.getMessage());
+            rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고 삭제에 실패했습니다: " + e.getMessage());
         }
         return "redirect:/defect-report-list";
     }

@@ -6,7 +6,7 @@
 
     <insert id="insertReport" parameterType="com.boot.dto.DefectReportDTO">
         INSERT INTO DEFECT_REPORT (
-            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         ) VALUES (
             DEFECT_REPORT_SEQ.NEXTVAL,
             #{reporterName},
@@ -14,13 +14,18 @@
             #{carModel},
             #{vin},
             #{defectDetails},
-            SYSDATE
+            SYSDATE,
+            #{password}
         )
+        <!-- ID 값을 DTO에 다시 설정 (이미지 저장을 위해 필요) -->
+        <selectKey keyProperty="id" resultType="long" order="AFTER">
+            SELECT DEFECT_REPORT_SEQ.CURRVAL FROM DUAL
+        </selectKey>
     </insert>
 
     <select id="selectAll" resultType="com.boot.dto.DefectReportDTO">
         SELECT
-            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         FROM DEFECT_REPORT
         ORDER BY ID DESC
         OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
@@ -33,7 +38,7 @@
     <!-- ID로 단일 결함 신고 조회 -->
     <select id="selectById" parameterType="long" resultType="com.boot.dto.DefectReportDTO">
         SELECT
-            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         FROM DEFECT_REPORT
         WHERE ID = #{id}
     </select>
@@ -54,5 +59,10 @@
     <delete id="deleteReport" parameterType="long">
         DELETE FROM DEFECT_REPORT WHERE ID = #{id}
     </delete>
+
+    <!-- 비밀번호 조회 -->
+    <select id="selectPasswordById" parameterType="long" resultType="string">
+        SELECT PASSWORD FROM DEFECT_REPORT WHERE ID = #{id}
+    </select>
 
 </mapper>
