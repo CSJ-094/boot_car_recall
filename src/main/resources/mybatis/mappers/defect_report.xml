@@ -1,0 +1,33 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.DefectReportDAO">
+
+    <insert id="insertReport" parameterType="com.boot.dto.DefectReportDTO">
+        INSERT INTO DEFECT_REPORT (
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE
+        ) VALUES (
+            DEFECT_REPORT_SEQ.NEXTVAL,
+            #{reporterName},
+            #{contact},
+            #{carModel},
+            #{vin},
+            #{defectDetails},
+            SYSDATE
+        )
+    </insert>
+
+    <select id="selectAll" resultType="com.boot.dto.DefectReportDTO">
+        SELECT
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE
+        FROM DEFECT_REPORT
+        ORDER BY ID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM DEFECT_REPORT
+    </select>
+
+</mapper>

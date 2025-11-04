@@ -9,6 +9,7 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/board.xml"/>
 		<mapper resource="mybatis/mappers/recall.xml"/>
+        <mapper resource="mybatis/mappers/defect_report.xml"/>
 		<mapper resource="mybatis/mappers/page.xml"/>
 		<mapper resource="mybatis/mappers/admin.xml"/>
 		<mapper resource="mybatis/mappers/carRecall.xml"/>
