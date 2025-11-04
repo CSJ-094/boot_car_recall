@@ -16,11 +16,16 @@
         .search-container input[type="text"] { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
         .search-container button { padding: 10px 20px; background: #0d47a1; color: white; border: none; cursor: pointer; border-radius: 4px; }
         table { width: 100%; margin-top: 20px; border-collapse: collapse; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: middle; }
         th { background-color: #1e88e5; color: white; }
         tr:hover { background-color: #f1f1f1; }
         .error-message { color: red; text-align: center; padding: 20px; background-color: #ffebee; border: 1px solid #e57373; border-radius: 8px; margin-top: 20px; }
         footer { background: #263238; color: #ccc; text-align: center; padding: 20px; margin-top: 30px; }
+        .nowrap { white-space: nowrap; }
+        .reason-col { padding-left: 24px; }
+        .pagination { text-align: center; margin-top: 20px; }
+        .pagination a, .pagination strong { display: inline-block; padding: 5px 10px; margin: 0 2px; border: 1px solid #ddd; background-color: #fff; text-decoration: none; color: #337ab7; }
+        .pagination strong { background-color: #337ab7; color: white; border-color: #337ab7; }
     </style>
 </head>
 <body>
@@ -53,20 +58,43 @@
                             <th>제조사</th>
                             <th>차종</th>
                             <th>리콜 날짜</th>
-                            <th>리콜 사유</th>
+                            <th class="reason-col">리콜 사유</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach items="${recallList}" var="recall">
                             <tr>
-                                <td>${recall.maker}</td>
-                                <td>${recall.modelName}</td>
-                                <td>${recall.recallDate}</td>
-                                <td>${recall.recallReason}</td>
+                                <td class="nowrap">${recall.maker}</td>
+                                <td class="nowrap">${recall.modelName}</td>
+                                <td class="nowrap">${recall.recallDate}</td>
+                                <td class="reason-col">${recall.recallReason}</td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <c:if test="${pageMaker.prev}">
+                        <a href="/recall-status?pageNum=${pageMaker.startPage - 1}">&laquo;</a>
+                    </c:if>
+
+                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
+                        <c:choose>
+                            <c:when test="${pageMaker.cri.pageNum == num}">
+                                <strong>${num}</strong>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/recall-status?pageNum=${num}">${num}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <c:if test="${pageMaker.next}">
+                        <a href="/recall-status?pageNum=${pageMaker.endPage + 1}">&raquo;</a>
+                    </c:if>
+                </div>
+
             </c:when>
             <c:otherwise>
                 <c:if test="${empty errorMessage}">
@@ -80,26 +108,8 @@
     </footer>
 
     <script>
-    function filterTable() {
-        var input, filter, table, tr, td, i, j;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("recallTable");
-        tr = table.getElementsByTagName("tr");
-
-        for (i = 1; i < tr.length; i++) { // i=1 to skip header row
-            tr[i].style.display = "none";
-            td = tr[i].getElementsByTagName("td");
-            for (j = 0; j < 2; j++) { // j=0 for MAKER, j=1 for MODEL_NAME
-                if (td[j]) {
-                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                        break;
-                    }
-                }
-            }
-        }
-    }
+    // 클라이언트 사이드 검색은 페이징과 함께 사용하기 복잡하므로, 우선 비활성화합니다.
+    // function filterTable() { ... }
     </script>
 </body>
 </html>
