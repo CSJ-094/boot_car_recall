@@ -172,3 +172,26 @@ body.nav-open{ overflow: hidden; }
 
 /* 접근성: 포커스 링 */
 .menu a:focus{ outline: 2px solid #9cc3ff; outline-offset: 2px; }
+/* 브랜드 로고 아이콘 */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 아이콘과 글자 사이 간격 */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff; /* ← 흰색으로 변경 */
+}
+
+.brand-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.brand-text {
+  display: inline-block;
+}
+
+

@@ -1,8 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<link rel="stylesheet" href="${ctx}/css/header.css" />
+
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="${pageContext.request.contextPath}/">
-      자동차 리콜 통합센터
+		<img src="${pageContext.request.contextPath}/img/car.png" class="brand-logo">
+		<span class="brand-text">자동차 리콜 통합센터</span>
     </a>
 
     <!-- 모바일 메뉴 토글 -->
@@ -51,37 +56,4 @@
     </nav>
   </div>
 </header>
-
-<script>
-  // 모바일 햄버거 토글
-  (function () {
-    const btn = document.querySelector('.nav-toggle');
-    const nav = document.getElementById('global-nav');
-
-    if (btn && nav) {
-      btn.addEventListener('click', () => {
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', String(!expanded));
-        nav.classList.toggle('open');
-        document.body.classList.toggle('nav-open');
-      });
-    }
-
-	 // 서브메뉴 키보드 접근성 + 모바일 아코디언
-	    const mq = window.matchMedia('(max-width: 992px)');
-	    document.querySelectorAll('.menu-item.has-sub > .menu-link').forEach(link => {
-	      link.addEventListener('keydown', e => {
-	        if (e.key === 'Enter' || e.key === ' ') {
-	          e.preventDefault();
-	          link.parentElement.classList.toggle('sub-open');
-	        }
-	      });
-	      link.addEventListener('click', e => {
-	        if (mq.matches) {            // 모바일에서만 링크 이동 막고 토글
-	          e.preventDefault();
-	          link.parentElement.classList.toggle('sub-open');
-	        }
-	      });
-	    });
-	  })();
-	</script>
+<script src="${ctx}/js/header.js"></script>

@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>자동차 리콜 통합센터</title>
 
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css" />
+<!--  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css" />-->
+<!--  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css" />-->
 </head>
 <!-- ▼ contextPath를 JS에서 쓰도록 data 속성에 실어 둡니다 -->
 <body data-contextpath="${pageContext.request.contextPath}">
@@ -193,10 +193,6 @@
       </div>
     </div>
   </section>
-
-  <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
-
-
 
   <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
 
