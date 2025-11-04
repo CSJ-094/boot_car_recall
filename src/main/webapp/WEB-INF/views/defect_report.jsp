@@ -29,6 +29,7 @@
         <a href="/">홈</a>
         <a href="/recall-status">리콜 현황</a>
         <a href="/defect-report">결함 신고</a>
+        <a href="/defect-report-list">신고 목록</a> <!-- 신고 목록 링크 추가 -->
         <a href="#">고객 지원</a>
     </nav>
 

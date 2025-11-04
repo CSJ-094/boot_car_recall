@@ -82,6 +82,7 @@
         <a href="/recall-status">리콜 현황</a>
         <a href="/defect-report">결함 신고</a>
         <a href="/defect-report-list">신고 목록</a>
+        <a href="#">고객 지원</a>
     </nav>
     <div class="container">
         <c:if test="${not empty errorMessage}">
@@ -155,7 +156,6 @@
     </footer>
 
     <script>
-    // 클라이언트 사이드 검색 기능은 서버 사이드 검색으로 대체되었으므로 제거합니다.
     </script>
 </body>
 </html>

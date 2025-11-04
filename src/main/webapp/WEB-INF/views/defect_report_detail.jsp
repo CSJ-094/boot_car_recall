@@ -19,8 +19,14 @@
         .detail-item label { font-weight: bold; display: inline-block; width: 120px; color: #555; }
         .detail-item span { color: #333; }
         .defect-details-box { border: 1px solid #ddd; padding: 15px; border-radius: 4px; background-color: #f9f9f9; margin-top: 10px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; }
-        .back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; }
-        .back-btn:hover { background-color: #5a6268; }
+        .btn-group { text-align: center; margin-top: 20px; }
+        .btn-group a, .btn-group button { display: inline-block; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1em; font-weight: 600; margin: 0 5px; text-decoration: none; }
+        .btn-group .edit-btn { background-color: #28a745; color: white; }
+        .btn-group .edit-btn:hover { background-color: #218838; }
+        .btn-group .delete-btn { background-color: #dc3545; color: white; }
+        .btn-group .delete-btn:hover { background-color: #c82333; }
+        .btn-group .back-btn { background-color: #6c757d; color: white; }
+        .btn-group .back-btn:hover { background-color: #5a6268; }
         footer { background: #263238; color: #ccc; text-align: center; padding: 20px; margin-top: 30px; }
     </style>
 </head>
@@ -33,11 +39,14 @@
         <a href="/recall-status">리콜 현황</a>
         <a href="/defect-report">결함 신고</a>
         <a href="/defect-report-list">신고 목록</a>
-        <a href="#">고객 문의</a>
+        <a href="#">고객 지원</a>
     </nav>
 
     <div class="container">
         <h2>신고 상세 내용</h2>
+        <c:if test="${not empty message}">
+            <p style="text-align:center; color: green;">${message}</p>
+        </c:if>
         <c:if test="${empty report}">
             <p style="text-align:center; color: red;">해당 신고를 찾을 수 없습니다.</p>
         </c:if>
@@ -64,8 +73,15 @@
                 <label>결함 내용:</label>
                 <div class="defect-details-box">${report.defectDetails}</div>
             </div>
+            <div class="btn-group">
+                <a href="/defect-report-edit?id=${report.id}" class="edit-btn">수정</a>
+                <form action="/defect-report-delete" method="post" style="display:inline-block;" onsubmit="return confirm('정말로 이 신고를 삭제하시겠습니까?');">
+                    <input type="hidden" name="id" value="${report.id}">
+                    <button type="submit" class="delete-btn">삭제</button>
+                </form>
+                <a href="/defect-report-list" class="back-btn">목록으로</a>
+            </div>
         </c:if>
-        <a href="/defect-report-list" class="back-btn">목록으로 돌아가기</a>
     </div>
 
     <footer>

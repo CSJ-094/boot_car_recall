@@ -28,4 +28,19 @@ public class DefectReportServiceImpl implements DefectReportService {
     public int getTotalCount() {
         return defectReportDAO.count();
     }
+
+    @Override
+    public DefectReportDTO getReportById(Long id) {
+        return defectReportDAO.selectById(id);
+    }
+
+    @Override
+    public void updateReport(DefectReportDTO report) {
+        defectReportDAO.updateReport(report);
+    }
+
+    @Override
+    public void deleteReport(Long id) {
+        defectReportDAO.deleteReport(id);
+    }
 }
