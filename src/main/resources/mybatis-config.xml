@@ -6,5 +6,6 @@
 	<mappers>
 		<mapper resource="mybatis/mappers/board.xml"/>
 		<mapper resource="mybatis/mappers/recall.xml"/>
+		<mapper resource="mybatis/mappers/notice.xml"/>
 	</mappers>
 </configuration>
