@@ -16,5 +16,6 @@
 		<mapper resource="mybatis/mappers/faq.xml"/>
 		<mapper resource="mybatis/mappers/stats.xml"/>
 		<mapper resource="mybatis/mappers/notice.xml"/>
+        <mapper resource="mybatis/mappers/defect_image.xml"/>
 	</mappers>
 </configuration>

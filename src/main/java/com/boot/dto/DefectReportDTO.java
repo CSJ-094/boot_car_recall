@@ -1,7 +1,8 @@
 package com.boot.dto;
 
 import lombok.Data;
-import java.util.Date; // LocalDateTime 대신 Date를 임포트
+import java.util.Date;
+import java.util.List; // List 임포트
 
 @Data
 public class DefectReportDTO {
@@ -11,5 +12,7 @@ public class DefectReportDTO {
     private String carModel;
     private String vin;
     private String defectDetails;
-    private Date reportDate; // 타입을 Date로 변경
+    private Date reportDate;
+    private String password;
+    private List<DefectImageDTO> images; // 이미지 리스트 필드 추가
 }

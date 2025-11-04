@@ -14,4 +14,5 @@ public interface DefectReportDAO {
     DefectReportDTO selectById(Long id);
     void updateReport(DefectReportDTO report);
     void deleteReport(Long id);
+    String selectPasswordById(Long id);
 }
