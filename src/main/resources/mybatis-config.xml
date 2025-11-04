@@ -4,8 +4,9 @@
     "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<mappers>
-		<mapper resource="mybatis/mappers/board.xml"/>
+<!--		<mapper resource="mybatis/mappers/board.xml"/>-->
 		<mapper resource="mybatis/mappers/recall.xml"/>
 		<mapper resource="mybatis/mappers/notice.xml"/>
+		<mapper resource="mybatis/mappers/faq.xml"/>
 	</mappers>
 </configuration>
