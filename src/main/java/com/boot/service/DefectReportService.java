@@ -9,7 +9,7 @@ import java.util.List;
 public interface DefectReportService {
     void saveReport(DefectReportDTO report, List<MultipartFile> files);
     List<DefectReportDTO> getAllReports(Criteria cri);
-    int getTotalCount();
+    int getTotalCount(Criteria cri); // 검색 조건에 따른 전체 개수
     DefectReportDTO getReportById(Long id);
     void updateReport(DefectReportDTO report, List<MultipartFile> newFiles, List<String> existingFileNames);
     void deleteReport(Long id);

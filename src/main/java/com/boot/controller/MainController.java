@@ -100,7 +100,7 @@ public class MainController {
         List<DefectReportDTO> reportList = defectReportService.getAllReports(cri);
         model.addAttribute("reportList", reportList);
 
-        int total = defectReportService.getTotalCount();
+        int total = defectReportService.getTotalCount(cri);
         PageDTO pageDTO = new PageDTO(cri, total);
         model.addAttribute("pageMaker", pageDTO);
 
@@ -128,7 +128,7 @@ public class MainController {
 
     // 결함 신고 수정 처리 (비밀번호 검증 제거)
     @PostMapping("/defect-report-edit")
-    public String defectReportEditSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> newFiles, @RequestParam(value = "existingImageFileNames", required = false) List<String> existingFileNames, RedirectAttributes rttr) {
+    public String defectReportEditSubmit(DefectReportDTO report, @RequestParam(value = "newDefectImages", required = false) List<MultipartFile> newFiles, @RequestParam(value = "existingImageFileNames", required = false) List<String> existingFileNames, RedirectAttributes rttr) {
         try {
             defectReportService.updateReport(report, newFiles, existingFileNames);
             rttr.addFlashAttribute("message", "결함 신고가 성공적으로 수정되었습니다.");

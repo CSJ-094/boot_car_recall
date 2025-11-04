@@ -13,6 +13,37 @@
         header h1 { margin: 0; font-size: 2rem; }
         nav { background: #1565c0; padding: 10px; text-align: center; }
         nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 500; }
+        .search-container { 
+            padding: 20px; 
+            background: #fff; 
+            margin-top: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            text-align: center; 
+        }
+        .search-container form { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            max-width: 500px; 
+            margin: 0 auto; 
+        }
+        .search-container input[type="text"] { 
+            flex-grow: 1; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            margin-right: 10px; 
+            min-width: 150px; 
+        }
+        .search-container button { 
+            padding: 10px 20px; 
+            background: #0d47a1; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 4px; 
+        }
         table { width: 100%; margin-top: 20px; border-collapse: collapse; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); table-layout: fixed; }
         th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: middle; word-wrap: break-word; }
         th { background-color: #1e88e5; color: white; }
@@ -46,10 +77,17 @@
         <a href="/recall-status">리콜 현황</a>
         <a href="/defect-report">결함 신고</a>
         <a href="/defect-report-list">신고 목록</a>
-        <a href="#">고객 지원</a> <!-- 고객 문의를 고객 지원으로 변경 -->
+        <a href="#">고객 지원</a>
     </nav>
 
     <div class="container">
+        <div class="search-container">
+            <form action="/defect-report-list" method="get">
+                <input type="text" id="searchInput" name="keyword" placeholder="신고인, 차량 모델, VIN으로 검색..." value="${pageMaker.cri.keyword}">
+                <button type="submit">검색</button>
+            </form>
+        </div>
+
         <table id="reportTable">
             <thead>
                 <tr>
@@ -80,7 +118,7 @@
         <!-- Pagination -->
         <div class="pagination">
             <c:if test="${pageMaker.prev}">
-                <a href="/defect-report-list?pageNum=${pageMaker.startPage - 1}">&laquo;</a>
+                <a href="/defect-report-list?pageNum=${pageMaker.startPage - 1}&keyword=${pageMaker.cri.keyword}">&laquo;</a>
             </c:if>
 
             <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
@@ -89,13 +127,13 @@
                         <strong>${num}</strong>
                     </c:when>
                     <c:otherwise>
-                        <a href="/defect-report-list?pageNum=${num}">${num}</a>
+                        <a href="/defect-report-list?pageNum=${num}&keyword=${pageMaker.cri.keyword}">${num}</a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
 
             <c:if test="${pageMaker.next}">
-                <a href="/defect-report-list?pageNum=${pageMaker.endPage + 1}">&raquo;</a>
+                <a href="/defect-report-list?pageNum=${pageMaker.endPage + 1}&keyword=${pageMaker.cri.keyword}">&raquo;</a>
             </c:if>
         </div>
     </div>

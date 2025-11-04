@@ -17,22 +17,37 @@
             SYSDATE,
             #{password}
         )
-        <!-- ID 값을 DTO에 다시 설정 (이미지 저장을 위해 필요) -->
         <selectKey keyProperty="id" resultType="long" order="AFTER">
             SELECT DEFECT_REPORT_SEQ.CURRVAL FROM DUAL
         </selectKey>
     </insert>
 
+    <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->
     <select id="selectAll" resultType="com.boot.dto.DefectReportDTO">
         SELECT
             ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         FROM DEFECT_REPORT
+        <where>
+            <if test="keyword != null and keyword != ''">
+                UPPER(REPORTER_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(CAR_MODEL) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(VIN) LIKE '%' || UPPER(#{keyword}) || '%'
+            </if>
+        </where>
         ORDER BY ID DESC
         OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
     </select>
 
+    <!-- 검색 조건에 따른 전체 데이터 수 조회 쿼리 수정 -->
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM DEFECT_REPORT
+        <where>
+            <if test="keyword != null and keyword != ''">
+                UPPER(REPORTER_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(CAR_MODEL) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(VIN) LIKE '%' || UPPER(#{keyword}) || '%'
+            </if>
+        </where>
     </select>
 
     <!-- ID로 단일 결함 신고 조회 -->
