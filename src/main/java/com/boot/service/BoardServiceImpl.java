@@ -15,13 +15,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Autowired
 	private SqlSession sqlSession;
-	
-	@Override
-	public ArrayList<BoardDTO> list() {
-		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-		ArrayList<BoardDTO> list = dao.list();
-		return list;
-	}
+
 
 	@Override
 	public void write(HashMap<String, String> param) {
@@ -44,9 +38,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void delete(HashMap<String, String> param) {
+	public void delete(int boardNo) {
 		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-		dao.delete(param);
+		dao.delete(boardNo);
 	}
 
 }
