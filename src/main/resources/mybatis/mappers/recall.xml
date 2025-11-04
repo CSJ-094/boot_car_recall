@@ -10,8 +10,8 @@
         RECALL_DATE, RECALL_REASON
         ) VALUES (
         RECALL_SEQ.NEXTVAL,
-        #{recall.maker}, #{recall.modelName}, #{recall.makeStart}, #{recall.makeEnd},
-        #{recall.recallDate}, #{recall.recallReason}
+        #{maker}, #{modelName}, #{makeStart}, #{makeEnd},
+        #{recallDate}, #{recallReason}
         )
     </insert>
 
