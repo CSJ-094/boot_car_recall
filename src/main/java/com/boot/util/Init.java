@@ -1,6 +1,5 @@
 package com.boot.util;
 
-import com.boot.dao.RecallDAO;
 import com.boot.dto.RecallDTO;
 import com.boot.service.RecallService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
