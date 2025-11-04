@@ -2,13 +2,14 @@ package com.boot.dao;
 
 import com.boot.dto.BoardDTO;
 import com.boot.dto.Criteria;
+import com.boot.dto.RecallDTO;
 
 import java.util.ArrayList;
 
 public interface PageDAO {
-	//criteria 객체를 이용해서 페이징 처리
-	public ArrayList<BoardDTO> listWithPaging(Criteria cri);
-//	public int getTotalCount();
+
+	public ArrayList<RecallDTO> listWithPaging(Criteria cri);
+
 	public int getTotalCount(Criteria cri);
 
 }

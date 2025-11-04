@@ -31,41 +31,35 @@
 	<table width="500" border="1">
 		<form method="post" action="modify">
 <%--			<input type="hidden" name="boardNo" value="${content_view.boardNo}">--%>
-			<input type="hidden" name="boardNo" value="${pageMaker.boardNo}">
+			<input type="hidden" name="id" value="${pageMaker.id}">
 			<input type="hidden" name="pageNum" value="${pageMaker.pageNum}">
 			<input type="hidden" name="amount" value="${pageMaker.amount}">
 
 			<tr>
 				<td>번호</td>
 				<td>
-					${content_view.boardNo}
+					${content_view.id}
 				</td>
 			</tr>
 			<tr>
-				<td>히트</td>
-				<td>
-					${content_view.boardHit}
-				</td>
-			</tr>
-			<tr>
-				<td>이름</td>
+				<td>제조사</td>
 				<td>
 <%-- 					${content_view.boardName} --%>
-					<input type="text" name="boardName" value="${content_view.boardName}">
+					<input type="text" name="maker" value="${content_view.maker}">
 				</td>
 			</tr>
 			<tr>
-				<td>제목</td>
+				<td>모델명</td>
 				<td>
 <%-- 					${content_view.boardTitle} --%>
-					<input type="text" name="boardTitle" value="${content_view.boardTitle}">
+					<input type="text" name="model_name" value="${content_view.model_name}">
 				</td>
 			</tr>
 			<tr>
-				<td>내용</td>
+				<td>리콜날짜</td>
 				<td>
 <%-- 					${content_view.boardContent} --%>
-					<input type="text" name="boardContent" value="${content_view.boardContent}">
+					<input type="text" name="recall_date" value="${content_view.recall_date}">
 				</td>
 			</tr>
 			<tr>
@@ -81,171 +75,10 @@
 	</table>
 
 	<!-- 첨부파일 출력 -->
-	 Files
-	<div class="bigPicture">
-		<div class="bigPic">
-
-		</div>
-	</div>
-
-	<div class="uploadResult">
-		<ul>
-
-		</ul>
-	</div>
 	<!-- 댓글 출력 -->
-	<div>
-		<input type="text" id="commentWriter" placeholder="작성자">
-		<input type="text" id="commentContent" placeholder="내용">
-		<button onclick="commentWrite()">댓글작성</button>
-	</div>
 
-	<div id="comment-list">
-		<table>
-			<tr>
-				<th>댓글번호</th>
-				<th>작성자</th>
-				<th>내용</th>
-				<th>작성시간</th>
-			</tr>
-			<c:forEach items="${commentList}" var="comment">
-				<tr>
-					<td>${comment.commentNo}</td>
-					<td>${comment.commentWriter}</td>
-					<td>${comment.commentContent}</td>
-<!--					<td>${comment.commentCreatedTime}</td>-->
-					<td>${comment.commentCreatedTime2}</td>
-				</tr>
-			</c:forEach>
-		</table>
-	</div>
+
 </body>
-	<script>
-		const commentWrite = () => {
-			const writer = document.getElementById("commentWriter").value;
-			const content = document.getElementById("commentContent").value;
-			const no = "${content_view.boardNo}";
-
-			$.ajax({
-				 type:"post"
-				,url: "/comment/save"
-				,data:{
-					 commentWriter: writer
-					,commentContent: content
-					,boardNo: no
-				}
-				,success: function (commentList) {
-					console.log("작성성공");
-					console.log(commentList);
-
-					let output = "<table>";
-						output += "<tr><th>댓글번호</th>";
-						output += "<th>작성자</th>";
-						output += "<th>내용</th>";
-						output += "<th>작성시간</th>";
-						output += "</tr>";
-						for(let i in commentList){
-							output += "<tr>";
-							output += "<td>"+commentList[i].commentNo+"</td>";
-							output += "<td>"+commentList[i].commentWriter+"</td>";
-							output += "<td>"+commentList[i].commentContent+"</td>";
-							// output += "<td>"+commentList[i].commentCreatedTime+"</td>";
-							output += "<td>"+commentList[i].commentCreatedTime2+"</td>";
-							output += "</tr>";
-						}
-						output += "</table>";
-						console.log("@# output=>"+output);
-
-						document.getElementById("comment-list").innerHTML = output;
-				}
-				,error: function () {
-					console.log("실패");
-				}
-			});
-		}
-	</script>
-	<script>
-		$(document).ready(function () {
-			// 즉시실행함수
-			(function () {
-				console.log("@# document ready");
-
-				var boardNo = "${content_view.boardNo}";
-				console.log("@# boardNo=>"+boardNo);
-
-				$.getJSON("/getFileList", {boardNo: boardNo}, function (arr) {
-					console.log("@# arr=>"+arr);
-					var str="";
-
-					$(arr).each(function (i, obj) {
-						str += "<li data-path='"+ obj.uploadPath +"'";
-						str += " data-uuid='"+ obj.uuid +"'";
-						str += " data-filename='"+ obj.fileName +"'";
-						str += " data-type='"+ obj.image +"'";
-						str += "><div>";
-
-						str += "<span>"+ obj.fileName +"</span>";
-
-						//image type
-						if (obj.image) {
-							var fileCallPath = obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName;
-
-							str += "<img src='/display?fileName="+ fileCallPath +"'>";//이미지 출력 처리(컨트롤러단)
-							str += "</div></li>";
-						} else {
-							var fileCallPath = obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName;
-							
-							str += "<img src='${contextPath}/img/attach.png'>"
-							str += "</div></li>";
-						}
-					});//end of arr each
-
-					console.log("@# str=>"+str);
-					$(".uploadResult ul").html(str);
-				});//end of getJSON
-
-				$(".uploadResult").on("click", "li", function (e) {
-					console.log("@# uploadResult click");
-
-					var liObj = $(this);
-					console.log("@# path=>"+liObj.data("path"));
-					console.log("@# uuid=>"+liObj.data("uuid"));
-					console.log("@# filename=>"+liObj.data("filename"));
-					console.log("@# type=>"+liObj.data("type"));
-
-					var path = liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename");
-					console.log("@# full path=>"+path);
-
-					// 이미지일때
-					if (liObj.data("type")) {
-						console.log("@# 이미지 확대");
-
-						showImage(path);
-					// 이미지가 아닐때
-					} else {
-						console.log("@# 파일 다운로드");
-
-						// 컨트롤러의 download 호출
-						self.location = "/download?fileName="+path;
-					}
-				});//end of uploadResult click
-
-				function showImage(fileCallPath) {
-					console.log("@# fileCallPath=>", fileCallPath);
-
-					$(".bigPicture").css("display","flex").show();
-					$(".bigPic").html("<img src='/display?fileName="+fileCallPath+"'>")
-								.animate({width: "100%", height: "100%"}, 1000);
-				}
-				$(".bigPicture").on("click", function(e){
-					$(".bigPic").animate({width: "0%", height: "0%"}, 1000);
-					setTimeout(function(){
-						$(".bigPicture").hide();
-					}, 1000);
-				});
-			})();//end of 즉시실행함수
-		});//end of document ready
-	</script>
 </html>
 
 

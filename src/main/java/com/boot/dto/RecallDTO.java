@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class RecallDTO {
     private Long id;
     private String maker;
-    private String modelName;
-    private String makeStart;
-    private String makeEnd;
-    private String recallDate;
-    private String recallReason;
+    private String model_Name;
+    private String make_Start;
+    private String make_End;
+    private String recall_Date;
+    private String recall_Reason;
 }

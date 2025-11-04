@@ -3,6 +3,7 @@ package com.boot.controller;
 import com.boot.dto.BoardDTO;
 import com.boot.dto.Criteria;
 import com.boot.dto.PageDTO;
+import com.boot.dto.RecallDTO;
 import com.boot.service.PageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,13 @@ public class PageController {
 		log.info("@# list()");
 		log.info("@# cri=>"+cri);
 
-		ArrayList<BoardDTO> list = service.listWithPaging(cri);
+		ArrayList<RecallDTO> list = service.listWithPaging(cri);
 		int total = service.getTotalCount(cri);
 		model.addAttribute("list", list);
 		model.addAttribute("pageMaker", new PageDTO(total,cri));
 
 		return "list";
 	}
-
 }
 
 

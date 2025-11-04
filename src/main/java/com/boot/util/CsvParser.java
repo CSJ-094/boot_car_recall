@@ -38,11 +38,11 @@ public class CsvParser {
 
                 RecallDTO dto = RecallDTO.builder()
                         .maker(nextLine[0])
-                        .modelName(nextLine[1])
-                        .makeStart(nextLine[2])
-                        .makeEnd(nextLine[3])
-                        .recallDate(nextLine[4])
-                        .recallReason(nextLine[5])
+                        .model_Name(nextLine[1])
+                        .make_Start(nextLine[2])
+                        .make_End(nextLine[3])
+                        .recall_Date(nextLine[4])
+                        .recall_Reason(nextLine[5])
                         .build();
 
                 recallList.add(dto);
