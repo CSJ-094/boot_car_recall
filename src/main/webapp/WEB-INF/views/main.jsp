@@ -1,80 +1,206 @@
-
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>차량 리콜 조회 시스템</title>
+  <title>자동차 리콜 통합센터</title>
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css" />
 </head>
-<body>
-  <header>
-    <h1>차량 리콜 조회</h1>
-    <nav>
-      <a href="#">홈</a>
-      <a href="#">리콜 안내</a>
-      <a href="#">고객 지원</a>
-      <a href="#">문의하기</a>
-    </nav>
-  </header>
+<!-- ▼ contextPath를 JS에서 쓰도록 data 속성에 실어 둡니다 -->
+<body data-contextpath="${pageContext.request.contextPath}">
+
+  <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
   <div class="hero">
     <h2>내 차량이 리콜 대상인지 확인하세요</h2>
-    <p>차량번호나 VIN(차대번호)를 입력하세요</p>
+    <p>차량번호나 VIN(차대번호)을 입력하세요.</p>
     <br />
     <div class="search-box">
-      <input type="text" id="vinInput" placeholder="예: 12가3456 또는 KMHAB81...">
-      <button onclick="searchRecall()">조회하기</button>
+      <input type="text" id="vinInput" placeholder="예: 12가3456 또는 KMHAB81..." />
+      <!-- ▼ onclick 제거, id 부여 -->
+      <button id="searchBtn">조회하기</button>
     </div>
-    <p id="result" style="margin-top: 20px; font-size: 1.1rem;"></p>
+    <p id="result" style="margin-top:20px; font-size:1.1rem;"></p>
   </div>
 
-  <section>
-    <h3>리콜 절차 및 서비스 안내</h3>
-    <div class="features">
-      <div class="feature">
-        <h4>1️⃣ 리콜 조회</h4>
-        <p>차량 번호나 VIN을 입력하면 리콜 여부를 즉시 확인할 수 있습니다.</p>
+  <!-- [1] 리콜 절차 및 서비스 안내 (업그레이드) -->
+  <section class="section-steps">
+    <div class="container">
+      <h3>리콜 절차 및 서비스 안내</h3>
+      <p class="sub">조회부터 수리 완료까지, 3단계로 간단하게 이용하세요.</p>
+
+      <div class="steps-timeline" aria-hidden="true">
+        <span class="dot active"></span><span class="bar"></span>
+        <span class="dot"></span><span class="bar"></span>
+        <span class="dot"></span>
       </div>
-      <div class="feature">
-        <h4>2️⃣ 서비스 예약</h4>
-        <p>리콜 대상일 경우 근처 서비스센터에서 무료 수리 예약이 가능합니다.</p>
+
+      <div class="card-grid">
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true">🔎</div>
+          <h4>리콜 조회</h4>
+          <p>차량번호/VIN으로 즉시 리콜 여부를 확인하세요.</p>
+          <a class="more" href="${pageContext.request.contextPath}/info/status">자세히 보기</a>
+        </article>
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true">📅</div>
+          <h4>서비스 예약</h4>
+          <p>대상 차량이면 가까운 리콜센터 예약 안내를 드립니다.</p>
+          <a class="more" href="${pageContext.request.contextPath}/centers/about">예약 절차</a>
+        </article>
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true">🛡️</div>
+          <h4>안전 보장</h4>
+          <p>정부 인증 시스템을 통해 무료 수리를 제공합니다.</p>
+          <a class="more" href="${pageContext.request.contextPath}/centers/faq">FAQ 보기</a>
+        </article>
       </div>
-      <div class="feature">
-        <h4>3️⃣ 안전 보장</h4>
-        <p>정부 인증 리콜 시스템으로 차량 안전과 신뢰를 보장합니다.</p>
+    </div>
+  </section>
+  
+  <!-- [NEW 5] 리콜센터 소개: 풀폭 슬라이드 (B안, 절차 아래 배치) -->
+  <section class="section-center-hero">
+    <div class="hero-carousel" data-autoplay="true" data-interval="3000" aria-roledescription="carousel">
+      <div class="hero-track">
+        <img src="${pageContext.request.contextPath}/img/main1.png" alt="리콜 접수 및 안내 장면">
+        <img src="${pageContext.request.contextPath}/img/main2.png" alt="전문 정비사가 점검 중인 모습">
+        <img src="${pageContext.request.contextPath}/img/main3.png" alt="서비스 완료 후 안전 주행">
+      </div>
+
+      <button class="hero-nav prev" aria-label="이전 슬라이드">&#10094;</button>
+      <button class="hero-nav next" aria-label="다음 슬라이드">&#10095;</button>
+
+      <div class="showcase-panel">
+        <div class="panel-top">
+          <h3 class="panel-title">자동차 리콜센터</h3>
+          <p class="panel-desc">
+            정부와 제조사가 함께 운영하는 공식 리콜 서비스입니다.<br>
+            전국 어디서나 가까운 지정 센터에서 신속하고 투명한 절차로 무료 수리를 제공합니다.
+          </p>
+        </div>
+        <div class="panel-bottom">
+          <div class="chips">
+            <span class="chip">#정부인증</span>
+            <span class="chip">#무료수리</span>
+            <span class="chip">#전국센터</span>
+            <span class="chip">#실시간조회</span>
+          </div>
+          <div class="panel-cta">
+            <a class="btn-ghost" href="${pageContext.request.contextPath}/info/status">리콜현황 보기</a>
+            <a class="btn-solid" href="${pageContext.request.contextPath}/report/write">내 차량 신고하기</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-dots" role="tablist" aria-label="슬라이드 선택">
+        <button class="dot" aria-label="1번 슬라이드"></button>
+        <button class="dot" aria-label="2번 슬라이드"></button>
+        <button class="dot" aria-label="3번 슬라이드"></button>
       </div>
     </div>
   </section>
 
-  <footer>
-    <p>© 2025 차량 리콜 조회 시스템 | 고객센터: 1234-5678 | 이메일: support@recall.co.kr</p>
-  </footer>
 
-  <script>
-    function searchRecall() {
-      const vin = document.getElementById('vinInput').value.trim();
-      const result = document.getElementById('result');
-      
-      if (!vin) {
-        result.textContent = "⚠️ 차량번호나 VIN을 입력해주세요.";
-        return;
-      }
+  <!-- [퀵 액션] 2×2 그리드, 크게/간결 -->
+  <section class="section-hub">
+    <div class="container">
+      <nav class="hub-grid" aria-label="주요 서비스 바로가기">
+        <a class="hub-card" href="${pageContext.request.contextPath}/report/write">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 5h6m-3-3v6M6 9h12v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <div class="hub-text">
+            <strong>결함신고</strong>
+            <span>비회원 제출, 약 5분</span>
+          </div>
+        </a>
 
-      // 예시 로직 (실제 서비스에서는 API 연동 필요)
-      if (vin.includes("123") || vin.startsWith("KMH")) {
-        result.textContent = "🔴 리콜 대상 차량입니다. 가까운 서비스센터를 방문하세요.";
-      } else {
-        result.textContent = "✅ 해당 차량은 리콜 대상이 아닙니다.";
-      }
-    }
-  </script>
+        <a class="hub-card" href="${pageContext.request.contextPath}/report/history">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h6l2 2h10v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.5"/></svg>
+          </span>
+          <div class="hub-text">
+            <strong>신고내역</strong>
+            <span>접수/처리 단계 조회</span>
+          </div>
+        </a>
+
+        <a class="hub-card" href="${pageContext.request.contextPath}/info/status">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m16 14H4m3-4v4m5-8v8m5-6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <div class="hub-text">
+            <strong>리콜현황</strong>
+            <span>제조사/모델/월별 통계</span>
+          </div>
+        </a>
+
+        <a class="hub-card" href="${pageContext.request.contextPath}/centers/notice">
+          <span class="hub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l14-6v14L3 13v-2zM9 13v5a3 3 0 0 0 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <div class="hub-text">
+            <strong>공지/FAQ</strong>
+            <span>이용 안내/점검 공지</span>
+          </div>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+
+  <!-- [4] 최근 소식 -->
+  <section class="section-news">
+    <div class="container">
+      <div class="news-head">
+        <h3>최근 소식</h3>
+        <a class="news-more" href="${pageContext.request.contextPath}/centers/notice">전체 보기</a>
+      </div>
+      <ul id="newsList" class="news-list" aria-live="polite">
+        <li class="news-item">
+          <span class="tag">공지</span>
+          <a href="${pageContext.request.contextPath}/centers/notice">시스템 점검 안내 (예시)</a>
+          <time datetime="2025-11-01">2025-11-01</time>
+        </li>
+      </ul>
+    </div>
+  </section>
+  
+  <!-- [푸터 직전 신뢰 스트립] (얇고 단정하게) -->
+  <section class="trust-strip" aria-label="신뢰 및 운영 안내">
+    <div class="container strip-grid">
+      <div class="strip-item">
+        <span class="strip-dot" aria-hidden="true"></span>
+        <div>
+          <strong>공공 데이터 연계</strong><span>최신 현황 자동 반영</span>
+        </div>
+      </div>
+      <div class="strip-item">
+        <span class="strip-dot" aria-hidden="true"></span>
+        <div>
+          <strong>개인정보 보호</strong><span>암호화 저장·접근 통제</span>
+        </div>
+      </div>
+      <div class="strip-item">
+        <span class="strip-dot" aria-hidden="true"></span>
+        <div>
+          <strong>고객센터</strong><span>평일 09:00–18:00</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
+
+
+
+  <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
+
+  <!-- ▼ 인라인 JS 제거, 외부 스크립트만 로드 -->
+  <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p>© 2025 자동차 리콜 통합센터 | 고객센터: 1234-5678 | 이메일: support@recall.co.kr</p>
+  </div>
+</footer>
