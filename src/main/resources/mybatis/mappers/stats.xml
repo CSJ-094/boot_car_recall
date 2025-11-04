@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.StatsDAO">
+    <select id="getDailyReportStats" resultType="com.boot.dto.DailyStatsDTO">
+        SELECT TO_CHAR(reported_at, 'YYYY-MM-DD') AS report_day, COUNT(*) AS count
+        FROM CAR_RECALL
+        WHERE reported_at >= TRUNC(SYSDATE) - 7
+        GROUP BY TO_CHAR(reported_at, 'YYYY-MM-DD')
+        ORDER BY report_day ASC
+    </select>
+
+    <select id="getRecentReports" resultType="com.boot.dto.CarRecallDTO">
+        SELECT report_id, car_model, reporter_name, is_reviewed as reviewed, TO_CHAR(reported_at, 'YYYY-MM-DD HH24:MI') as reported_at
+        FROM CAR_RECALL
+        WHERE reported_at >= TRUNC(SYSDATE) - 7
+        ORDER BY reported_at DESC
+    </select>
+</mapper>

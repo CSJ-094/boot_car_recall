@@ -7,5 +7,7 @@
 		<mapper resource="mybatis/mappers/board.xml"/>
 		<mapper resource="mybatis/mappers/recall.xml"/>
 		<mapper resource="mybatis/mappers/admin.xml"/>
+		<mapper resource="mybatis/mappers/stats.xml"/>
+		<mapper resource="mybatis/mappers/carRecall.xml"/>
 	</mappers>
 </configuration>
