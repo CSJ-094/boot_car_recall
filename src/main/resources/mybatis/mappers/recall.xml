@@ -15,17 +15,30 @@
         )
     </insert>
 
-    <!-- 페이징 처리를 위한 selectAll 쿼리 수정 -->
+    <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->
     <select id="selectAll" resultType="com.boot.dto.RecallDTO">
         SELECT
             ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
         FROM RECALL
+        <where>
+            <if test="keyword != null and keyword != ''">
+                MAKER LIKE '%' || #{keyword} || '%'
+                OR MODEL_NAME LIKE '%' || #{keyword} || '%'
+            </if>
+        </where>
         ORDER BY ID DESC
         OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
     </select>
 
+    <!-- 검색 조건에 따른 전체 데이터 수 조회 쿼리 수정 -->
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM RECALL
+        <where>
+            <if test="keyword != null and keyword != ''">
+                MAKER LIKE '%' || #{keyword} || '%'
+                OR MODEL_NAME LIKE '%' || #{keyword} || '%'
+            </if>
+        </where>
     </select>
 
 </mapper>

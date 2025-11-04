@@ -23,11 +23,16 @@ public class RecallServiceImpl implements RecallService {
 
     @Override
     public List<RecallDTO> getAllRecalls(Criteria cri) {
-        return recallDAO.selectAll(cri.getOffset(), cri.getAmount());
+        return recallDAO.selectAll(cri.getOffset(), cri.getAmount(), cri.getKeyword());
     }
 
     @Override
     public int getRecallCount() {
-        return recallDAO.count();
+        return recallDAO.count(null); // 검색 조건 없이 전체 카운트
+    }
+
+    @Override
+    public int getRecallCount(Criteria cri) {
+        return recallDAO.count(cri.getKeyword()); // 검색 조건에 따른 카운트
     }
 }
