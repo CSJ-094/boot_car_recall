@@ -15,17 +15,34 @@
         .search-container { padding: 20px; background: #fff; margin-top: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .search-container input[type="text"] { width: 80%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
         .search-container button { padding: 10px 20px; background: #0d47a1; color: white; border: none; cursor: pointer; border-radius: 4px; }
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: middle; }
+        table { 
+            width: 100%; 
+            margin-top: 20px; 
+            border-collapse: collapse; 
+            background: #fff; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            table-layout: fixed; /* 테이블 레이아웃 고정 */
+        }
+        th, td { 
+            padding: 8px; 
+            border-bottom: 1px solid #ddd; 
+            text-align: left; 
+            vertical-align: middle; 
+            word-wrap: break-word; /* 긴 텍스트 자동 줄바꿈 */
+        }
         th { background-color: #1e88e5; color: white; }
         tr:hover { background-color: #f1f1f1; }
         .error-message { color: red; text-align: center; padding: 20px; background-color: #ffebee; border: 1px solid #e57373; border-radius: 8px; margin-top: 20px; }
         footer { background: #263238; color: #ccc; text-align: center; padding: 20px; margin-top: 30px; }
-        .nowrap { white-space: nowrap; }
-        .reason-col { padding-left: 24px; }
         .pagination { text-align: center; margin-top: 20px; }
         .pagination a, .pagination strong { display: inline-block; padding: 5px 10px; margin: 0 2px; border: 1px solid #ddd; background-color: #fff; text-decoration: none; color: #337ab7; }
         .pagination strong { background-color: #337ab7; color: white; border-color: #337ab7; }
+        
+        /* 컬럼 너비 설정 */
+        .col-maker { width: 12%; }
+        .col-model { width: 18%; }
+        .col-date { width: 12%; }
+
     </style>
 </head>
 <body>
@@ -35,8 +52,8 @@
     <nav>
         <a href="/">홈</a>
         <a href="/recall-status">리콜 현황</a>
-        <a href="#">고객 지원</a>
-        <a href="#">문의하기</a>
+        <a href="/defect-report">결함 신고</a>
+        <a href="/defect-report-list">신고 목록</a>
     </nav>
     <div class="container">
         <c:if test="${not empty errorMessage}">
@@ -55,19 +72,19 @@
                 <table id="recallTable">
                     <thead>
                         <tr>
-                            <th>제조사</th>
-                            <th>차종</th>
-                            <th>리콜 날짜</th>
-                            <th class="reason-col">리콜 사유</th>
+                            <th class="col-maker">제조사</th>
+                            <th class="col-model">차종</th>
+                            <th class="col-date">리콜 날짜</th>
+                            <th>리콜 사유</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach items="${recallList}" var="recall">
                             <tr>
-                                <td class="nowrap">${recall.maker}</td>
-                                <td class="nowrap">${recall.modelName}</td>
-                                <td class="nowrap">${recall.recallDate}</td>
-                                <td class="reason-col">${recall.recallReason}</td>
+                                <td>${recall.maker}</td>
+                                <td>${recall.modelName}</td>
+                                <td>${recall.recallDate}</td>
+                                <td>${recall.recallReason}</td>
                             </tr>
                         </c:forEach>
                     </tbody>

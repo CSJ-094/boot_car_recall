@@ -126,10 +126,10 @@
   <header>
     <h1>🚗 차량 리콜 조회</h1>
     <nav>
-      <a href="#">홈</a>
-      <a href="#">리콜 안내</a>
-      <a href="#">고객 지원</a>
-      <a href="#">문의하기</a>
+        <a href="/">홈</a>
+        <a href="/recall-status">리콜 현황</a>
+        <a href="/defect-report">결함 신고</a>
+        <a href="/defect-report-list">신고 목록</a>
     </nav>
   </header>
 

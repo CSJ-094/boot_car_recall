@@ -1,8 +1,10 @@
 package com.boot.controller;
 
 import com.boot.dto.Criteria;
+import com.boot.dto.DefectReportDTO;
 import com.boot.dto.PageDTO;
 import com.boot.dto.RecallDTO;
+import com.boot.service.DefectReportService;
 import com.boot.service.RecallService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +14,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +26,7 @@ public class MainController {
 
     private final ResourceLoader resourceLoader;
     private final RecallService recallService;
+    private final DefectReportService defectReportService;
 
     @GetMapping("/")
     public String main() {
@@ -31,14 +35,11 @@ public class MainController {
 
     @GetMapping("/recall-status")
     public String recallStatus(Criteria cri, Model model) {
-        // 페이징된 데이터 조회
         List<RecallDTO> recallList = recallService.getAllRecalls(cri);
         model.addAttribute("recallList", recallList);
 
-        // 전체 데이터 수 조회
         int total = recallService.getRecallCount();
 
-        // 페이지 정보 생성 및 전달
         PageDTO pageDTO = new PageDTO(cri, total);
         model.addAttribute("pageMaker", pageDTO);
 
@@ -66,5 +67,34 @@ public class MainController {
             model.addAttribute("message", "데이터 로드 및 저장 중 오류가 발생했습니다: " + e.getMessage());
         }
         return "load_result";
+    }
+
+    @GetMapping("/defect-report")
+    public String defectReportForm() {
+        return "defect_report";
+    }
+
+    @PostMapping("/defect-report")
+    public String defectReportSubmit(DefectReportDTO report, Model model) {
+        try {
+            defectReportService.saveReport(report);
+            model.addAttribute("message", "결함 신고가 성공적으로 접수되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message", "오류가 발생하여 신고가 접수되지 않았습니다: " + e.getMessage());
+        }
+        return "report_result";
+    }
+
+    @GetMapping("/defect-report-list")
+    public String defectReportList(Criteria cri, Model model) {
+        List<DefectReportDTO> reportList = defectReportService.getAllReports(cri);
+        model.addAttribute("reportList", reportList);
+
+        int total = defectReportService.getTotalCount();
+        PageDTO pageDTO = new PageDTO(cri, total);
+        model.addAttribute("pageMaker", pageDTO);
+
+        return "defect_report_list";
     }
 }
