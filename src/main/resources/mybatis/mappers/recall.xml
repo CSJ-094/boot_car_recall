@@ -15,8 +15,13 @@
         )
     </insert>
 
+    <!-- 페이징 처리를 위한 selectAll 쿼리 수정 -->
     <select id="selectAll" resultType="com.boot.dto.RecallDTO">
-        SELECT * FROM RECALL
+        SELECT
+            ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+        FROM RECALL
+        ORDER BY ID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
     </select>
 
     <select id="count" resultType="int">

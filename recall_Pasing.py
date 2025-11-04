@@ -1,17 +1,17 @@
 import csv
 import json
 
-# 1. 파일 경로 설정 (2023년 파일만 사용)
+# 1. 파일 경로 설정
 FILE_2023 = '한국교통안전공단_자동차결함 리콜현황_20231231.csv'
 OUTPUT_FILE = 'integrated_recall_data.json'
 
 def parse_csv_file(filename):
-    """지정된 CSV 파일을 파싱하여 데이터 리스트를 반환합니다."""
+    """지정된 CSV 파일을 파싱하여 RECALL 테이블 구조에 맞는 데이터 리스트를 반환합니다."""
     print(f"[{filename}] 파일 파싱 시작...")
     collected_data = []
     try:
-        # 2023 파일 (6개 컬럼): 리콜대수(NULL), 시정율(NULL), 리콜사유(5)
-        with open(filename, 'r', encoding='euc-kr') as f: # 인코딩을 EUC-KR로 변경
+        # UTF-8 (BOM 포함 가능성)으로 인코딩 변경
+        with open(filename, 'r', encoding='utf-8-sig') as f:
             reader = csv.reader(f)
             next(reader)  # 헤더 건너뛰기
 
@@ -19,21 +19,23 @@ def parse_csv_file(filename):
                 if not row:
                     continue
 
+                # DB의 RECALL 테이블 및 RecallDTO.java 구조에 맞게 데이터 생성
                 data = {
                     'maker': row[0],
                     'modelName': row[1],
                     'recallDate': row[4],
                     'recallReason': row[5],
-                    'makeStart': "",
-                    'makeEnd': ""
+                    'makeStart': "",  # CSV에 없는 정보는 빈 값으로 처리
+                    'makeEnd': ""      # CSV에 없는 정보는 빈 값으로 처리
                 }
                 collected_data.append(data)
         print(f"[{filename}] 파싱 완료. 총 {len(collected_data)}건의 데이터 수집됨.")
     except FileNotFoundError:
         print(f"\n❌ 오류: '{filename}' 파일을 찾을 수 없습니다. 스크립트와 같은 폴더에 CSV 파일이 있는지 확인해 주세요.")
         return None
-    except UnicodeDecodeError:
-        print(f"\n❌ 인코딩 오류: '{filename}' 파일을 EUC-KR로 읽는 데 실패했습니다. 파일 인코딩을 확인해주세요.")
+    except UnicodeDecodeError as e:
+        print(f"\n❌ 인코딩 오류: '{filename}' 파일을 UTF-8로 읽는 데 실패했습니다.")
+        print(f"   오류 상세: {e}")
         return None
     except Exception as e:
         print(f"\n❌ '{filename}' 파일 처리 중 오류 발생: {e}")

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Component
+//@Component // 스프링 빈으로 등록하지 않도록 주석 처리
 @RequiredArgsConstructor
 public class Init implements CommandLineRunner {
     private final CsvParser csvParser;
@@ -25,7 +25,8 @@ public class Init implements CommandLineRunner {
             log.info("csv파일 x");
             return;
         }
-        recallService.insertRecallList(recallList);
+        // 아래 메소드는 존재하지 않으므로 주석 처리합니다.
+        // recallService.insertRecallList(recallList);
         log.info("성공");
     }
 }
