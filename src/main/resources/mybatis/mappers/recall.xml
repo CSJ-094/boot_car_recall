@@ -1,0 +1,53 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.RecallDAO">
+
+    <insert id="insertRecall" parameterType="com.boot.dto.RecallDTO">
+        INSERT INTO RECALL (
+        ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END,
+        RECALL_DATE, RECALL_REASON
+        ) VALUES (
+        RECALL_SEQ.NEXTVAL,
+        #{maker}, #{modelName}, #{makeStart}, #{makeEnd},
+        #{recallDate}, #{recallReason}
+        )
+    </insert>
+
+    <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->
+    <select id="selectAll" resultType="com.boot.dto.RecallDTO">
+        SELECT
+            ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+        FROM RECALL
+        <where>
+            <if test="keyword != null and keyword != ''">
+                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+            </if>
+        </where>
+        ORDER BY ID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
+    </select>
+
+    <!-- 검색 조건에 따른 전체 데이터 수 조회 쿼리 수정 -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM RECALL
+        <where>
+            <if test="keyword != null and keyword != ''">
+                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+            </if>
+        </where>
+    </select>
+
+    <!-- 차량 모델명으로 리콜 정보 검색 -->
+    <select id="searchByModelName" parameterType="string" resultType="com.boot.dto.RecallDTO">
+        SELECT
+            ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+        FROM RECALL
+        WHERE UPPER(MODEL_NAME) LIKE '%' || UPPER(#{modelName}) || '%'
+        ORDER BY RECALL_DATE DESC
+    </select>
+
+</mapper>
