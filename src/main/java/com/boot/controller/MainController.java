@@ -76,7 +76,7 @@ public class MainController {
             InputStream inputStream = resource.getInputStream();
             List<RecallDTO> recallList = objectMapper.readValue(inputStream, new TypeReference<List<RecallDTO>>() {});
 
-            recallService.saveRecallData(recallList);
+            recallService.insertRecallList(recallList);
 
             // 데이터 로드 후 전체 카운트 재확인
             int count = recallService.getRecallCount(new Criteria());
