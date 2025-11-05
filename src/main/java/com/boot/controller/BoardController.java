@@ -33,7 +33,7 @@ public class BoardController {
     @RequestMapping("/write_view")
     public String write_view() {
         log.info("@# write_view()");
-
+        //
         return "report_write_view";
     }
     @RequestMapping("/report_content_view")
