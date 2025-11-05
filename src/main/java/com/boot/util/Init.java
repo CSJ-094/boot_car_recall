@@ -1,6 +1,7 @@
 package com.boot.util;
 
 import com.boot.dao.RecallDAO;
+import com.boot.dto.Criteria;
 import com.boot.dto.RecallDTO;
 import com.boot.service.RecallService;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +22,22 @@ public class Init implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // 데이터베이스에 리콜 데이터가 이미 존재하는지 확인
-        int recallCount = recallService.countAllRecalls();
-
-        if (recallCount == 0) {
-            List<RecallDTO> recallList = csvParser.getRecallList();
-
-            if(recallList.isEmpty()){
-                log.info("CSV 파일에서 읽을 데이터가 없습니다.");
-                return;
-            }
-
-            // 데이터베이스 삽입 로직을 활성화합니다.
-            recallService.insertRecallList(recallList);
-            log.info("CSV 데이터가 성공적으로 데이터베이스에 삽입되었습니다.");
-        } else {
-            log.info("리콜 데이터가 이미 데이터베이스에 존재합니다. 삽입을 건너뜀.");
+        // 데이터베이스에 이미 데이터가 있는지 확인
+        if (recallService.getRecallCount(new Criteria()) > 0) {
+            log.info("데이터베이스에 이미 리콜 데이터가 존재합니다. 초기화 작업을 건너뜁니다.");
+            return;
         }
 
-        log.info("Init 작업 완료.");
+        List<RecallDTO> recallList = csvParser.getRecallList();
+
+        if(recallList.isEmpty()){
+            log.info("CSV 파일이 비어있거나 읽을 수 없습니다. 초기화 작업을 건너뜁니다.");
+            return;
+        }
+
+        // 데이터베이스가 비어있을 때만 데이터 삽입
+        recallService.insertRecallList(recallList);
+
+        log.info("CSV 데이터로부터 {}개의 리콜 정보를 데이터베이스에 성공적으로 저장했습니다.", recallList.size());
     }
 }

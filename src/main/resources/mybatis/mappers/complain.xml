@@ -5,17 +5,17 @@
 <mapper namespace="com.boot.dao.ComplainDAO">
 
     <select id="complain_list" resultType="com.boot.dto.ComplainDTO">
-        select report_id, reporter_name, title, content, complain_type, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain
+        select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain
     </select>
     
      <insert id="complain_write">
-    	insert into online_complain(report_id, reporter_name, password, phone, title, complain_type, carNum, 
-    	is_public, content) values(REPORT_ID.NEXTVAL, #{reporter_name, jdbcType=VARCHAR}, #{password}, #{phone}, #{title}, #{complain_type}
-    	, #{carNum}, #{is_public}, #{content})
+    	insert into online_complain(report_id, reporter_name, password, phone, title, COMPLAIN_TYPE, carNum, is_public, content) 
+    	values(ONLINE_COMPLAIN_SEQ.NEXTVAL, #{reporter_name, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{title, jdbcType=VARCHAR}, 
+    	#{complain_type, jdbcType=VARCHAR}, #{carNum, jdbcType=VARCHAR}, #{is_public, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR})
     </insert>
     
       <select id="contentView" resultType="com.boot.dto.ComplainDTO">
-    	select report_id, reporter_name, title, content, complain_type from online_complain where report_id=#{report_id}
+    	select report_id, reporter_name, title, content, COMPLAIN_TYPE from online_complain where report_id=#{report_id}
     </select>
     
     <update id="complain_modify">
@@ -28,4 +28,3 @@
     </delete>
 
 </mapper>
-
