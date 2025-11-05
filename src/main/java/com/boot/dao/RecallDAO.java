@@ -8,11 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface RecallDAO {
-<<<<<<< HEAD
-    void insertRecall(@Param("recall") RecallDTO recall);
-    List<RecallDTO> selectAll();
-    int count();
-=======
 
     // 1. 단일 리콜 정보 삽입 (Mapper XML과 일치하도록 @Param 제거)
     void insertRecall(RecallDTO recallDTO);
@@ -29,5 +24,4 @@ public interface RecallDAO {
 
     // 5. 모델명으로 검색
     List<RecallDTO> searchByModelName(@Param("modelName") String modelName);
->>>>>>> ad8bc530aef486e966fece58f7cb8a4d1d105086
 }
