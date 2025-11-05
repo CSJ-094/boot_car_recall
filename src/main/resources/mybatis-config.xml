@@ -6,7 +6,13 @@
 	<mappers>
 <!--		<mapper resource="mybatis/mappers/board.xml"/>-->
 		<mapper resource="mybatis/mappers/recall.xml"/>
+<<<<<<< HEAD
 		<mapper resource="mybatis/mappers/notice.xml"/>
 		<mapper resource="mybatis/mappers/faq.xml"/>
+=======
+		<mapper resource="mybatis/mappers/admin.xml"/>
+		<mapper resource="mybatis/mappers/stats.xml"/>
+		<mapper resource="mybatis/mappers/carRecall.xml"/>
+>>>>>>> 7010d15039e83a0f271f1cec844470960bb67bab
 	</mappers>
 </configuration>

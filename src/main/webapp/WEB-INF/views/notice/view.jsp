@@ -58,10 +58,10 @@
 	<header>
 	    <h1>차량 리콜 조회</h1>
 	    <nav>
-	      <a href="#">홈</a>
+	      <a href="${pageContext.request.contextPath}/">홈</a>
 	      <a href="#">리콜 안내</a>
-	      <a href="#">고객 지원</a>
-	      <a href="#">문의하기</a>
+		  <a href="/notice/list">고객 지원</a>
+		  <a href="/faq/list">문의하기</a>
 	    </nav>
 	  </header>
 

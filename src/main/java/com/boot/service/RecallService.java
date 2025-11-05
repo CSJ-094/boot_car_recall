@@ -1,7 +1,6 @@
 package com.boot.service;
 
 import com.boot.dto.RecallDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
