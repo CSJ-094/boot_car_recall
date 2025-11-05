@@ -6,13 +6,15 @@
 <head>
     <meta charset="UTF-8">
     <title>결함 신고 목록</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; margin: 0; background-color: #f4f4f4; color: #333; }
-        .container { width: 80%; margin: auto; overflow: hidden; }
-        header { background: #0d47a1; color: white; padding: 20px 0; text-align: center; }
-        header h1 { margin: 0; font-size: 2rem; }
-        nav { background: #1565c0; padding: 10px; text-align: center; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 500; }
+        /* 이 페이지에만 적용될 추가적인 스타일 */
+        .container { 
+            padding-top: 50px; 
+            padding-bottom: 50px; 
+        }
         .search-container { 
             padding: 20px; 
             background: #fff; 
@@ -65,20 +67,10 @@
             font-size: 0.9em;
         }
         .detail-btn:hover { background-color: #1565c0; }
-        footer { background: #263238; color: #ccc; text-align: center; padding: 20px; margin-top: 30px; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>📋 결함 신고 목록</h1>
-    </header>
-    <nav>
-        <a href="/">홈</a>
-        <a href="/recall-status">리콜 현황</a>
-        <a href="/defect-report">결함 신고</a>
-        <a href="/defect-report-list">신고 목록</a>
-        <a href="#">고객 지원</a>
-    </nav>
+    <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
     <div class="container">
         <div class="search-container">
@@ -138,8 +130,6 @@
         </div>
     </div>
 
-    <footer>
-        <p>© 2025 차량 리콜 조회 시스템</p>
-    </footer>
+    <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
 </body>
 </html>

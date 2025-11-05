@@ -40,8 +40,7 @@ public class MainController {
         if (query != null && !query.trim().isEmpty()) {
             List<RecallDTO> searchResults = recallService.searchRecallsByModelName(query.trim());
             model.addAttribute("searchQuery", query);
-            model.addAttribute("searchResults", new SearchResultsDTO(query, searchResults));
-        }
+            model.addAttribute("searchResults", new SearchResultsDTO(query, searchResults));        }
         return "main";
     }
 
@@ -77,7 +76,7 @@ public class MainController {
 
             recallService.saveRecallData(recallList);
 
-            int count = recallService.getRecallCount();
+            int count = recallService.getRecallCount(new Criteria()); // Changed this line
             model.addAttribute("message", "성공적으로 " + count + "개의 리콜 데이터를 데이터베이스에 저장했습니다.");
 
         } catch (IOException e) {
@@ -90,7 +89,7 @@ public class MainController {
     // -------------------------------------------------------------------
     // 4. 결함 신고 접수 (폼)
     // -------------------------------------------------------------------
-    @GetMapping("/defect-report")
+    @GetMapping("/defect_report")
     public String defectReportForm() {
         return "defect_report";
     }
@@ -99,21 +98,21 @@ public class MainController {
     // 5. 결함 신고 접수 처리
     // -------------------------------------------------------------------
     @PostMapping("/defect-report")
-    public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, Model model) {
+    public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, RedirectAttributes rttr) {
         try {
             defectReportService.saveReport(report, files);
-            model.addAttribute("message", "결함 신고가 성공적으로 접수되었습니다.");
+            rttr.addFlashAttribute("message", "결함 신고가 성공적으로 접수되었습니다.");
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "오류가 발생하여 신고가 접수되지 않았습니다: " + e.getMessage());
+            rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고가 접수되지 않았습니다: " + e.getMessage());
         }
-        return "report_result";
+        return "redirect:/defect_report_list";
     }
 
     // -------------------------------------------------------------------
     // 6. 결함 신고 목록 조회 (페이징 기능 포함)
     // -------------------------------------------------------------------
-    @GetMapping("/defect-report-list")
+    @GetMapping("/defect_report_list")
     public String defectReportList(Criteria cri, Model model) {
         List<DefectReportDTO> reportList = defectReportService.getAllReports(cri);
         model.addAttribute("reportList", reportList);

@@ -7,12 +7,16 @@
 
     <select id="list" resultType="com.boot.dto.BoardDTO">
         select boardNo, boardName, boardTitle, boardContent, boardDate
-        , DATE_FORMAT(boardDate, '%Y-%m-%d %h:%i') AS boardDate2
+        , TO_CHAR(boardDate, 'YYYY-MM-DD HH24:MI') AS boardDate2
         , boardHit from tbl_board
     </select>
 
     <insert id="write">
-    	insert into tbl_board(boardName, boardTitle, boardContent) values(#{boardName},#{boardTitle},#{boardContent})
+        <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+            SELECT TBL_BOARD_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into tbl_board(boardNo, boardName, boardTitle, boardContent)
+        values(#{boardNo}, #{boardName}, #{boardTitle}, #{boardContent})
     </insert>
 
     <select id="contentView" resultType="com.boot.dto.BoardDTO">
@@ -27,18 +31,5 @@
     <delete id="delete">
     	delete from tbl_board where boardNo=#{boardNo}
     </delete>
-
-
-    <select id="contentView" parameterType="int" resultType="com.boot.dto.BoardDTO">
-        SELECT
-        BOARD_NO AS boardNo,
-        BOARD_TITLE AS boardTitle,
-        BOARD_CONTENT AS boardContent,
-        BOARD_NAME AS boardName,
-        BOARD_DATE AS boardDate,
-        HIT AS boardHit
-        FROM RECALL_BOARD
-        WHERE BOARD_NO = #{boardNo}
-    </select>
 
 </mapper>
