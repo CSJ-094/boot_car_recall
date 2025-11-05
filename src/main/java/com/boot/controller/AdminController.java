@@ -58,6 +58,16 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        log.info("@# Admin logout");
+        HttpSession session = request.getSession(false); // 세션이 없으면 새로 생성하지 않음
+        if (session != null) {
+            session.invalidate(); // 세션 무효화
+        }
+        return "redirect:/admin/login"; // 로그인 페이지로 리디렉션
+    }
+
     @GetMapping("/main")
     public String adminMain(Model model) {
         log.info("@# Admin main page");
