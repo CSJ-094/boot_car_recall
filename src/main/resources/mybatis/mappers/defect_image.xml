@@ -1,0 +1,33 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.DefectImageDAO">
+
+    <insert id="insertImage" parameterType="com.boot.dto.DefectImageDTO">
+        INSERT INTO DEFECT_REPORT_IMAGES (
+            IMAGE_ID, REPORT_ID, FILE_NAME
+        ) VALUES (
+            DEFECT_REPORT_IMAGES_SEQ.NEXTVAL,
+            #{reportId},
+            #{fileName}
+        )
+    </insert>
+
+    <select id="selectImagesByReportId" parameterType="long" resultType="com.boot.dto.DefectImageDTO">
+        SELECT
+            IMAGE_ID, REPORT_ID, FILE_NAME
+        FROM DEFECT_REPORT_IMAGES
+        WHERE REPORT_ID = #{reportId}
+        ORDER BY IMAGE_ID ASC
+    </select>
+
+    <delete id="deleteImagesByReportId" parameterType="long">
+        DELETE FROM DEFECT_REPORT_IMAGES WHERE REPORT_ID = #{reportId}
+    </delete>
+
+    <delete id="deleteImageByFileName" parameterType="map">
+        DELETE FROM DEFECT_REPORT_IMAGES WHERE REPORT_ID = #{reportId} AND FILE_NAME = #{fileName}
+    </delete>
+
+</mapper>

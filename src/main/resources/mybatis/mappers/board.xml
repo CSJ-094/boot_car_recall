@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boot.dao.BoardDAO">
 
@@ -9,7 +10,7 @@
         , DATE_FORMAT(boardDate, '%Y-%m-%d %h:%i') AS boardDate2
         , boardHit from tbl_board
     </select>
-    
+
     <insert id="write">
     	insert into tbl_board(boardName, boardTitle, boardContent) values(#{boardName},#{boardTitle},#{boardContent})
     </insert>
@@ -17,14 +18,27 @@
     <select id="contentView" resultType="com.boot.dto.BoardDTO">
     	select boardNo, boardName, boardTitle, boardContent, boardDate, boardHit from tbl_board where boardNo=#{boardNo}
     </select>
-    
+
     <update id="modify">
-    	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent} 
+    	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent}
     	 where boardNo=#{boardNo}
     </update>
-    
+
     <delete id="delete">
     	delete from tbl_board where boardNo=#{boardNo}
     </delete>
+
+
+    <select id="contentView" parameterType="int" resultType="com.boot.dto.BoardDTO">
+        SELECT
+        BOARD_NO AS boardNo,
+        BOARD_TITLE AS boardTitle,
+        BOARD_CONTENT AS boardContent,
+        BOARD_NAME AS boardName,
+        BOARD_DATE AS boardDate,
+        HIT AS boardHit
+        FROM RECALL_BOARD
+        WHERE BOARD_NO = #{boardNo}
+    </select>
 
 </mapper>

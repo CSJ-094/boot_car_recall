@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.UploadDAO">
+
+	<!-- 첨부파일 등록 -->
+	<insert id="insertFile" parameterType="com.boot.dto.BoardAttachDTO">
+		INSERT INTO BOARD_ATTACH (
+			UUID,
+			UPLOADPATH,
+			FILENAME,
+			IMAGE,
+			BOARDNO
+			)
+		VALUES (
+			#{uuid},
+			#{uploadPath},
+			#{fileName},
+			#{image},
+			(SELECT NVL(MAX(BOARD_NO), 0) FROM RECALL_BOARD)
+		)
+	</insert>
+
+	<!-- 첨부파일 목록 조회 -->
+	<select id="getFileList" resultType="com.boot.dto.BoardAttachDTO">
+		SELECT UUID AS uuid,
+		UPLOADPATH AS uploadPath,
+		FILENAME AS fileName,
+		IMAGE AS image,
+		BOARDNO AS boardNo
+		FROM BOARD_ATTACH
+		WHERE BOARDNO = #{boardNo}
+	</select>
+
+	<!-- 첨부파일 삭제 -->
+	<delete id="deleteFile">
+		DELETE FROM BOARD_ATTACH WHERE BOARDNO = #{boardNo}
+	</delete>
+
+</mapper>
