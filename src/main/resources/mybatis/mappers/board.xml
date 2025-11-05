@@ -5,31 +5,27 @@
 
 <mapper namespace="com.boot.dao.BoardDAO">
 
-    <!-- 글쓰기 -->
-    <insert id="write" parameterType="hashmap">
-        INSERT INTO RECALL_BOARD (
-        BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_NAME
-        ) VALUES (
-        RECALL_BOARD_SEQ.NEXTVAL,
-        #{boardTitle},
-        #{boardContent},
-        #{boardName}
-        )
+    <select id="list" resultType="com.boot.dto.BoardDTO">
+        select boardNo, boardName, boardTitle, boardContent, boardDate
+        , DATE_FORMAT(boardDate, '%Y-%m-%d %h:%i') AS boardDate2
+        , boardHit from tbl_board
+    </select>
+
+    <insert id="write">
+    	insert into tbl_board(boardName, boardTitle, boardContent) values(#{boardName},#{boardTitle},#{boardContent})
     </insert>
 
-    <!-- 글 수정 -->
-    <update id="modify" parameterType="hashmap">
-        UPDATE RECALL_BOARD
-        SET
-        BOARD_TITLE = #{boardTitle},
-        BOARD_CONTENT = #{boardContent}
-        WHERE BOARD_NO = #{boardNo}
+    <select id="contentView" resultType="com.boot.dto.BoardDTO">
+    	select boardNo, boardName, boardTitle, boardContent, boardDate, boardHit from tbl_board where boardNo=#{boardNo}
+    </select>
+
+    <update id="modify">
+    	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent}
+    	 where boardNo=#{boardNo}
     </update>
 
-
-    <delete id="delete" parameterType="hashmap">
-        DELETE FROM RECALL_BOARD
-        WHERE BOARD_NO = #{boardNo}
+    <delete id="delete">
+    	delete from tbl_board where boardNo=#{boardNo}
     </delete>
 
 
