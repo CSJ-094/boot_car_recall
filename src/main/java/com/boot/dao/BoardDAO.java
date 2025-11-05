@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.boot.dto.BoardDTO;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface BoardDAO {
 	public ArrayList<BoardDTO> list();
 	public void write(HashMap<String, String> param);

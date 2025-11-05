@@ -19,7 +19,7 @@
     <h1>차량 리콜 조회</h1>
     <nav>
       <a href="#">홈</a>
-      <a href="recallInfo">리콜 보도자료</a>
+      <a href="report_recallInfo">리콜 보도자료</a>
       <a href="#">리콜 안내</a>
       <a href="#">고객 지원</a>
       <a href="#">문의하기</a>
