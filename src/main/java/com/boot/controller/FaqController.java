@@ -1,86 +1,57 @@
 package com.boot.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.boot.dto.Criteria;
 import com.boot.dto.FaqDTO;
+import com.boot.dto.PageDTO;
 import com.boot.service.FaqService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/faq")
+@RequiredArgsConstructor
+@Slf4j
 public class FaqController {
-	@Autowired
-    private FaqService faqService;
+	private final FaqService faqService; // 기존에 구현된 Service 주입
 
+    // 1. FAQ 목록 페이지
+    // URL: /faq/list
     @GetMapping("/list")
-    public String list(Model model) {
-        ArrayList<FaqDTO> faqList = faqService.list();
-        model.addAttribute("faqList", faqList);
-        return "faq/list"; 
-    }
-    
-    @GetMapping("/write_view")
-    public String writeView() {
-        return "faq/write";
-    }
-    
-    @PostMapping("/write")
-    public String write(HttpServletRequest request) {
-        HashMap<String, String> param = new HashMap<>();
-        param.put("faqTitle", request.getParameter("faqTitle"));
-        param.put("faqContent", request.getParameter("faqContent"));
-        param.put("faqCategory", request.getParameter("faqCategory"));
+    public String faqList(Criteria cri, Model model) {
+        log.info("@# User Faq list requested: {}", cri);
         
-        faqService.write(param);
-        return "redirect:list";
-    }
-    
-    @GetMapping("/content_view")
-    public String contentView(HttpServletRequest request, Model model) {
-        HashMap<String, String> param = new HashMap<>();
-        param.put("faqNo", request.getParameter("faqNo"));
-        FaqDTO dto = faqService.contentView(param);
+        // **[Service 호출]**: FaqService의 목록 조회 및 전체 개수 메서드 재사용
+        ArrayList<FaqDTO> list = faqService.getFaqList(cri);
+        int total = faqService.getTotal();
 
-        model.addAttribute("faqDto", dto); 
-        return "faq/list"; 
-    }
-    
-    @GetMapping("/modify_view")
-    public String modifyView(@RequestParam("faqNo") String faqNo, Model model) {
-        HashMap<String, String> param = new HashMap<>();
-        param.put("faqNo", faqNo);
-        FaqDTO dto = faqService.contentView(param);
-        model.addAttribute("faqDto", dto);
-        return "faq/modify";
+        model.addAttribute("list", list);
+        model.addAttribute("pageMaker", new PageDTO(cri, total));
+
+        // **[View 지정]**: 유저용 JSP 파일로 연결
+        return "faq_list_user"; 
     }
 
-    @PostMapping("/modify")
-    public String modify(HttpServletRequest request) {
-        HashMap<String, String> param = new HashMap<>();
-        param.put("faqNo", request.getParameter("faqNo"));
-        param.put("faqTitle", request.getParameter("faqTitle"));
-        param.put("faqContent", request.getParameter("faqContent"));
-        param.put("faqCategory", request.getParameter("faqCategory"));
+    // 2. FAQ 상세 페이지 (필요한 경우. FAQ는 주로 목록에서 아코디언으로 처리)
+    // URL: /faq/123
+    @GetMapping("/{faq_id}")
+    public String faqDetail(@PathVariable("faq_id") long faq_id, Model model) {
+        log.info("@# User Faq detail requested: {}", faq_id);
         
-        faqService.modify(param);
-        return "redirect:list";
-    }
-    
-    @GetMapping("/delete")
-    public String delete(@RequestParam("faqNo") String faqNo) {
-        HashMap<String, String> param = new HashMap<>();
-        param.put("faqNo", faqNo);
-        faqService.delete(param);
-        return "redirect:list";
+        // **[Service 호출]**: 상세 정보 조회
+        FaqDTO faq = faqService.getFaq(faq_id);
+        
+        model.addAttribute("faq", faq);
+        
+        // **[View 지정]**: 유저용 JSP 파일로 연결
+        return "faq_detail_user";
     }
 }

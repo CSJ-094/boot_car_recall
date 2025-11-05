@@ -10,23 +10,10 @@
 <!--  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css" />-->
 <!--  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css" />-->
 </head>
-<<<<<<< HEAD
-<body>
-  <header>
-    <h1>차량 리콜 조회</h1>
-    <nav>
-      <a href="#">홈</a>
-      <a href="#">리콜 안내</a>
-      <a href="/notice/list">고객 지원</a>
-      <a href="/faq/list">문의하기</a>
-    </nav>
-  </header>
-=======
 <!-- ▼ contextPath를 JS에서 쓰도록 data 속성에 실어 둡니다 -->
 <body data-contextpath="${pageContext.request.contextPath}">
 
   <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
->>>>>>> ea43a775c9b39041c2c846933da45c1acbc879e0
 
   <div class="hero">
     <h2>내 차량이 리콜 대상인지 확인하세요</h2>
