@@ -5,30 +5,33 @@
 
 <mapper namespace="com.boot.dao.BoardDAO">
 
-    <select id="list" resultType="com.boot.dto.BoardDTO">
-        select boardNo, boardName, boardTitle, boardContent, boardDate
-        , DATE_FORMAT(boardDate, '%Y-%m-%d %h:%i') AS boardDate2
-        , boardHit from tbl_board
-    </select>
-
-    <insert id="write">
-    	insert into tbl_board(boardName, boardTitle, boardContent) values(#{boardName},#{boardTitle},#{boardContent})
+    <!-- 게시글 등록 -->
+    <insert id="write" parameterType="hashmap">
+        INSERT INTO RECALL_BOARD (
+        BOARD_NO,
+        BOARD_TITLE,
+        BOARD_CONTENT,
+        BOARD_NAME,
+        BOARD_DATE,
+        HIT
+        ) VALUES (
+        RECALL_BOARD_SEQ.NEXTVAL,
+        #{boardTitle},
+        #{boardContent},
+        #{boardName},
+        SYSDATE,
+        DEFAULT
+        )
     </insert>
 
-    <select id="contentView" resultType="com.boot.dto.BoardDTO">
-    	select boardNo, boardName, boardTitle, boardContent, boardDate, boardHit from tbl_board where boardNo=#{boardNo}
+    <!-- 게시글 목록 -->
+    <select id="list" resultType="com.boot.dto.BoardDTO">
+        SELECT *
+        FROM RECALL_BOARD
+        ORDER BY BOARD_NO DESC
     </select>
 
-    <update id="modify">
-    	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent}
-    	 where boardNo=#{boardNo}
-    </update>
-
-    <delete id="delete">
-    	delete from tbl_board where boardNo=#{boardNo}
-    </delete>
-
-
+    <!-- 게시글 상세보기 -->
     <select id="contentView" parameterType="int" resultType="com.boot.dto.BoardDTO">
         SELECT
         BOARD_NO AS boardNo,
@@ -40,5 +43,19 @@
         FROM RECALL_BOARD
         WHERE BOARD_NO = #{boardNo}
     </select>
+
+    <!-- 게시글 수정 -->
+    <update id="modify" parameterType="hashmap">
+        UPDATE RECALL_BOARD
+        SET BOARD_TITLE = #{boardTitle},
+        BOARD_CONTENT = #{boardContent},
+        BOARD_NAME = #{boardName}
+        WHERE BOARD_NO = #{boardNo}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="delete" parameterType="hashmap">
+        DELETE FROM RECALL_BOARD WHERE BOARD_NO = #{boardNo}
+    </delete>
 
 </mapper>
