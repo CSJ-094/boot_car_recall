@@ -38,8 +38,8 @@
         <li class="menu-item has-sub">
           <a href="${pageContext.request.contextPath}/centers" class="menu-link">리콜센터</a>
           <ul class="submenu">
-            <li><a href="${pageContext.request.contextPath}/centers/notice">공지사항</a></li>
-            <li><a href="${pageContext.request.contextPath}/centers/faq">FAQ</a></li>
+            <li><a href="${pageContext.request.contextPath}/notice/list">공지사항</a></li>
+            <li><a href="${pageContext.request.contextPath}/faq/list">FAQ</a></li>
             <li><a href="${pageContext.request.contextPath}/centers/about">리콜센터 소개</a></li>
           </ul>
         </li>
@@ -48,7 +48,7 @@
         <li class="menu-item has-sub">
           <a href="${pageContext.request.contextPath}/admin" class="menu-link">관리자</a>
           <ul class="submenu">
-            <li><a href="${pageContext.request.contextPath}/admin/notice">공지사항</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/notice/list">공지사항</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/review">결함신고 검수</a></li>
           </ul>
         </li>

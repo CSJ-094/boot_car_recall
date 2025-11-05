@@ -9,6 +9,5 @@ public class BootCarRecallApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BootCarRecallApplication.class, args);
 	}
-
 }
 

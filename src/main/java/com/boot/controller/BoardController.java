@@ -58,11 +58,25 @@ public class BoardController {
 
         return "report_content_view";
     }
+    @RequestMapping("/report_modify_view")
+    public String report_modify_view(@RequestParam("boardNo") int boardNo,
+                                     @RequestParam("pageNum") int pageNum,
+                                     @RequestParam("amount") int amount,
+                                     Model model) {
+
+        log.info("@# report_modify_view()");
+        BoardDTO dto = service.contentView(boardNo); // 수정할 글 데이터 불러오기
+
+        model.addAttribute("content_view", dto);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("amount", amount);
+
+        return "report_modify_view"; // 수정 JSP로 이동
+    }
+
     @RequestMapping("/report_modify")
     public String report_modify(@RequestParam HashMap<String, String> param, RedirectAttributes rttr) {
         log.info("@# report_modify()");
-        log.info("@# param =>" + param);
-
         service.modify(param);
 
         rttr.addAttribute("pageNum", param.get("pageNum"));

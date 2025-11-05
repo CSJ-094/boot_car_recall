@@ -1,79 +1,102 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-		 pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html lang="ko">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>리콜 보도자료 상세</title>
-
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
-	<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
-
+	<title>게시글 보기</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
-		.container {
-			width: 80%;
-			margin: 40px auto;
+		.bigPicture {
+			position: fixed;
+			display: none;
+			justify-content: center;
+			align-items: center;
+			top: 0; left: 0; right: 0; bottom: 0;
+			background-color: rgba(0,0,0,0.8);
+			z-index: 100;
 		}
-
-		.post-card {
-			background: #fff;
+		.bigPic img {
+			max-width: 80%;
+			max-height: 80%;
 			border-radius: 10px;
-			box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-			padding: 20px;
-			margin-bottom: 20px;
-		}
-
-		.post-title {
-			font-size: 24px;
-			font-weight: 600;
-			margin-bottom: 15px;
-		}
-
-		.post-content {
-			margin-bottom: 15px;
-			font-size: 16px;
-			line-height: 1.5;
-		}
-
-		.post-info {
-			font-size: 14px;
-			color: #888;
 		}
 	</style>
 </head>
-
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp" />
+<jsp:include page="/WEB-INF/views/header.jsp"/>
 
 <div class="container">
-	<div class="post-card">
-		<form method="post" action="report_modify">
-			<input type="hidden" name="boardNo" value="${content_view.boardNo}">
-			<input type="hidden" name="pageNum" value="${pageNum}">
-			<input type="hidden" name="amount" value="${amount}">
+	<h2>${content_view.boardTitle}</h2>
+	<div class="uploadResult">
+		<ul></ul>
+	</div>
 
-			<div class="post-title">
-				<input type="text" name="boardTitle" value="${content_view.boardTitle}" class="input-title">
-			</div>
-			<div class="post-content">
-				<textarea name="boardContent" class="input-content">${content_view.boardContent}</textarea>
-			</div>
-			<div class="post-info">
-				작성자: <input type="text" name="boardName" value="${content_view.boardName}" class="input-name">
-				| 날짜: ${content_view.boardDate} | 조회수: ${content_view.boardHit}
-			</div>
+	<div class="bigPicture">
+		<div class="bigPic"></div>
+	</div>
 
-			<div class="btn-group">
-				<input type="submit" value="수정" class="btn btn-primary">
-				<input type="submit" value="삭제" formaction="report_delete" class="btn btn-danger">
-				<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}" class="btn btn-secondary">목록</a>
-			</div>
-		</form>
+	<p>${content_view.boardContent}</p>
+	<p>작성자: ${content_view.boardName} | 날짜: ${content_view.boardDate} | 조회수: ${content_view.boardHit}</p>
+
+
+	<div class="actions">
+		<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로</a>
+		<a href="report_modify_view?boardNo=${content_view.boardNo}">수정</a>
+		<a href="delete?boardNo=${content_view.boardNo}">삭제</a>
 	</div>
 </div>
+
+<script>
+	$(document).ready(function() {
+		const boardNo = "${content_view.boardNo}";
+
+		$.getJSON("/getFileList", { boardNo: boardNo }, function(arr) {
+			let str = "";
+
+			$(arr).each(function(i, obj) {
+				const path = obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName;
+
+				str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.image + "'>";
+				str += "<span>" + obj.fileName + "</span>";
+
+				if (obj.image) {
+					str += "<img src='/display?fileName=" + path + "' width='100'>";
+				} else {
+					str += "<img src='${pageContext.request.contextPath}/img/attach.png' width='30'>";
+				}
+
+				str += "</li>";
+			});
+
+			$(".uploadResult ul").html(str);
+		});
+
+		$(".uploadResult").on("click", "li", function() {
+			const liObj = $(this);
+			const path = liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename");
+
+			if (liObj.data("type")) {
+				showImage(path);
+			} else {
+				self.location = "/download?fileName=" + path;
+			}
+		});
+
+		function showImage(fileCallPath) {
+			$(".bigPicture").css("display", "flex").show();
+			$(".bigPic").html("<img src='/display?fileName=" + fileCallPath + "'>")
+					.animate({width: "100%", height: "100%"}, 400);
+		}
+
+		$(".bigPicture").on("click", function() {
+			$(".bigPic").animate({width: "0%", height: "0%"}, 400);
+			setTimeout(function() {
+				$(".bigPicture").hide();
+			}, 400);
+		});
+	});
+</script>
 </body>
 </html>
-
 
 
 
