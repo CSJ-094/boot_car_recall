@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- 컨텍스트 경로를 변수 ctx에 저장하여 JSP 내 모든 경로에서 사용 --%>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,17 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>자동차 리콜 통합센터</title>
 
-    <%-- 경로 수정: /css/main.css -> ${ctx}/css/main.css --%>
-    <link rel="stylesheet" href="${ctx}/css/main.css" />
+    <link rel="stylesheet" href="/css/main.css" />
 </head>
-<body data-contextpath="${ctx}">
+<body data-contextpath="">
 
 <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
 <div class="hero">
     <h2>내 차량이 리콜 대상인지 확인하세요</h2>
     <div class="search-form">
-        <form action="${ctx}/" method="get">
+        <form action="/" method="get">
             <input type="text" name="query" placeholder="차량 모델명 또는 제조사 입력" value="<c:out value="${searchQuery}"/>" />
             <button type="submit">검색</button>
         </form>
@@ -72,10 +69,9 @@
 <section class="section-center-hero">
     <div class="hero-carousel" data-autoplay="true" data-interval="3000" aria-roledescription="carousel">
         <div class="hero-track">
-            <%-- 경로 수정: /img/mainN.png -> ${ctx}/img/mainN.png --%>
-            <img src="${ctx}/img/main1.png" alt="리콜 접수 및 안내 장면">
-            <img src="${ctx}/img/main2.png" alt="전문 정비사가 점검 중인 모습">
-            <img src="${ctx}/img/main3.png" alt="서비스 완료 후 안전 주행">
+            <img src="/img/main1.png" alt="리콜 접수 및 안내 장면">
+            <img src="/img/main2.png" alt="전문 정비사가 점검 중인 모습">
+            <img src="/img/main3.png" alt="서비스 완료 후 안전 주행">
         </div>
 
         <button class="hero-nav prev" aria-label="이전 슬라이드">&#10094;</button>
@@ -97,10 +93,8 @@
                     <span class="chip">#실시간조회</span>
                 </div>
                 <div class="panel-cta">
-                    <%-- 경로 수정: /recall-status -> ${ctx}/info/status --%>
-                    <a class="btn-ghost" href="${ctx}/info/status">리콜현황 보기</a>
-                    <%-- 경로 수정: /defect_report -> ${ctx}/report --%>
-                    <a class="btn-solid" href="${ctx}/report">내 차량 신고하기</a>
+                    <a class="btn-ghost" href="/recall-status">리콜현황 보기</a>
+                    <a class="btn-solid" href="/report/write">내 차량 신고하기</a>
                 </div>
             </div>
         </div>
@@ -129,22 +123,19 @@
                 <div class="icon-badge" aria-hidden="true">🔎</div>
                 <h4>리콜 조회</h4>
                 <p>차량번호/VIN으로 즉시 리콜 여부를 확인하세요.</p>
-                <%-- 경로 수정: /recall-status -> ${ctx}/info/status --%>
-                <a class="more" href="${ctx}/info/status">자세히 보기</a>
+                <a class="more" href="/recall-status">자세히 보기</a>
             </article>
             <article class="card">
                 <div class="icon-badge" aria-hidden="true">📅</div>
                 <h4>서비스 예약</h4>
                 <p>대상 차량이면 가까운 리콜센터 예약 안내를 드립니다.</p>
-                <%-- 경로는 /centers/about 유지 (header.jsp와 동일) --%>
-                <a class="more" href="${ctx}/centers/about">예약 절차</a>
+                <a class="more" href="/centers/about">예약 절차</a>
             </article>
             <article class="card">
                 <div class="icon-badge" aria-hidden="true">🛡️</div>
                 <h4>안전 보장</h4>
                 <p>정부 인증 시스템을 통해 무료 수리를 제공합니다.</p>
-                <%-- 경로 수정: /centers/faq -> ${ctx}/faq/list --%>
-                <a class="more" href="${ctx}/faq/list">FAQ 보기</a>
+                <a class="more" href="/centers/faq">FAQ 보기</a>
             </article>
         </div>
     </div>
@@ -154,7 +145,7 @@
 <section class="section-hub">
     <div class="container">
         <nav class="hub-grid" aria-label="주요 서비스 바로가기">
-            <a class="hub-card" href="${ctx}/report">
+            <a class="hub-card" href="/report/write">
                     <span class="hub-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M9 5h6m-3-3v6M6 9h12v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     </span>
@@ -164,7 +155,7 @@
                 </div>
             </a>
 
-            <a class="hub-card" href="${ctx}/report/history">
+            <a class="hub-card" href="/report/history">
                     <span class="hub-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M3 7h6l2 2h10v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.5"/></svg>
                     </span>
@@ -174,7 +165,7 @@
                 </div>
             </a>
 
-            <a class="hub-card" href="${ctx}/info/status">
+            <a class="hub-card" href="/info/status">
                     <span class="hub-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m16 14H4m3-4v4m5-8v8m5-6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     </span>
@@ -184,7 +175,7 @@
                 </div>
             </a>
 
-            <a class="hub-card" href="${ctx}/notice/list">
+            <a class="hub-card" href="/notice/list">
                     <span class="hub-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l14-6v14L3 13v-2zM9 13v5a3 3 0 0 0 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </span>
@@ -202,14 +193,12 @@
     <div class="container">
         <div class="news-head">
             <h3>최근 소식</h3>
-            <%-- 경로 수정: /centers/notice -> ${ctx}/notice/list --%>
-            <a class="news-more" href="${ctx}/notice/list">전체 보기</a>
+            <a class="news-more" href="/notice/list">전체 보기</a>
         </div>
         <ul id="newsList" class="news-list" aria-live="polite">
             <li class="news-item">
                 <span class="tag">공지</span>
-                <%-- 경로 수정: /centers/notice -> ${ctx}/notice/list --%>
-                <a href="${ctx}/notice/list">시스템 점검 안내 (예시)</a>
+                <a href="/notice/list">시스템 점검 안내 (예시)</a>
                 <time datetime="2025-11-01">2025-11-01</time>
             </li>
         </ul>
@@ -241,7 +230,6 @@
 
 <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
 
-<%-- 경로 수정: /js/main.js -> ${ctx}/js/main.js --%>
-<script src="${ctx}/js/main.js"></script>
+<script src="/js/main.js"></script>
 </body>
 </html>
