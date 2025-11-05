@@ -3,6 +3,7 @@ package com.boot.service;
 import com.boot.dao.RecallDAO;
 import com.boot.dto.RecallDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
