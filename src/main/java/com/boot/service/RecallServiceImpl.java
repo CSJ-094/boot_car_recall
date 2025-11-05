@@ -22,23 +22,22 @@ public class RecallServiceImpl implements RecallService {
     @Transactional // 대량의 데이터를 삽입하므로 트랜잭션을 적용합니다.
     public void saveRecallData(List<RecallDTO> recallList) {
         // 이 메서드는 외부 리스트를 받아 저장하는 역할입니다.
-        // DAO의 insertRecallList를 호출하여 효율적인 배치를 사용하도록 로직을 변경합니다.
-        // 첫 번째 코드의 for-loop 방식 대신 배치 삽입을 사용합니다.
-        this.insertRecallList(recallList);
+        // 각 리콜 항목을 개별적으로 삽입하도록 변경합니다.
+        for (RecallDTO recallDTO : recallList) {
+            recallDAO.insertRecall(recallDTO);
+        }
     }
 
     // -------------------------------------------------------------------
     // 2. 리스트 배치 삽입 (Init.java의 컴파일 오류 해결 및 효율적인 삽입)
     // -------------------------------------------------------------------
     @Override
-    @Transactional // 트랜잭션을 명확히 적용합니다. (두 번째 코드의 결정)
+    @Transactional // 트랜잭션을 명확히 적용합니다.
     public void insertRecallList(List<RecallDTO> recallList) {
-        // DAO의 배치 삽입 메서드(insertRecallList)를 호출합니다.
-        // (RecallDAO XML에서 <foreach>로 구현된 쿼리를 사용한다고 가정)
-        recallDAO.insertRecallList(recallList);
-
-        // 참고: 두 번째 코드에서는 for-loop를 사용했지만,
-        // 이미 recall.xml에 배치 쿼리를 구현했으므로, DAO 메서드를 직접 호출하는 것이 효율적입니다.
+        // 각 리콜 항목을 개별적으로 삽입하도록 변경합니다.
+        for (RecallDTO recallDTO : recallList) {
+            recallDAO.insertRecall(recallDTO);
+        }
     }
 
     // -------------------------------------------------------------------
@@ -65,5 +64,13 @@ public class RecallServiceImpl implements RecallService {
     @Override
     public List<RecallDTO> searchRecallsByModelName(String modelName) {
         return recallDAO.searchByModelName(modelName);
+    }
+
+    // -------------------------------------------------------------------
+    // 6. 전체 리콜 데이터 수 조회 (Init 클래스에서 사용)
+    // -------------------------------------------------------------------
+    @Override
+    public int countAllRecalls() {
+        return recallDAO.count(null);
     }
 }

@@ -43,7 +43,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDTO contentView(HashMap<String, String> param) {
         BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-        BoardDTO dto = dao.contentView(param);
+        // HashMap에서 "boardNo" 키의 값을 int로 변환하여 전달
+        int boardNo = Integer.parseInt(param.get("boardNo"));
+        BoardDTO dto = dao.contentView(boardNo);
 
         return dto;
     }
@@ -54,6 +56,7 @@ public class BoardServiceImpl implements BoardService {
         BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
         // BoardDAO의 메서드 이름과 매개변수 타입을 맞추어 호출
         // (DAO에도 int 타입의 contentView 메서드가 있다고 가정)
+        // 이 메서드는 이미 int를 받으므로 그대로 전달
         BoardDTO dto = dao.contentView(boardNo);
 
         return dto;

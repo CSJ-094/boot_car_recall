@@ -5,10 +5,13 @@
 <mapper namespace="com.boot.dao.DefectReportDAO">
 
     <insert id="insertReport" parameterType="com.boot.dto.DefectReportDTO">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT DEFECT_REPORT_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO DEFECT_REPORT (
             ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         ) VALUES (
-            DEFECT_REPORT_SEQ.NEXTVAL,
+            #{id},
             #{reporterName},
             #{contact},
             #{carModel},
@@ -17,9 +20,6 @@
             SYSDATE,
             #{password}
         )
-        <selectKey keyProperty="id" resultType="long" order="AFTER">
-            SELECT DEFECT_REPORT_SEQ.CURRVAL FROM DUAL
-        </selectKey>
     </insert>
 
     <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->

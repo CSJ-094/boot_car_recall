@@ -47,8 +47,9 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 2. 리콜 현황 페이지 (페이징 기능 포함)
+    // URL: /info/status (header.jsp와 통일)
     // -------------------------------------------------------------------
-    @GetMapping("/recall-status")
+    @GetMapping("/info/status")
     public String recallStatus(Criteria cri, Model model) {
         List<RecallDTO> recallList = recallService.getAllRecalls(cri);
         model.addAttribute("recallList", recallList);
@@ -68,7 +69,7 @@ public class MainController {
     // 3. 데이터 로드 및 초기화 기능
     // -------------------------------------------------------------------
     @GetMapping("/load-data")
-    public String loadData(Criteria cri, Model model) {
+    public String loadData(Model model) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Resource resource = resourceLoader.getResource("classpath:integrated_recall_data.json");
@@ -77,7 +78,8 @@ public class MainController {
 
             recallService.saveRecallData(recallList);
 
-            int count = recallService.getRecallCount(cri);
+            // 데이터 로드 후 전체 카운트 재확인
+            int count = recallService.getRecallCount(new Criteria());
             model.addAttribute("message", "성공적으로 " + count + "개의 리콜 데이터를 데이터베이스에 저장했습니다.");
 
         } catch (IOException e) {
@@ -89,31 +91,35 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 4. 결함 신고 접수 (폼)
+    // URL: /report/write
     // -------------------------------------------------------------------
-    @GetMapping("/defect-report")
+    @GetMapping("/report/write")
     public String defectReportForm() {
         return "defect_report";
     }
 
     // -------------------------------------------------------------------
     // 5. 결함 신고 접수 처리
+    // URL: /report (POST)
     // -------------------------------------------------------------------
-    @PostMapping("/defect-report")
-    public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, Model model) {
+    @PostMapping("/report")
+    public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, RedirectAttributes rttr) {
         try {
             defectReportService.saveReport(report, files);
-            model.addAttribute("message", "결함 신고가 성공적으로 접수되었습니다.");
+            rttr.addFlashAttribute("message", "결함 신고가 성공적으로 접수되었습니다. 신고 내역에서 확인해 주세요.");
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "오류가 발생하여 신고가 접수되지 않았습니다: " + e.getMessage());
+            rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고가 접수되지 않았습니다: " + e.getMessage());
         }
-        return "report_result";
+        // 리다이렉션 경로 수정: /defect_report_list -> /report/history
+        return "redirect:/report/history";
     }
 
     // -------------------------------------------------------------------
     // 6. 결함 신고 목록 조회 (페이징 기능 포함)
+    // URL: /report/history
     // -------------------------------------------------------------------
-    @GetMapping("/defect-report-list")
+    @GetMapping("/report/history")
     public String defectReportList(Criteria cri, Model model) {
         List<DefectReportDTO> reportList = defectReportService.getAllReports(cri);
         model.addAttribute("reportList", reportList);
@@ -127,8 +133,9 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 7. 결함 신고 상세 조회
+    // URL: /report/detail
     // -------------------------------------------------------------------
-    @GetMapping("/defect-report-detail")
+    @GetMapping("/report/detail")
     public String defectReportDetail(@RequestParam("id") Long id, Model model) {
         DefectReportDTO report = defectReportService.getReportById(id);
         model.addAttribute("report", report);
@@ -137,12 +144,14 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 8. 결함 신고 수정 폼 요청 (비밀번호 검증 포함)
+    // URL: /report/edit
     // -------------------------------------------------------------------
-    @GetMapping("/defect-report-edit")
+    @GetMapping("/report/edit")
     public String defectReportEditForm(@RequestParam("id") Long id, @RequestParam("password") String password, Model model, RedirectAttributes rttr) {
         if (!defectReportService.checkPassword(id, password)) {
             rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-            return "redirect:/defect-report-detail?id=" + id;
+            // 리다이렉션 경로 수정: /defect-report-detail -> /report/detail
+            return "redirect:/report/detail?id=" + id;
         }
         DefectReportDTO report = defectReportService.getReportById(id);
         model.addAttribute("report", report);
@@ -151,8 +160,9 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 9. 결함 신고 수정 처리
+    // URL: /report/edit (POST)
     // -------------------------------------------------------------------
-    @PostMapping("/defect-report-edit")
+    @PostMapping("/report/edit")
     public String defectReportEditSubmit(DefectReportDTO report,
                                          @RequestParam(value = "newDefectImages", required = false) List<MultipartFile> newFiles,
                                          @RequestParam(value = "existingImageFileNames", required = false) List<String> existingFileNames,
@@ -164,18 +174,21 @@ public class MainController {
             e.printStackTrace();
             rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고 수정에 실패했습니다: " + e.getMessage());
         }
-        return "redirect:/defect-report-detail?id=" + report.getId();
+        // 리다이렉션 경로 수정: /defect-report-detail -> /report/detail
+        return "redirect:/report/detail?id=" + report.getId();
     }
 
     // -------------------------------------------------------------------
     // 10. 결함 신고 삭제 처리
+    // URL: /report/delete (POST)
     // -------------------------------------------------------------------
-    @PostMapping("/defect-report-delete")
+    @PostMapping("/report/delete")
     public String defectReportDelete(@RequestParam("id") Long id, @RequestParam("password") String password, RedirectAttributes rttr) {
         try {
             if (!defectReportService.checkPassword(id, password)) {
                 rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않아 삭제에 실패했습니다.");
-                return "redirect:/defect-report-detail?id=" + id;
+                // 리다이렉션 경로 수정: /defect-report-detail -> /report/detail
+                return "redirect:/report/detail?id=" + id;
             }
             defectReportService.deleteReport(id);
             rttr.addFlashAttribute("message", "결함 신고가 성공적으로 삭제되었습니다.");
@@ -183,6 +196,7 @@ public class MainController {
             e.printStackTrace();
             rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고 삭제에 실패했습니다: " + e.getMessage());
         }
-        return "redirect:/defect-report-list";
+        // 리다이렉션 경로 수정: /defect-report-list -> /report/history
+        return "redirect:/report/history";
     }
 }

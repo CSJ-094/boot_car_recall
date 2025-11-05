@@ -23,5 +23,6 @@ public interface RecallService {
     // 5. 차량 모델명으로 검색 (첫 번째 코드)
     List<RecallDTO> searchRecallsByModelName(String modelName);
 
-    // 6. 두 번째 코드의 getList()는 getAllRecalls(Criteria)와 중복되므로 제외합니다.
+    // 6. 전체 리콜 데이터 수 조회 (Init 클래스에서 사용)
+    int countAllRecalls();
 }
