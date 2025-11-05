@@ -42,6 +42,12 @@
         <hr>
         <p class="lead">관리자님, 환영합니다!</p>
 
+        <div class="my-4">
+            <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-info">공지사항 관리</a>
+            <a href="${pageContext.request.contextPath}/admin/faq/list" class="btn btn-info">FAQ 관리</a>
+        </div>
+
+
         <div class="chart-container">
             <h4>최근 7일간 결함 신고 건수</h4>
             <canvas id="dailyReportChart"></canvas>
@@ -91,7 +97,7 @@
         const labels = dailyStatsData.map(item => item.report_day);
         const data = dailyStatsData.map(item => item.count);
 
-        // 데이터 중 가장 큰 값을 찾아 약간의 여유(2)를 더해 y축의 최대값으로 설정합니다.
+
         const suggestedMax = data.length > 0 ? Math.max(...data) + 2 : 10;
 
         const ctx = document.getElementById('dailyReportChart').getContext('2d');
