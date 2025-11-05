@@ -75,7 +75,7 @@ public class MainController {
             InputStream inputStream = resource.getInputStream();
             List<RecallDTO> recallList = objectMapper.readValue(inputStream, new TypeReference<List<RecallDTO>>() {});
 
-            recallService.saveRecallData(recallList);
+            recallService.insertRecallList(recallList);
 
             int count = recallService.getRecallCount(cri);
             model.addAttribute("message", "성공적으로 " + count + "개의 리콜 데이터를 데이터베이스에 저장했습니다.");
