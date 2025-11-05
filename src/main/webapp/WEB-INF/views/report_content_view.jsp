@@ -55,7 +55,7 @@
 	</div>
 
 	<div>
-		<a href="recallInfo?pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}">목록으로 돌아가기</a>
+		<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로 돌아가기</a>
 	</div>
 </div>
 </body>
