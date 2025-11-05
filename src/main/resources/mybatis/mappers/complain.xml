@@ -1,0 +1,31 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.ComplainDAO">
+
+    <select id="complain_list" resultType="com.boot.dto.ComplainDTO">
+        select report_id, reporter_name, title, content, complain_type, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain
+    </select>
+    
+     <insert id="complain_write">
+    	insert into online_complain(report_id, reporter_name, password, phone, title, complain_type, carNum, 
+    	is_public, content) values(REPORT_ID.NEXTVAL, #{reporter_name, jdbcType=VARCHAR}, #{password}, #{phone}, #{title}, #{complain_type}
+    	, #{carNum}, #{is_public}, #{content})
+    </insert>
+    
+      <select id="contentView" resultType="com.boot.dto.ComplainDTO">
+    	select report_id, reporter_name, title, content, complain_type from online_complain where report_id=#{report_id}
+    </select>
+    
+    <update id="complain_modify">
+    	update online_complain set reporter_name=#{reporter_name, jdbcType=VARCHAR}, title=#{title}, content=#{content} 
+    	 where report_id=#{report_id}
+    </update>
+    
+    <delete id="complain_delete">
+    	delete from online_complain where report_id=#{report_id}
+    </delete>
+
+</mapper>
+
