@@ -15,10 +15,6 @@
     	insert into tbl_board(boardName, boardTitle, boardContent) values(#{boardName},#{boardTitle},#{boardContent})
     </insert>
 
-    <select id="contentView" resultType="com.boot.dto.BoardDTO">
-    	select boardNo, boardName, boardTitle, boardContent, boardDate, boardHit from tbl_board where boardNo=#{boardNo}
-    </select>
-
     <update id="modify">
     	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent}
     	 where boardNo=#{boardNo}

@@ -17,17 +17,12 @@
     </insert>
 
     <insert id="insertRecallList" parameterType="java.util.List">
-        INSERT INTO RECALL (
-        ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END,
-        RECALL_DATE, RECALL_REASON
-        )
-        <foreach collection="list" item="recall" separator="UNION ALL">
-            SELECT
-            RECALL_SEQ.NEXTVAL,
-            #{recall.maker}, #{recall.modelName}, #{recall.makeStart}, #{recall.makeEnd},
-            #{recall.recallDate}, #{recall.recallReason}
-            FROM DUAL
+        INSERT ALL
+        <foreach collection="list" item="recall">
+            INTO RECALL (ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON)
+            VALUES (RECALL_SEQ.NEXTVAL, #{recall.maker}, #{recall.modelName}, #{recall.makeStart}, #{recall.makeEnd}, #{recall.recallDate}, #{recall.recallReason})
         </foreach>
+        SELECT * FROM DUAL
     </insert>
 
 
