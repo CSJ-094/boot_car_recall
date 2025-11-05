@@ -1,7 +1,11 @@
 package com.boot.dto;
 
+import lombok.Getter;
+import lombok.ToString;
 import lombok.Data;
 
+@Getter
+@ToString
 @Data
 public class PageDTO {
 

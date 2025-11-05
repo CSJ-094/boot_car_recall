@@ -20,7 +20,7 @@ CREATE TABLE VEHICLE (
     MANUFACTURE_DATE DATE -- 실제 생산 날짜
 );
 
- - 리콜 대상 매핑 테이블 --
+ - 리콜 대상 매핑 테이블 -
  CREATE TABLE RECALL_TARGET (
      RECALL_ID NUMBER NOT NULL, -- RECALL 테이블의 ID (외래 키)
      VEHICLE_VIN VARCHAR2(50) NOT NULL, -- VEHICLE 테이블의 VIN (외래 키)
