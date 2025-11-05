@@ -1,35 +1,61 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boot.dao.BoardDAO">
 
-    <select id="list" resultType="com.boot.dto.BoardDTO">
-        select boardNo, boardName, boardTitle, boardContent, boardDate
-        , TO_CHAR(boardDate, 'YYYY-MM-DD HH24:MI') AS boardDate2
-        , boardHit from tbl_board
-    </select>
-
-    <insert id="write">
-        <selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
-            SELECT TBL_BOARD_SEQ.NEXTVAL FROM DUAL
-        </selectKey>
-        insert into tbl_board(boardNo, boardName, boardTitle, boardContent)
-        values(#{boardNo}, #{boardName}, #{boardTitle}, #{boardContent})
+    <insert id="write" parameterType="hashmap">
+        INSERT INTO RECALL_BOARD (
+        BOARD_NO,
+        BOARD_TITLE,
+        BOARD_CONTENT,
+        BOARD_NAME,
+        BOARD_DATE,
+        HIT
+        ) VALUES (
+        RECALL_BOARD_SEQ.NEXTVAL,
+        #{boardTitle},
+        #{boardContent},
+        #{boardName},
+        SYSDATE,
+        DEFAULT
+        )
     </insert>
 
-    <select id="contentView" resultType="com.boot.dto.BoardDTO">
-    	select boardNo, boardName, boardTitle, boardContent, boardDate, boardHit from tbl_board where boardNo=#{boardNo}
+    <select id="list" resultType="com.boot.dto.BoardDTO">
+        SELECT *
+        FROM RECALL_BOARD
+        ORDER BY BOARD_NO DESC
     </select>
 
-    <update id="modify">
-    	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent}
-    	 where boardNo=#{boardNo}
+    <select id="contentView" parameterType="int" resultType="com.boot.dto.BoardDTO">
+        SELECT
+        BOARD_NO AS boardNo,
+        BOARD_TITLE AS boardTitle,
+        BOARD_CONTENT AS boardContent,
+        BOARD_NAME AS boardName,
+        BOARD_DATE AS boardDate,
+        HIT AS boardHit
+        FROM RECALL_BOARD
+        WHERE BOARD_NO = #{boardNo}
+    </select>
+
+    <update id="hitUp" parameterType="int">
+        UPDATE RECALL_BOARD SET HIT = HIT + 1
+        WHERE BOARD_NO = #{boardNo}
     </update>
 
-    <delete id="delete">
-    	delete from tbl_board where boardNo=#{boardNo}
+    <update id="modify" parameterType="hashmap">
+        UPDATE RECALL_BOARD
+        SET BOARD_TITLE = #{boardTitle},
+        BOARD_CONTENT = #{boardContent},
+        BOARD_NAME = #{boardName}
+        WHERE BOARD_NO = #{boardNo}
+    </update>
+
+    <delete id="delete" parameterType="hashmap">
+        DELETE FROM RECALL_BOARD WHERE BOARD_NO = #{boardNo}
     </delete>
 
 </mapper>
