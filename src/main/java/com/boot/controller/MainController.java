@@ -68,7 +68,7 @@ public class MainController {
     // 3. 데이터 로드 및 초기화 기능
     // -------------------------------------------------------------------
     @GetMapping("/load-data")
-    public String loadData(Model model) {
+    public String loadData(Criteria cri, Model model) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Resource resource = resourceLoader.getResource("classpath:integrated_recall_data.json");
@@ -77,7 +77,7 @@ public class MainController {
 
             recallService.saveRecallData(recallList);
 
-            int count = recallService.getRecallCount();
+            int count = recallService.getRecallCount(cri);
             model.addAttribute("message", "성공적으로 " + count + "개의 리콜 데이터를 데이터베이스에 저장했습니다.");
 
         } catch (IOException e) {
