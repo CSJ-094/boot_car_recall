@@ -53,6 +53,7 @@ public class BoardController {
         log.info("@# pn => " + pageNum);
         log.info("@# am => " + amount);
 //
+
         return "report_content_view";
     }
 
