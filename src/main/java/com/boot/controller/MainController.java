@@ -32,6 +32,9 @@ public class MainController {
     private final RecallService recallService;
     private final DefectReportService defectReportService;
 
+    // -------------------------------------------------------------------
+    // 1. 메인 페이지 (리콜 검색 기능 포함)
+    // -------------------------------------------------------------------
     @GetMapping("/")
     public String main(Model model, @RequestParam(value = "query", required = false) String query) {
         if (query != null && !query.trim().isEmpty()) {
@@ -42,12 +45,15 @@ public class MainController {
         return "main";
     }
 
+    // -------------------------------------------------------------------
+    // 2. 리콜 현황 페이지 (페이징 기능 포함)
+    // -------------------------------------------------------------------
     @GetMapping("/recall-status")
     public String recallStatus(Criteria cri, Model model) {
         List<RecallDTO> recallList = recallService.getAllRecalls(cri);
         model.addAttribute("recallList", recallList);
 
-        int total = recallService.getRecallCount(cri); 
+        int total = recallService.getRecallCount(cri);
 
         PageDTO pageDTO = new PageDTO(cri, total);
         model.addAttribute("pageMaker", pageDTO);
@@ -58,6 +64,9 @@ public class MainController {
         return "recall_status";
     }
 
+    // -------------------------------------------------------------------
+    // 3. 데이터 로드 및 초기화 기능
+    // -------------------------------------------------------------------
     @GetMapping("/load-data")
     public String loadData(Model model) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -78,11 +87,17 @@ public class MainController {
         return "load_result";
     }
 
+    // -------------------------------------------------------------------
+    // 4. 결함 신고 접수 (폼)
+    // -------------------------------------------------------------------
     @GetMapping("/defect-report")
     public String defectReportForm() {
         return "defect_report";
     }
 
+    // -------------------------------------------------------------------
+    // 5. 결함 신고 접수 처리
+    // -------------------------------------------------------------------
     @PostMapping("/defect-report")
     public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, Model model) {
         try {
@@ -95,6 +110,9 @@ public class MainController {
         return "report_result";
     }
 
+    // -------------------------------------------------------------------
+    // 6. 결함 신고 목록 조회 (페이징 기능 포함)
+    // -------------------------------------------------------------------
     @GetMapping("/defect-report-list")
     public String defectReportList(Criteria cri, Model model) {
         List<DefectReportDTO> reportList = defectReportService.getAllReports(cri);
@@ -107,6 +125,9 @@ public class MainController {
         return "defect_report_list";
     }
 
+    // -------------------------------------------------------------------
+    // 7. 결함 신고 상세 조회
+    // -------------------------------------------------------------------
     @GetMapping("/defect-report-detail")
     public String defectReportDetail(@RequestParam("id") Long id, Model model) {
         DefectReportDTO report = defectReportService.getReportById(id);
@@ -114,7 +135,9 @@ public class MainController {
         return "defect_report_detail";
     }
 
-    // 결함 신고 수정 폼 요청
+    // -------------------------------------------------------------------
+    // 8. 결함 신고 수정 폼 요청 (비밀번호 검증 포함)
+    // -------------------------------------------------------------------
     @GetMapping("/defect-report-edit")
     public String defectReportEditForm(@RequestParam("id") Long id, @RequestParam("password") String password, Model model, RedirectAttributes rttr) {
         if (!defectReportService.checkPassword(id, password)) {
@@ -126,9 +149,14 @@ public class MainController {
         return "defect_report_edit";
     }
 
-    // 결함 신고 수정 처리 (비밀번호 검증 제거)
+    // -------------------------------------------------------------------
+    // 9. 결함 신고 수정 처리
+    // -------------------------------------------------------------------
     @PostMapping("/defect-report-edit")
-    public String defectReportEditSubmit(DefectReportDTO report, @RequestParam(value = "newDefectImages", required = false) List<MultipartFile> newFiles, @RequestParam(value = "existingImageFileNames", required = false) List<String> existingFileNames, RedirectAttributes rttr) {
+    public String defectReportEditSubmit(DefectReportDTO report,
+                                         @RequestParam(value = "newDefectImages", required = false) List<MultipartFile> newFiles,
+                                         @RequestParam(value = "existingImageFileNames", required = false) List<String> existingFileNames,
+                                         RedirectAttributes rttr) {
         try {
             defectReportService.updateReport(report, newFiles, existingFileNames);
             rttr.addFlashAttribute("message", "결함 신고가 성공적으로 수정되었습니다.");
@@ -139,7 +167,9 @@ public class MainController {
         return "redirect:/defect-report-detail?id=" + report.getId();
     }
 
-    // 결함 신고 삭제 처리
+    // -------------------------------------------------------------------
+    // 10. 결함 신고 삭제 처리
+    // -------------------------------------------------------------------
     @PostMapping("/defect-report-delete")
     public String defectReportDelete(@RequestParam("id") Long id, @RequestParam("password") String password, RedirectAttributes rttr) {
         try {
