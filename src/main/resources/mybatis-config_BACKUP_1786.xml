@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+<<<<<<< HEAD
+<!--		<mapper resource="mybatis/mappers/board.xml"/>-->
+		<mapper resource="mybatis/mappers/recall.xml"/>
+<<<<<<< HEAD
+<<<<<<< HEAD
+		<mapper resource="mybatis/mappers/notice.xml"/>
+		<mapper resource="mybatis/mappers/faq.xml"/>
+=======
+		<mapper resource="mybatis/mappers/admin.xml"/>
+		<mapper resource="mybatis/mappers/stats.xml"/>
+		<mapper resource="mybatis/mappers/carRecall.xml"/>
+>>>>>>> 7010d15039e83a0f271f1cec844470960bb67bab
+=======
+>>>>>>> ea43a775c9b39041c2c846933da45c1acbc879e0
+=======
+		<mapper resource="mybatis/mappers/board.xml"/>
+		<mapper resource="mybatis/mappers/admin.xml"/>
+		<mapper resource="mybatis/mappers/carRecall.xml"/>
+		<mapper resource="mybatis/mappers/faq.xml"/>
+		<mapper resource="mybatis/mappers/notice.xml"/>
+		<mapper resource="mybatis/mappers/page.xml"/>
+		<mapper resource="mybatis/mappers/recall.xml"/>
+		<mapper resource="mybatis/mappers/stats.xml"/>
+>>>>>>> 452073dcddc91d29907a71ce3a502ffc5025aa14
+	</mappers>
+</configuration>
