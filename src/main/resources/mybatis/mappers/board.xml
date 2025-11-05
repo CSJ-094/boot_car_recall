@@ -23,15 +23,6 @@
         )
     </insert>
 
-    <update id="modify">
-    	update tbl_board set boardName=#{boardName}, boardTitle=#{boardTitle}, boardContent=#{boardContent}
-    	 where boardNo=#{boardNo}
-    </update>
-
-    <delete id="delete">
-    	delete from tbl_board where boardNo=#{boardNo}
-    </delete>
-
     <select id="list" resultType="com.boot.dto.BoardDTO">
         SELECT *
         FROM RECALL_BOARD
