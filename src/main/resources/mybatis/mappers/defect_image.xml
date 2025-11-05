@@ -5,10 +5,13 @@
 <mapper namespace="com.boot.dao.DefectImageDAO">
 
     <insert id="insertImage" parameterType="com.boot.dto.DefectImageDTO">
+        <selectKey keyProperty="imageId" resultType="long" order="BEFORE">
+            SELECT DEFECT_REPORT_IMAGES_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO DEFECT_REPORT_IMAGES (
             IMAGE_ID, REPORT_ID, FILE_NAME
         ) VALUES (
-            DEFECT_REPORT_IMAGES_SEQ.NEXTVAL,
+            #{imageId},
             #{reportId},
             #{fileName}
         )

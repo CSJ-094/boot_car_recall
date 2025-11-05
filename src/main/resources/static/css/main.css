@@ -26,16 +26,117 @@ section { padding: var(--section-space) 0; }
   color: #fff; text-align: center; padding: 80px 20px;
 }
 .hero h2{ font-size: 2rem; margin-bottom: 20px; }
-.search-box{
-  background:#fff; color:#333; display:inline-flex; border-radius:10px; overflow:hidden;
-  max-width:600px; width:100%;
+
+.hero .search-form {
+    display: inline-block;
+    max-width: 600px;
+    width: 100%;
 }
-.search-box input{ flex:1; padding:15px; border:none; font-size:1rem; outline:none; }
-.search-box button{
-  background:#0d47a1; color:#fff; border:none; padding:15px 30px; cursor:pointer; font-weight:600;
-  transition: background .3s;
+
+.hero .search-form form {
+    display: flex;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
 }
-.search-box button:hover{ background:#1565c0; }
+
+.hero .search-form input{
+    flex: 1;
+    padding: 15px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    color: #333;
+}
+
+.hero .search-form button{
+    background: #0d47a1;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background .3s;
+}
+
+.hero .search-form button:hover{ background: #1565c0; }
+
+/* ===========================
+   Search Results Section
+=========================== */
+.section-search-results {
+  padding: var(--section-space) 0;
+  background-color: var(--card);
+  margin-top: var(--section-space);
+  border-top: 1px solid var(--line);
+}
+
+.section-search-results h3 {
+  font-size: 1.8rem;
+  color: var(--ink);
+  margin-bottom: 30px; /* 여백 증가 */
+  text-align: center;
+}
+
+.section-search-results .table-responsive {
+    overflow-x: auto;
+}
+
+.section-search-results table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius); /* 테이블 전체에 border-radius 적용 */
+  overflow: hidden; /* border-radius 적용을 위해 */
+}
+
+.section-search-results th,
+.section-search-results td {
+  border: 1px solid var(--line);
+  padding: 14px 18px; /* 패딩 증가 */
+  text-align: left;
+  vertical-align: middle;
+}
+
+.section-search-results th {
+  background-color: var(--surface);
+  font-weight: 700; /* 폰트 굵기 증가 */
+  color: var(--brand); /* 브랜드 색상 적용 */
+  font-size: 1.05rem;
+  white-space: nowrap; /* 헤더는 줄바꿈 방지 */
+}
+
+.section-search-results td {
+  white-space: nowrap; /* 기본적으로 셀 내용은 줄바꿈 방지 (날짜 등) */
+}
+
+.section-search-results td:last-child { /* 리콜 사유 열만 줄바꿈 허용 */
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.section-search-results tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+.section-search-results tr:hover {
+  background-color: #eef3ff;
+}
+
+.section-search-results .no-results {
+  text-align: center;
+  padding: 40px;
+  color: var(--muted);
+  font-size: 1.2rem; /* 폰트 크기 증가 */
+  font-weight: 600; /* 폰트 굵기 증가 */
+  background-color: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 20px;
+  border: 1px dashed var(--line); /* 점선 테두리 추가 */
+}
 
 /* ===========================
    [1] 리콜 절차 및 서비스 안내
@@ -234,7 +335,7 @@ section { padding: var(--section-space) 0; }
   width:52px; height:52px; flex:0 0 52px;  /* 아이콘 더 큼 */
   display:grid; place-items:center;
   border-radius: 14px;
-  background:#eef3ff; color: var(--brand);
+  background:#eef3ff; color:var(--brand);
 }
 .hub-icon svg{ width:26px; height:26px; }
 .hub-text strong{ display:block; font-size:18px; line-height:1.15; }

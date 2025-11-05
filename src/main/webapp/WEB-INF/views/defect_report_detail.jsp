@@ -6,14 +6,15 @@
 <head>
     <meta charset="UTF-8">
     <title>결함 신고 상세</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
     <style>
-        body { font-family: 'Noto Sans KR', sans-serif; margin: 0; background-color: #f4f4f4; color: #333; }
-        .container { width: 60%; margin: auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 30px; }
-        header { background: #0d47a1; color: white; padding: 20px 0; text-align: center; }
-        header h1 { margin: 0; font-size: 2rem; }
-        nav { background: #1565c0; padding: 10px; text-align: center; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 500; }
-        h2 { text-align: center; color: #0d47a1; margin-bottom: 20px; }
+        /* 이 페이지에만 적용될 추가적인 스타일 */
+        .container { 
+            padding-top: 50px; 
+            padding-bottom: 50px; 
+        }
         .detail-item { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
         .detail-item:last-child { border-bottom: none; }
         .detail-item label { font-weight: bold; display: inline-block; width: 120px; color: #555; }
@@ -27,7 +28,6 @@
         .btn-group .delete-btn:hover { background-color: #c82333; }
         .btn-group .back-btn { background-color: #6c757d; color: white; }
         .btn-group .back-btn:hover { background-color: #5a6268; }
-        footer { background: #263238; color: #ccc; text-align: center; padding: 20px; margin-top: 30px; }
 
         /* 비밀번호 입력 모달 스타일 */
         .password-modal { 
@@ -75,16 +75,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>📋 결함 신고 상세</h1>
-    </header>
-    <nav>
-        <a href="/">홈</a>
-        <a href="/recall-status">리콜 현황</a>
-        <a href="/defect-report">결함 신고</a>
-        <a href="/defect-report-list">신고 목록</a>
-        <a href="#">고객 지원</a>
-    </nav>
+    <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
     <div class="container">
         <h2>신고 상세 내용</h2>
@@ -164,6 +155,8 @@
         <input type="hidden" name="password" id="deletePassword">
     </form>
 
+    <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
+
     <script>
         let currentAction = ''; // 'edit' 또는 'delete'
 
@@ -218,9 +211,5 @@
             }
         };
     </script>
-
-    <footer>
-        <p>© 2025 차량 리콜 조회 시스템</p>
-    </footer>
 </body>
 </html>

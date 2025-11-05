@@ -6,11 +6,14 @@
 <mapper namespace="com.boot.dao.RecallDAO">
 
     <insert id="insertRecall" parameterType="com.boot.dto.RecallDTO">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT RECALL_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO RECALL (
         ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END,
         RECALL_DATE, RECALL_REASON
         ) VALUES (
-        RECALL_SEQ.NEXTVAL,
+        #{id},
         #{maker}, #{modelName}, #{makeStart}, #{makeEnd},
         #{recallDate}, #{recallReason}
         )
