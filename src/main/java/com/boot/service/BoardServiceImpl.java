@@ -1,6 +1,5 @@
 package com.boot.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,13 +14,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Autowired
 	private SqlSession sqlSession;
-	
-	@Override
-	public ArrayList<BoardDTO> list() {
-		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-		ArrayList<BoardDTO> list = dao.list();
-		return list;
-	}
+
 
 	@Override
 	public void write(HashMap<String, String> param) {
@@ -30,10 +23,10 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public BoardDTO contentView(HashMap<String, String> param) {
+	public BoardDTO contentView(int boardNo) {
 		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-		BoardDTO dto = dao.contentView(param);
-		
+		BoardDTO dto = dao.contentView(boardNo);
+
 		return dto;
 	}
 
@@ -44,12 +37,14 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void delete(HashMap<String, String> param) {
+	public void delete(int boardNo) {
 		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-		dao.delete(param);
+		dao.delete(boardNo);
 	}
 
 }
+
+
 
 
 
