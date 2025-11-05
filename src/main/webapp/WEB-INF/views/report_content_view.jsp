@@ -47,15 +47,28 @@
 
 <div class="container">
 	<div class="post-card">
-		<div class="post-title">${content_view.boardTitle}</div>
-		<div class="post-content">${content_view.boardContent}</div>
-		<div class="post-info">
-			작성자: ${content_view.boardName} | 날짜: ${content_view.boardDate} | 조회수: ${content_view.boardHit}
-		</div>
-	</div>
+		<form method="post" action="report_modify">
+			<input type="hidden" name="boardNo" value="${content_view.boardNo}">
+			<input type="hidden" name="pageNum" value="${pageNum}">
+			<input type="hidden" name="amount" value="${amount}">
 
-	<div>
-		<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로 돌아가기</a>
+			<div class="post-title">
+				<input type="text" name="boardTitle" value="${content_view.boardTitle}" class="input-title">
+			</div>
+			<div class="post-content">
+				<textarea name="boardContent" class="input-content">${content_view.boardContent}</textarea>
+			</div>
+			<div class="post-info">
+				작성자: <input type="text" name="boardName" value="${content_view.boardName}" class="input-name">
+				| 날짜: ${content_view.boardDate} | 조회수: ${content_view.boardHit}
+			</div>
+
+			<div class="btn-group">
+				<input type="submit" value="수정" class="btn btn-primary">
+				<input type="submit" value="삭제" formaction="report_delete" class="btn btn-danger">
+				<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}" class="btn btn-secondary">목록</a>
+			</div>
+		</form>
 	</div>
 </div>
 </body>

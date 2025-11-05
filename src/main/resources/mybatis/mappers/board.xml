@@ -33,8 +33,14 @@
     </delete>
 
 
-    <select id="contentView" parameterType="hashmap" resultType="com.boot.dto.BoardDTO">
-        SELECT *
+    <select id="contentView" parameterType="int" resultType="com.boot.dto.BoardDTO">
+        SELECT
+        BOARD_NO AS boardNo,
+        BOARD_TITLE AS boardTitle,
+        BOARD_CONTENT AS boardContent,
+        BOARD_NAME AS boardName,
+        BOARD_DATE AS boardDate,
+        HIT AS boardHit
         FROM RECALL_BOARD
         WHERE BOARD_NO = #{boardNo}
     </select>

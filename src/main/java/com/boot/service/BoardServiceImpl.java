@@ -37,9 +37,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void delete(int boardNo) {
+	public void delete(HashMap<String, String> param) {
 		BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
-		dao.delete(boardNo);
+		dao.delete(param);
 	}
 
 }

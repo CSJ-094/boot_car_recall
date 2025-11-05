@@ -32,9 +32,8 @@
     </table>
 </form>
 
-<!-- 업로드 공간 자리(추후 구현) -->
 <div class="uploadDiv">
-    <label>파일 첨부 (추후 구현)</label>
-    <input type="file" name="uploadFile" multiple disabled>
+    <h2>아직 ㅣㅁ구현</h2>
+    <input type="file" name="uploadFile">
 </div>
 </body>

@@ -10,7 +10,7 @@ public interface BoardDAO {
     void write(HashMap<String, String> param);
     BoardDTO contentView(int param);
     void modify(HashMap<String, String> param);
-    void delete(int boardNo);
+    void delete(HashMap<String, String> param);
 
 }
 
