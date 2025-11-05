@@ -19,7 +19,7 @@ public class pageController {
     @Autowired
     private PageService service;
 
-    @RequestMapping("/recallInfo")
+    @RequestMapping("/report_recallInfo")
     public String recallInfo(Criteria cri, Model model) {
         log.info("@# recallInfo()");
         log.info("@# cri => " + cri);
@@ -30,6 +30,6 @@ public class pageController {
 
         model.addAttribute("list", list);
         model.addAttribute("pageMaker", new PageDTO(cri, total));
-        return "recallInfo";
+        return "report_recallInfo";
     }
 }
