@@ -52,7 +52,7 @@ public class BoardController {
         model.addAttribute("amount", amount);
         log.info("@# pn => " + pageNum);
         log.info("@# am => " + amount);
-
+//
         return "report_content_view";
     }
 
