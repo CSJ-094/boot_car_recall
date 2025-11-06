@@ -70,7 +70,7 @@ public class UploadServiceImpl implements UploadService{
 //				boolean contentType = Files.probeContentType(file).startsWith("image");
 				String contentType = Files.probeContentType(saveFile.toPath());
 				log.info("@# contentType=>"+contentType);
-				//
+
 //				probeContentType 메소드 버그로 로직 추가
 				if (contentType == null) {
 					return;
