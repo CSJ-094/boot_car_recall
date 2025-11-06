@@ -167,7 +167,6 @@
             return true;
         }
 
-
         $("input[type='file']").change(function(e) {
             const uploadUL = $(".uploadResult ul");
             uploadUL.empty();
@@ -179,7 +178,7 @@
                 if (!checkExtension(files[i].name, files[i].size)) return false;
                 formData.append("uploadFile", files[i]);
             }
-//
+
             $.ajax({
                 type: "post",
                 url: "uploadAjaxAction",
@@ -212,7 +211,6 @@
             uploadUL.append(str);
         }
 
-
         $("button[type='submit']").on("click", function(e) {
             e.preventDefault();
 
@@ -223,7 +221,14 @@
                 url: "write",
                 data: formData,
                 success: function(result) {
-                    uploadFolder();
+                    const files = $("input[name='uploadFile']")[0].files;
+                    // ✅ 파일이 있을 때만 업로드 함수 호출
+                    if (files.length > 0) {
+                        uploadFolder();
+                    } else {
+                        alert("게시글 등록 완료!");
+                        location.href = "report_recallInfo";
+                    }
                 },
                 error: function() {
                     alert("게시글 저장 실패");
