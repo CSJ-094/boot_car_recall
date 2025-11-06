@@ -4,22 +4,40 @@
 
 <mapper namespace="com.boot.dao.ComplainDAO">
 
-    <select id="complain_list" resultType="com.boot.dto.ComplainDTO">
+	 <resultMap id="Map" type="com.boot.dto.ComplainDTO">
+        <result property="report_id" column="REPORT_ID"/>
+        <result property="reporter_name" column="REPORTER_NAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="phone" column="PHONE"/>
+        <result property="title" column="TITLE"/>
+        <result property="complain_type" column="COMPLAIN_TYPE"/>
+        <result property="carNum" column="CARNUM"/>
+        <result property="is_public" column="IS_PUBLIC"/>
+        <result property="complainDate" column="COMPLAINDATE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="answer" column="ANSWER"/>
+    </resultMap>
+
+    <select id="complain_list" resultMap="Map">
         select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain
+    </select>
+   
+    <select id="find_modify_content" resultMap="Map">
+        select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain where report_id=#{report_id}
     </select>
     
      <insert id="complain_write">
     	insert into online_complain(report_id, reporter_name, password, phone, title, COMPLAIN_TYPE, carNum, is_public, content) 
-    	values(ONLINE_COMPLAIN_SEQ.NEXTVAL, #{reporter_name, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{title, jdbcType=VARCHAR}, 
+    	values(REPORT_ID.NEXTVAL, #{reporter_name, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR}, #{phone, jdbcType=VARCHAR}, #{title, jdbcType=VARCHAR}, 
     	#{complain_type, jdbcType=VARCHAR}, #{carNum, jdbcType=VARCHAR}, #{is_public, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR})
     </insert>
     
-      <select id="contentView" resultType="com.boot.dto.ComplainDTO">
-    	select report_id, reporter_name, title, content, COMPLAIN_TYPE from online_complain where report_id=#{report_id}
+      <select id="contentView" resultMap="Map">
+    	select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain where report_id=#{report_id}
     </select>
     
     <update id="complain_modify">
-    	update online_complain set reporter_name=#{reporter_name, jdbcType=VARCHAR}, title=#{title}, content=#{content} 
+    	update online_complain set title=#{title}, COMPLAIN_TYPE=#{complain_type}, content=#{content} 
     	 where report_id=#{report_id}
     </update>
     

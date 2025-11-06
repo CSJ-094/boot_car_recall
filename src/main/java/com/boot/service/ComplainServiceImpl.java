@@ -25,6 +25,13 @@ public class ComplainServiceImpl implements ComplainService{
 		ArrayList<ComplainDTO> complain_list = dao.complain_list();
 		return complain_list;
 	}
+	
+	@Override
+	public ArrayList<ComplainDTO> find_modify_content(HashMap<String, String> param) {
+		ComplainDAO dao = sqlSession.getMapper(ComplainDAO.class);
+		ArrayList<ComplainDTO> find_modify_content = dao.find_modify_content(param);
+		return find_modify_content;
+	}
 
 	@Override
 	public void complain_write(HashMap<String, String> param) {
