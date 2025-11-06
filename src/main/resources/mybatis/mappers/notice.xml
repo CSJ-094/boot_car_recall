@@ -38,53 +38,29 @@
         INSERT INTO RECALL_NOTICE_DB (notice_id, title, content, is_urgent) VALUES (#{notice_id}, #{title}, #{content}, NVL(#{is_urgent, jdbcType=CHAR}, 'N'))
     </insert>
 
-    <select id="getNotice" resultMap="noticeResultMap">
+    <select id="getNotice" parameterType="long" resultMap="noticeResultMap">
         SELECT notice_id, title, content, views, TO_CHAR(created_at, 'YYYY-MM-DD HH24:MI') as created_at, is_urgent
         FROM RECALL_NOTICE_DB
-        ORDER BY notice_id DESC
-      )
-      WHERE ROWNUM &lt;= #{pageNum} * #{amount}
-    )
-    WHERE rnum > (#{pageNum} - 1) * #{amount}
-  </select>
+        WHERE notice_id = #{notice_id}
+    </select>
 
-  <select id="getTotalCount" resultType="int">
-    SELECT COUNT(*) FROM RECALL_NOTICE_DB
-  </select>
+    <update id="incrementViews" parameterType="long">
+        UPDATE RECALL_NOTICE_DB
+        SET views = views + 1
+        WHERE notice_id = #{notice_id}
+    </update>
 
-  <insert id="write" parameterType="com.boot.dto.NoticeDTO">
-    <selectKey keyProperty="notice_id" resultType="long" order="BEFORE">
-      SELECT RECALL_NOTICE_SEQ.NEXTVAL FROM DUAL
-    </selectKey>
-    INSERT INTO RECALL_NOTICE_DB (notice_id, title, content, is_urgent)
-    VALUES (#{notice_id}, #{title}, #{content}, NVL(#{is_urgent, jdbcType=CHAR}, 'N'))
-  </insert>
+    <update id="modify" parameterType="com.boot.dto.NoticeDTO">
+        UPDATE RECALL_NOTICE_DB
+        SET title = #{title},
+            content = #{content},
+            is_urgent = #{is_urgent},
+            updated_at = SYSDATE
+        WHERE notice_id = #{notice_id}
+    </update>
 
-  <select id="getNotice" parameterType="long" resultMap="NoticeMap">
-    SELECT notice_id, title, content, views,
-           TO_CHAR(created_at,'YYYY-MM-DD HH24:MI') as created_at,
-           is_urgent, updated_at
-    FROM RECALL_NOTICE_DB
-    WHERE notice_id = #{notice_id}
-  </select>
-
-  <update id="incrementViews" parameterType="long">
-    UPDATE RECALL_NOTICE_DB
-    SET views = views + 1
-    WHERE notice_id = #{notice_id}
-  </update>
-
-  <update id="modify" parameterType="com.boot.dto.NoticeDTO">
-    UPDATE RECALL_NOTICE_DB
-    SET title = #{title},
-        content = #{content},
-        is_urgent = #{is_urgent},
-        updated_at = SYSDATE
-    WHERE notice_id = #{notice_id}
-  </update>
-
-  <delete id="delete" parameterType="long">
-    DELETE FROM RECALL_NOTICE_DB
-    WHERE notice_id = #{notice_id}
-  </delete>
+    <delete id="delete" parameterType="long">
+        DELETE FROM RECALL_NOTICE_DB
+        WHERE notice_id = #{notice_id}
+    </delete>
 </mapper>
