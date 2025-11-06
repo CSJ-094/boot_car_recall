@@ -179,7 +179,7 @@
                 if (!checkExtension(files[i].name, files[i].size)) return false;
                 formData.append("uploadFile", files[i]);
             }
-
+//
             $.ajax({
                 type: "post",
                 url: "uploadAjaxAction",
