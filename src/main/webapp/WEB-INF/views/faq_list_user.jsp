@@ -57,7 +57,7 @@
           </c:if>
         </ul>
       </nav>
-      <!-- 문의하기 버튼 -->
+      <!-- 문의하기 버튼 추가 -->
       <div class="fq-footer-action">
         <a href="${ctx}/complain_list" class="fq-btn">문의하기</a>
       </div>
