@@ -13,7 +13,6 @@
         <mapper resource="mybatis/mappers/page.xml"/>
         <mapper resource="mybatis/mappers/complain.xml"/>
         <mapper resource="mybatis/mappers/admin.xml"/>
-        <mapper resource="mybatis/mappers/carRecall.xml"/>
         <mapper resource="mybatis/mappers/faq.xml"/>
         <mapper resource="mybatis/mappers/notice.xml"/>
         <mapper resource="mybatis/mappers/stats.xml"/>
