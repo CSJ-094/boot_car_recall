@@ -45,7 +45,7 @@
                     </ul>
                 </li>
 
-                <!-- 관리자 -->
+                <!-- 관리자 로그인페이지 이동 -->
                 <li class="menu-item has-sub">
                     <a href="/admin/login" class="menu-link">관리자</a>
                 </li>
