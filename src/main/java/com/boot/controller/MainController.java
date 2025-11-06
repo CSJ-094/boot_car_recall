@@ -47,9 +47,9 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 2. 리콜 현황 페이지 (페이징 기능 포함)
-    // URL: /info/status (header.jsp와 통일)
+    // URL: /recall-status
     // -------------------------------------------------------------------
-    @GetMapping("/info/status")
+    @GetMapping("/recall-status")
     public String recallStatus(Criteria cri, Model model) {
         List<RecallDTO> recallList = recallService.getAllRecalls(cri);
         model.addAttribute("recallList", recallList);
@@ -100,9 +100,9 @@ public class MainController {
 
     // -------------------------------------------------------------------
     // 5. 결함 신고 접수 처리
-    // URL: /report (POST)
+    // URL: /defect-report (POST)
     // -------------------------------------------------------------------
-    @PostMapping("/report")
+    @PostMapping("/defect-report")
     public String defectReportSubmit(DefectReportDTO report, @RequestParam(value = "defectImages", required = false) List<MultipartFile> files, RedirectAttributes rttr) {
         try {
             defectReportService.saveReport(report, files);
@@ -150,7 +150,6 @@ public class MainController {
     public String defectReportEditForm(@RequestParam("id") Long id, @RequestParam("password") String password, Model model, RedirectAttributes rttr) {
         if (!defectReportService.checkPassword(id, password)) {
             rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-            // 리다이렉션 경로 수정: /defect-report-detail -> /report/detail
             return "redirect:/report/detail?id=" + id;
         }
         DefectReportDTO report = defectReportService.getReportById(id);
@@ -174,7 +173,6 @@ public class MainController {
             e.printStackTrace();
             rttr.addFlashAttribute("errorMessage", "오류가 발생하여 신고 수정에 실패했습니다: " + e.getMessage());
         }
-        // 리다이렉션 경로 수정: /defect-report-detail -> /report/detail
         return "redirect:/report/detail?id=" + report.getId();
     }
 
@@ -187,7 +185,6 @@ public class MainController {
         try {
             if (!defectReportService.checkPassword(id, password)) {
                 rttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않아 삭제에 실패했습니다.");
-                // 리다이렉션 경로 수정: /defect-report-detail -> /report/detail
                 return "redirect:/report/detail?id=" + id;
             }
             defectReportService.deleteReport(id);

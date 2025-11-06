@@ -43,7 +43,7 @@
             <p style="text-align:center; color: red;">수정할 신고를 찾을 수 없습니다.</p>
         </c:if>
         <c:if test="${not empty report}">
-            <form action="/defect-report-edit" method="post" enctype="multipart/form-data"> <!-- enctype 추가 -->
+            <form action="/report/edit" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="${report.id}">
                 <input type="hidden" name="password" value="${report.password}"> <!-- 비밀번호는 hidden으로 전달 -->
                 <div class="form-group">
@@ -88,7 +88,7 @@
                 </div>
                 <div class="btn-group">
                     <button type="submit" class="submit-btn">수정 완료</button>
-                    <a href="/defect-report-detail?id=${report.id}" class="cancel-btn">취소</a>
+                    <a href="/report/detail?id=${report.id}" class="cancel-btn">취소</a>
                 </div>
             </form>
         </c:if>

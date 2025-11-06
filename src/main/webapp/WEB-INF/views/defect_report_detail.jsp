@@ -126,7 +126,7 @@
             <div class="btn-group">
                 <button type="button" class="edit-btn" onclick="showPasswordModal('edit')">수정</button>
                 <button type="button" class="delete-btn" onclick="showPasswordModal('delete')">삭제</button>
-                <a href="/defect-report-list" class="back-btn">목록으로</a>
+                <a href="/report/history" class="back-btn">목록으로</a>
             </div>
         </c:if>
     </div>
@@ -144,13 +144,13 @@
     </div>
 
     <!-- 수정 폼 (숨김) -->
-    <form id="editForm" action="/defect-report-edit" method="get" style="display:none;">
+    <form id="editForm" action="/report/edit" method="get" style="display:none;">
         <input type="hidden" name="id" value="${report.id}">
         <input type="hidden" name="password" id="editPassword">
     </form>
 
     <!-- 삭제 폼 (숨김) -->
-    <form id="deleteForm" action="/defect-report-delete" method="post" style="display:none;">
+    <form id="deleteForm" action="/report/delete" method="post" style="display:none;">
         <input type="hidden" name="id" value="${report.id}">
         <input type="hidden" name="password" id="deletePassword">
     </form>
