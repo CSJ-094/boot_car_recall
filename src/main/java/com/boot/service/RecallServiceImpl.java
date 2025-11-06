@@ -45,8 +45,8 @@ public class RecallServiceImpl implements RecallService {
     // -------------------------------------------------------------------
     @Override
     public List<RecallDTO> getAllRecalls(Criteria cri) {
-        // Criteria를 통해 offset, amount, keyword를 DAO에 전달
-        return recallDAO.selectAll(cri.getOffset(), cri.getAmount(), cri.getKeyword());
+        // Criteria를 통해 pageNum, amount, keyword를 DAO에 전달
+        return recallDAO.selectAll(cri.getPageNum(), cri.getAmount(), cri.getKeyword());
     }
 
     // -------------------------------------------------------------------
