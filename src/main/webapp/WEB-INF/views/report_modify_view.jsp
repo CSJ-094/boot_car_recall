@@ -1,51 +1,121 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-		 pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
-	<title>리콜 보도자료 상세</title>
+	<title>리콜 보도자료 수정</title>
 
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
 	<script src="${pageContext.request.contextPath}/js/jquery.js"></script>
 
 	<style>
-		.container {
-			width: 80%;
-			margin: 40px auto;
+		body {
+			font-family: "Noto Sans KR", sans-serif;
+			margin: 0;
+			background-color: #f8f9fa;
 		}
 
-		.post-card {
+		.container {
+			width: 70%;
+			margin: 50px auto;
 			background: #fff;
 			border-radius: 10px;
-			box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-			padding: 20px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+			padding: 40px 50px;
+		}
+
+		h2 {
+			text-align: center;
+			margin-bottom: 30px;
+			font-size: 26px;
+		}
+
+		hr {
+			border: none;
+			border-top: 1px solid #ddd;
+			margin: 20px 0;
+		}
+
+		.form-group {
 			margin-bottom: 20px;
 		}
 
-		.post-title {
-			font-size: 24px;
+		label {
+			display: block;
 			font-weight: 600;
-			margin-bottom: 15px;
+			margin-bottom: 8px;
+			color: #333;
 		}
 
-		.post-content {
-			margin-bottom: 15px;
-			font-size: 16px;
-			line-height: 1.5;
+		input[type="text"],
+		textarea {
+			width: 100%;
+			padding: 10px 12px;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			font-size: 15px;
+			box-sizing: border-box;
+		}
+
+		textarea {
+			resize: none;
+			height: 200px;
+			line-height: 1.6;
+		}
+
+		.btn-area {
+			text-align: center;
+			margin-top: 30px;
+		}
+
+		.btn-primary {
+			background-color: #007bff;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-size: 15px;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+		}
+
+		.btn-primary:hover {
+			background-color: #0056b3;
+		}
+
+		.btn-secondary {
+			display: inline-block;
+			background-color: #6c757d;
+			color: white;
+			text-decoration: none;
+			padding: 10px 20px;
+			font-size: 15px;
+			border-radius: 6px;
+			margin-left: 10px;
+			transition: background-color 0.2s ease;
+		}
+
+		.btn-secondary:hover {
+			background-color: #565e64;
 		}
 
 		.post-info {
 			font-size: 14px;
-			color: #888;
+			color: #666;
+			margin-bottom: 15px;
 		}
 	</style>
 </head>
 
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp" />
+<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
+
 <div class="container">
-	<h2>게시글 수정</h2>
+	<h2>리콜 보도자료 수정</h2>
+	<hr>
+
 	<form method="post" action="report_modify">
 		<input type="hidden" name="boardNo" value="${content_view.boardNo}">
 		<input type="hidden" name="pageNum" value="${pageNum}">
@@ -53,22 +123,28 @@
 
 		<div class="form-group">
 			<label>작성자</label>
-			<input type="text" name="boardName" value="${content_view.boardName}" class="form-control">
+			<input type="text" name="boardName" value="${content_view.boardName}" readonly>
 		</div>
+
+		<hr>
 
 		<div class="form-group">
 			<label>제목</label>
-			<input type="text" name="boardTitle" value="${content_view.boardTitle}" class="form-control">
+			<input type="text" name="boardTitle" value="${content_view.boardTitle}">
 		</div>
+
+		<hr>
 
 		<div class="form-group">
 			<label>내용</label>
-			<textarea name="boardContent" class="form-control" rows="6">${content_view.boardContent}</textarea>
+			<textarea name="boardContent">${content_view.boardContent}</textarea>
 		</div>
 
-		<div style="margin-top:10px;">
-			<input type="submit" value="수정완료" class="btn btn-primary">
-			<a href="report_content_view?boardNo=${content_view.boardNo}&pageNum=${pageNum}&amount=${amount}" class="btn btn-secondary">취소</a>
+		<hr>
+
+		<div class="btn-area">
+			<input type="submit" value="수정완료" class="btn-primary">
+			<a href="report_content_view?boardNo=${content_view.boardNo}&pageNum=${pageNum}&amount=${amount}" class="btn-secondary">취소</a>
 		</div>
 	</form>
 </div>
