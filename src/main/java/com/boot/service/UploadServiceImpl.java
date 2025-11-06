@@ -99,6 +99,18 @@ public class UploadServiceImpl implements UploadService{
 		
 		return str;
 	}
+
+	@Override
+	public BoardAttachDTO findByUuid(String uuid) {
+		UploadDAO dao = sqlSession.getMapper(UploadDAO.class);
+		return dao.findByUuid(uuid);
+	}
+
+	@Override
+	public void deleteFileDB(String uuid) {
+		UploadDAO dao = sqlSession.getMapper(UploadDAO.class);
+		dao.deleteFileDB(uuid);
+	}
 	
 }
 

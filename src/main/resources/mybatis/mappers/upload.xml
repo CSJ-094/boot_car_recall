@@ -42,4 +42,13 @@
 		DELETE FROM BOARD_ATTACH WHERE BOARDNO = #{boardNo}
 	</delete>
 
+	<select id="findByUuid" parameterType="string" resultType="com.boot.dto.BoardAttachDTO">
+		SELECT * FROM BOARD_ATTACH WHERE UUID = #{uuid}
+	</select>
+
+	<delete id="deleteFileDB" parameterType="string">
+		DELETE FROM BOARD_ATTACH WHERE UUID = #{uuid}
+	</delete>
+
+
 </mapper>

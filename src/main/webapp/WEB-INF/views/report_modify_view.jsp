@@ -129,6 +129,20 @@
 		<hr>
 
 		<div class="form-group">
+			<label>첨부된 파일</label>
+			<div class="uploadResult">
+				<ul></ul>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label>새 파일 업로드</label>
+			<input type="file" name="uploadFile" id="uploadFile" multiple>
+		</div>
+
+		<hr>
+
+		<div class="form-group">
 			<label>제목</label>
 			<input type="text" name="boardTitle" value="${content_view.boardTitle}">
 		</div>
@@ -150,7 +164,71 @@
 </div>
 </body>
 </html>
+<script>
+	$(document).ready(function() {
+		const boardNo = "${content_view.boardNo}";
 
+		$.getJSON("/getFileList", { boardNo: boardNo }, function(arr) {
+			let str = "";
+			$(arr).each(function(i, obj) {
+				const path = obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName;
+				str += "<li data-uuid='" + obj.uuid + "'>";
+				str += "<span>" + obj.fileName + "</span>";
+				if (obj.image) {
+					str += "<img src='/display?fileName=" + path + "' width='60'>";
+				} else {
+					str += "<img src='${pageContext.request.contextPath}/img/attach.png' width='20'>";
+				}
+				str += " <button type='button' class='delete-old' data-uuid='" + obj.uuid + "'>삭제</button>";
+				str += "</li>";
+			});
+			$(".uploadResult ul").html(str);
+		});
+
+		$(".uploadResult").on("click", ".delete-old", function() {
+			const uuid = $(this).data("uuid");
+			if (confirm("이 파일을 삭제하시겠습니까?")) {
+				$.ajax({
+					type: "post",
+					url: "/deleteFile",
+					data: { uuid: uuid },
+					success: function() {
+						alert("파일 삭제 완료");
+						location.reload();
+					},
+					error: function() {
+						alert("파일 삭제 실패");
+					}
+				});
+			}
+		});
+
+		// ✅ 새 파일 업로드 Ajax
+		$("input[type='file']").change(function(e) {
+			const uploadUL = $(".uploadResult ul");
+			const formData = new FormData();
+			const files = this.files;
+			for (let i = 0; i < files.length; i++) {
+				formData.append("uploadFile", files[i]);
+			}
+
+			$.ajax({
+				type: "post",
+				url: "/uploadFolder",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function() {
+					alert("파일 업로드 완료");
+					location.reload();
+				},
+				error: function() {
+					alert("업로드 실패");
+				}
+			});
+		});
+	});
+</script>
 
 
 

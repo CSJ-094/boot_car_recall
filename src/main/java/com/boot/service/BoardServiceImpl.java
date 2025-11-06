@@ -2,7 +2,10 @@ package com.boot.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import com.boot.dao.UploadDAO;
+import com.boot.dto.BoardAttachDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private SqlSession sqlSession;
+    @Autowired
+    private UploadService uploadService;
 
     // -------------------------------------------------------------------
     // 1. 목록 조회 메서드 (첫 번째 구현체에만 있었음)
@@ -76,7 +81,21 @@ public class BoardServiceImpl implements BoardService {
     // -------------------------------------------------------------------
     @Override
     public void delete(HashMap<String, String> param) {
+
+
         BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
+        UploadDAO uploadDao = sqlSession.getMapper(UploadDAO.class);
+        int boardNo = Integer.parseInt(param.get("boardNo"));
+        List<BoardAttachDTO> filePath = uploadDao.getFileList(boardNo);
+        uploadService.deleteFile(filePath);
+
+        uploadDao.deleteFile(boardNo);
         dao.delete(param);
+    }
+
+    @Override
+    public void hitUp(int boardNo) {
+        BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
+        dao.hitUp(boardNo);
     }
 }
