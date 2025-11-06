@@ -44,6 +44,8 @@ public class BoardController {
                                @RequestParam("amount") int amount,
                                Model model) {
         log.info("@# report_content_view()");
+
+        service.hitUp(boardNo);
         BoardDTO dto = service.contentView(boardNo);
         model.addAttribute("content_view", dto);
         model.addAttribute("pageNum", pageNum);

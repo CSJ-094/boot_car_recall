@@ -5,6 +5,7 @@
 
 <mapper namespace="com.boot.dao.BoardDAO">
 
+
     <insert id="write" parameterType="hashmap">
         INSERT INTO RECALL_BOARD (
         BOARD_NO,
@@ -29,7 +30,7 @@
         <result property="boardContent" column="BOARD_CONTENT"/>
         <result property="boardName" column="BOARD_NAME"/>
         <result property="boardDate" column="BOARD_DATE"/>
-        <result property="hit" column="HIT"/>
+        <result property="hit" column="BOARD_HIT"/>
     </resultMap>
 
     <select id="list" resultMap="boardResultMap">

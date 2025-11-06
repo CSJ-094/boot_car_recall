@@ -232,6 +232,21 @@ public class UploadController {
 //		윈도우 다운로드시 필요한 정보(리소스, 헤더, 상태OK)
 		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
 	}
+	@PostMapping("/deleteFile")
+	public ResponseEntity<String> deleteFile(String uuid) {
+		log.info("@# deleteFile() uuid => " + uuid);
+
+
+		BoardAttachDTO attach = service.findByUuid(uuid);
+		List<BoardAttachDTO> list = new ArrayList<>();
+		list.add(attach);
+
+
+		service.deleteFile(list);
+		service.deleteFileDB(uuid);
+
+		return new ResponseEntity<>("success", HttpStatus.OK);
+	}
 }
 
 

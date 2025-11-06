@@ -1,5 +1,11 @@
 package com.boot.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import com.boot.dao.UploadDAO;
+import com.boot.dto.BoardAttachDTO;
 import com.boot.dao.BoardDAO;
 import com.boot.dto.BoardDTO;
 import com.boot.dto.Criteria;
@@ -15,6 +21,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private SqlSession sqlSession;
+    @Autowired
+    private UploadService uploadService;
 
     @Override
     public ArrayList<BoardDTO> list() {
@@ -67,8 +75,21 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void delete(HashMap<String, String> param) {
+
+
         BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
+        UploadDAO uploadDao = sqlSession.getMapper(UploadDAO.class);
         int boardNo = Integer.parseInt(param.get("boardNo"));
-        dao.delete(boardNo);
+        List<BoardAttachDTO> filePath = uploadDao.getFileList(boardNo);
+        uploadService.deleteFile(filePath);
+
+        uploadDao.deleteFile(boardNo);
+        dao.delete(param);
+    }
+
+    @Override
+    public void hitUp(int boardNo) {
+        BoardDAO dao = sqlSession.getMapper(BoardDAO.class);
+        dao.hitUp(boardNo);
     }
 }

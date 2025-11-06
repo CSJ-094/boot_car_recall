@@ -5,6 +5,7 @@ import com.boot.dto.Criteria;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.apache.ibatis.annotations.Param;
 
 public interface BoardService {
     // 기존 목록 조회 (사용자용)
@@ -21,4 +22,6 @@ public interface BoardService {
     public BoardDTO contentView(int boardNo);
     public void modify(HashMap<String, String> param);
     public void delete(HashMap<String, String> param);
+
+    public void hitUp(@Param("boardNo") int boardNo);
 }
