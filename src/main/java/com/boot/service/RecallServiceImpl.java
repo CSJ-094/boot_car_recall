@@ -45,8 +45,8 @@ public class RecallServiceImpl implements RecallService {
     // -------------------------------------------------------------------
     @Override
     public List<RecallDTO> getAllRecalls(Criteria cri) {
-        // Criteria를 통해 pageNum, amount, keyword를 DAO에 전달
-        return recallDAO.selectAll(cri.getPageNum(), cri.getAmount(), cri.getKeyword());
+        // Criteria 객체를 DAO에 직접 전달
+        return recallDAO.selectAll(cri);
     }
 
     // -------------------------------------------------------------------
@@ -54,8 +54,8 @@ public class RecallServiceImpl implements RecallService {
     // -------------------------------------------------------------------
     @Override
     public int getRecallCount(Criteria cri) {
-        // Criteria에서 keyword를 추출하여 DAO에 전달
-        return recallDAO.count(cri.getKeyword());
+        // Criteria 객체를 DAO에 직접 전달
+        return recallDAO.count(cri);
     }
 
     // -------------------------------------------------------------------
@@ -71,6 +71,7 @@ public class RecallServiceImpl implements RecallService {
     // -------------------------------------------------------------------
     @Override
     public int countAllRecalls() {
-        return recallDAO.count(null);
+        // 빈 Criteria 객체를 전달
+        return recallDAO.count(new Criteria());
     }
 }
