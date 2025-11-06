@@ -135,7 +135,7 @@
                 <div class="icon-badge" aria-hidden="true">🛡️</div>
                 <h4>안전 보장</h4>
                 <p>정부 인증 시스템을 통해 무료 수리를 제공합니다.</p>
-                <a class="more" href="/centers/faq">FAQ 보기</a>
+                <a class="more" href="/faq/list">FAQ 보기</a>
             </article>
         </div>
     </div>
@@ -165,7 +165,7 @@
                 </div>
             </a>
 
-            <a class="hub-card" href="/info/status">
+            <a class="hub-card" href="/recall-status">
                     <span class="hub-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m16 14H4m3-4v4m5-8v8m5-6v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                     </span>

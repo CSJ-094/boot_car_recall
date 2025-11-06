@@ -28,10 +28,9 @@
 
                 <!-- 리콜정보 -->
                 <li class="menu-item has-sub">
-                    <a href="/info/status" class="menu-link">리콜정보</a>
+                    <a href="/recall-status" class="menu-link">리콜정보</a>
                     <ul class="submenu">
-                        <li><a href="/info/status">리콜현황</a></li>
-                        <li><a href="/report_recallInfo">리콜 보도자료</a></li>
+                        <li><a href="/recall-status">리콜현황</a></li>
                     </ul>
                 </li>
 

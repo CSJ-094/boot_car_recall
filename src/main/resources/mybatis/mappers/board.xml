@@ -19,7 +19,7 @@
         #{boardContent},
         #{boardName},
         SYSDATE,
-        DEFAULT
+        0
         )
     </insert>
 

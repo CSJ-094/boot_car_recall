@@ -74,7 +74,7 @@
 
     <div class="container">
         <div class="search-container">
-            <form action="/defect-report-list" method="get">
+            <form action="/report/history" method="get">
                 <input type="text" id="searchInput" name="keyword" placeholder="신고인, 차량 모델, VIN으로 검색..." value="${pageMaker.cri.keyword}">
                 <button type="submit">검색</button>
             </form>
@@ -101,7 +101,7 @@
                         <td>${report.vin}</td>
                         <td>${report.defectDetails}</td>
                         <td><fmt:formatDate value="${report.reportDate}" pattern="yyyy-MM-dd HH:mm"/></td>
-                        <td class="col-action"><a href="/defect-report-detail?id=${report.id}" class="detail-btn">상세보기</a></td>
+                        <td class="col-action"><a href="/report/detail?id=${report.id}" class="detail-btn">상세보기</a></td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -110,7 +110,7 @@
         <!-- Pagination -->
         <div class="pagination">
             <c:if test="${pageMaker.prev}">
-                <a href="/defect-report-list?pageNum=${pageMaker.startPage - 1}&keyword=${pageMaker.cri.keyword}">&laquo;</a>
+                <a href="/report/history?pageNum=${pageMaker.startPage - 1}&keyword=${pageMaker.cri.keyword}">&laquo;</a>
             </c:if>
 
             <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
@@ -119,13 +119,13 @@
                         <strong>${num}</strong>
                     </c:when>
                     <c:otherwise>
-                        <a href="/defect-report-list?pageNum=${num}&keyword=${pageMaker.cri.keyword}">${num}</a>
+                        <a href="/report/history?pageNum=${num}&keyword=${pageMaker.cri.keyword}">${num}</a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
 
             <c:if test="${pageMaker.next}">
-                <a href="/defect-report-list?pageNum=${pageMaker.endPage + 1}&keyword=${pageMaker.cri.keyword}">&raquo;</a>
+                <a href="/report/history?pageNum=${pageMaker.endPage + 1}&keyword=${pageMaker.cri.keyword}">&raquo;</a>
             </c:if>
         </div>
     </div>
