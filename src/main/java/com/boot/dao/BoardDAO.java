@@ -32,5 +32,5 @@ public interface BoardDAO {
     public void modify(HashMap<String, String> param);
 
     // 게시글 삭제
-    public void delete(@Param("boardNo") int boardNo);
+    public void delete(HashMap<String, String> param);
 }

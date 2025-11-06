@@ -145,13 +145,10 @@
                     ${dto.boardContent}
             </div>
             <div class="post-info">
-                    ${dto.boardName} | ${dto.boardDate} | 조회수 ${dto.boardHit}
+                    ${dto.boardName} | ${dto.boardDate} | 조회수 ${dto.hit}
             </div>
         </div>
     </c:forEach>
-
-    <a href="write_view" class="write-btn">글쓰기</a>
-
     <!-- 페이징 -->
     <ul class="pagination">
         <c:if test="${pageMaker.prev}">
@@ -197,7 +194,7 @@
         console.log("@# href=>" + $(this).attr("href"));
 
         actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-        actionForm.attr("action", "report_recallInfo").submit();
+        actionForm.attr("action", "/board/report_recallInfo").submit();
     }); //end of paginate_button click
 
     //게시글 처리
@@ -218,7 +215,7 @@
         actionForm.append("<input type='hidden' name='boardNo' value='" + targetBno + "'>");
         //컨트롤러에 content_view 로 찾아감
         //버그 처리(게시글 클릭 후 뒤로가기 누른 후 다른페이지 클릭할 때 content_view로 가는걸 해결
-        actionForm.attr("action", "report_content_view").submit();
+        actionForm.attr("action", "/board/report_content_view").submit();
 
     }); //end of paginate_button click
 </script>
