@@ -28,25 +28,29 @@
         SELECT * FROM DUAL
     </insert>
 
+    <resultMap id="recallResultMap" type="com.boot.dto.RecallDTO">
+        <result property="id" column="ID"/>
+        <result property="maker" column="MAKER"/>
+        <result property="modelName" column="MODEL_NAME"/>
+        <result property="makeStart" column="MAKE_START"/>
+        <result property="makeEnd" column="MAKE_END"/>
+        <result property="recallDate" column="RECALL_DATE"/>
+        <result property="recallReason" column="RECALL_REASON"/>
+    </resultMap>
 
-    <select id="selectAll" resultType="com.boot.dto.RecallDTO">
-        SELECT ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
-        FROM (
-            SELECT ROWNUM AS rn, ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
-            FROM (
-                SELECT ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
-                FROM RECALL
-                <where>
-                    <if test="keyword != null and keyword != ''">
-                        UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
-                        OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
-                    </if>
-                </where>
-                ORDER BY ID DESC
-            )
-            WHERE ROWNUM &lt;= #{pageNum} * #{amount}
-        )
-        WHERE rn > (#{pageNum} - 1) * #{amount}
+
+    <select id="selectAll" resultMap="recallResultMap">
+        SELECT
+        ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+        FROM RECALL
+        <where>
+            <if test="keyword != null and keyword != ''">
+                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+            </if>
+        </where>
+        ORDER BY ID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
     </select>
 
     <select id="count" resultType="int">
@@ -59,7 +63,7 @@
         </where>
     </select>
 
-    <select id="searchByModelName" parameterType="string" resultType="com.boot.dto.RecallDTO">
+    <select id="searchByModelName" parameterType="string" resultMap="recallResultMap">
         SELECT
         ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
         FROM RECALL

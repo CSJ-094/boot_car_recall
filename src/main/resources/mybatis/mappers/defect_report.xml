@@ -22,26 +22,31 @@
         )
     </insert>
 
-    <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 (Oracle 11g 호환) -->
-    <select id="selectAll" resultType="com.boot.dto.DefectReportDTO">
-        SELECT ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
-        FROM (
-            SELECT ROWNUM AS rn, ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
-            FROM (
-                SELECT ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
-                FROM DEFECT_REPORT
-                <where>
-                    <if test="keyword != null and keyword != ''">
-                        UPPER(REPORTER_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
-                        OR UPPER(CAR_MODEL) LIKE '%' || UPPER(#{keyword}) || '%'
-                        OR UPPER(VIN) LIKE '%' || UPPER(#{keyword}) || '%'
-                    </if>
-                </where>
-                ORDER BY ID DESC
-            )
-            WHERE ROWNUM &lt;= #{pageNum} * #{amount}
-        )
-        WHERE rn > (#{pageNum} - 1) * #{amount}
+    <resultMap id="defectReportResultMap" type="com.boot.dto.DefectReportDTO">
+        <result property="id" column="ID"/>
+        <result property="reporterName" column="REPORTER_NAME"/>
+        <result property="contact" column="CONTACT"/>
+        <result property="carModel" column="CAR_MODEL"/>
+        <result property="vin" column="VIN"/>
+        <result property="defectDetails" column="DEFECT_DETAILS"/>
+        <result property="reportDate" column="REPORT_DATE"/>
+        <result property="password" column="PASSWORD"/>
+    </resultMap>
+
+    <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->
+    <select id="selectAll" resultMap="defectReportResultMap">
+        SELECT
+            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
+        FROM DEFECT_REPORT
+        <where>
+            <if test="keyword != null and keyword != ''">
+                UPPER(REPORTER_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(CAR_MODEL) LIKE '%' || UPPER(#{keyword}) || '%'
+                OR UPPER(VIN) LIKE '%' || UPPER(#{keyword}) || '%'
+            </if>
+        </where>
+        ORDER BY ID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
     </select>
 
     <!-- 검색 조건에 따른 전체 데이터 수 조회 쿼리 수정 -->
@@ -57,7 +62,7 @@
     </select>
 
     <!-- ID로 단일 결함 신고 조회 -->
-    <select id="selectById" parameterType="long" resultType="com.boot.dto.DefectReportDTO">
+    <select id="selectById" parameterType="long" resultMap="defectReportResultMap">
         SELECT
             ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         FROM DEFECT_REPORT

@@ -17,7 +17,13 @@
         )
     </insert>
 
-    <select id="selectImagesByReportId" parameterType="long" resultType="com.boot.dto.DefectImageDTO">
+    <resultMap id="defectImageResultMap" type="com.boot.dto.DefectImageDTO">
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="reportId" column="REPORT_ID"/>
+        <result property="fileName" column="FILE_NAME"/>
+    </resultMap>
+
+    <select id="selectImagesByReportId" parameterType="long" resultMap="defectImageResultMap">
         SELECT
             IMAGE_ID, REPORT_ID, FILE_NAME
         FROM DEFECT_REPORT_IMAGES
