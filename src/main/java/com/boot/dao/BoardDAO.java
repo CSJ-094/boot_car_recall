@@ -2,6 +2,7 @@ package com.boot.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.boot.dto.Criteria;
 
 import com.boot.dto.BoardDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -11,6 +12,12 @@ import org.apache.ibatis.annotations.Param;
 public interface BoardDAO {
     // 게시글 목록 조회
     public ArrayList<BoardDTO> list();
+
+    // 페이징 처리된 목록 조회 (관리자용)
+    public ArrayList<BoardDTO> listWithPaging(Criteria cri);
+
+    // 전체 게시글 수 조회 (페이징용)
+    public int getTotalCount(Criteria cri);
 
     // 게시글 작성 (인자는 HashMap으로 유지)
     public void write(HashMap<String, String> param);

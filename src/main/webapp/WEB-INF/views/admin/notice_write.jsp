@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body { background-color: #f8f9fa; }
-        .container { max-width: 800px; margin-top: 50px; }
+        .container-main { max-width: 800px; margin: 50px auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
-<div class="container">
-    <h3>공지사항 작성</h3>
+<div class="container-main">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>공지사항 작성</h3>
+    </div>
     <hr>
     <form action="${pageContext.request.contextPath}/admin/notice/write" method="post">
         <div class="form-group">
@@ -22,6 +24,10 @@
         <div class="form-group">
             <label for="content">내용</label>
             <textarea class="form-control" id="content" name="content" rows="15" required></textarea>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="is_urgent" name="is_urgent" value="Y">
+            <label class="form-check-label" for="is_urgent">긴급 공지로 등록</label>
         </div>
         <div class="text-right">
             <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-secondary">취소</a>

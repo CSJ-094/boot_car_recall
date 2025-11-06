@@ -161,14 +161,11 @@
 
 
     <div class="actions">
-        <a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로</a>
-        <a href="report_modify_view?boardNo=${content_view.boardNo}&pageNum=${pageNum}&amount=${amount}">수정</a>
-        <a href="#" id="deleteBtn">삭제</a>
+		<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로</a>		
     </div>
 
     <%--    BoardController에 report_delete 메소드 호출용--%>
-    <form action="report_delete" method="post" id="deleteForm">
-        <input type="hidden" name="pageNum" value="${pageNum}">
+	<form method="get" id="actionForm">		<input type="hidden" name="pageNum" value="${pageNum}">
         <input type="hidden" name="amount" value="${amount}">
         <input type="hidden" name="boardNo" value="${content_view.boardNo}">
     </form>
@@ -231,14 +228,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-

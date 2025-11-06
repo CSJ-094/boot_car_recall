@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +18,6 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
-            text-align: center;
         }
         .chart-container {
             margin-top: 40px;
@@ -35,20 +33,23 @@
 <body>
 <div class="container">
     <div class="admin-container">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>관리자 페이지</h2>
             <a href="${pageContext.request.contextPath}/admin/logout" class="btn btn-secondary">로그아웃</a>
         </div>
-        <hr>
-        <p class="lead">관리자님, 환영합니다!</p>
 
-        <div class="my-4">
-            <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-info">공지사항 관리</a>
-            <a href="${pageContext.request.contextPath}/admin/faq/list" class="btn btn-info">FAQ 관리</a>
+        <div class="text-center p-4 mb-4 bg-light rounded">
+            <p class="lead mb-3">관리자님, 환영합니다! 원하시는 관리 메뉴를 선택하세요.</p>
+            <div>
+                <a href="#" class="btn btn-primary mx-2">신고 목록 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-info mx-2">공지사항 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/press/list" class="btn btn-info mx-2">보도자료 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/faq/list" class="btn btn-info mx-2">FAQ 관리</a>
+            </div>
         </div>
 
 
-        <div class="chart-container">
+        <div class="chart-container text-center">
             <h4>최근 7일간 결함 신고 건수</h4>
             <canvas id="dailyReportChart"></canvas>
         </div>
@@ -56,7 +57,7 @@
         <div class="table-container">
             <h4>최근 7일간 신고 목록</h4>
             <table class="table table-hover text-left">
-                <thead class="thead-light">
+                <thead class="thead-light text-center">
                 <tr>
                     <th>#</th>
                     <th>차량 모델</th>
@@ -70,7 +71,7 @@
                     <tr onclick="location.href='${pageContext.request.contextPath}/admin/report/${report.report_id}'">
                         <td>${report.report_id}</td>
                         <td>${report.car_model}</td>
-                        <td>${report.reporter_name}</td>
+                        <td class="text-center">${report.reporter_name}</td>
                         <td><span class="badge ${report.reviewed ? 'badge-success' : 'badge-warning'}">${report.reviewed ? '완료' : '대기'}</span></td>
                         <td>${report.reported_at}</td>
                     </tr>

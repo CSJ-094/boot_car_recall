@@ -17,4 +17,5 @@ public class BoardDTO {
 	private Timestamp boardDate;
 	private String boardDate2;
 	private int boardHit;
+	private int hit;
 }

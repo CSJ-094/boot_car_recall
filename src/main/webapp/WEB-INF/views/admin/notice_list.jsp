@@ -34,7 +34,7 @@
         </thead>
         <tbody>
         <c:forEach var="item" items="${list}">
-            <tr onclick="location.href='${pageContext.request.contextPath}/admin/notice/${item.notice_id}'">
+            <tr onclick="location.href='${pageContext.request.contextPath}/admin/notice/detail?notice_id=${item.notice_id}&pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}'" style="cursor: pointer;">
                 <td>${item.notice_id}</td>
                 <td class="text-left">
                     <c:if test="${item.is_urgent == 'Y'}"><span class="badge badge-danger mr-2">긴급</span></c:if>
