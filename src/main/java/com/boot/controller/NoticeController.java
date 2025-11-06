@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping
+@RequestMapping("/notice")
 @RequiredArgsConstructor
 @Slf4j
 public class NoticeController {
@@ -37,8 +37,8 @@ public class NoticeController {
         model.addAttribute("list", list);
         model.addAttribute("pageMaker", new PageDTO(cri, total));
 
-        // **[View 지정]**: /WEB-INF/views/notice/notice_list.jsp 로 연결
- return "notice/notice_list_user";
+        // **[View 지정]**: /WEB-INF/views/notice_list_user.jsp 로 연결
+        return "notice_list_user";
     }
 
     // 2. 공지사항 상세 페이지
@@ -52,7 +52,7 @@ public class NoticeController {
         
         model.addAttribute("notice", notice);
         
-        // **[View 지정]**: /WEB-INF/views/notice/notice_detail.jsp 로 연결
- return "notice/notice_detail_user";
+        // **[View 지정]**: /WEB-INF/views/notice_detail_user.jsp 로 연결
+        return "notice_detail_user";
     }
 }
