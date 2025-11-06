@@ -136,7 +136,7 @@
             </div>
         </div>
     </c:forEach>
-
+<%----%>
     <a href="write_view" class="write-btn">글쓰기</a>
 
     <!-- 페이징 -->
