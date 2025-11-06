@@ -67,23 +67,12 @@ public class ComplainServiceImpl implements ComplainService{
 		
 	}
 
+	@Override
+	public void addAnswer(HashMap<String, String> param) {
+		ComplainDAO dao = sqlSession.getMapper(ComplainDAO.class);
+		dao.updateAnswer(param);
+	}
+
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -156,7 +156,7 @@
 		            <th>답변내용</th>
 		            <td>
 		                <div class="answer-box">
-		                    <!--${content_view.answer}-->
+		                    ${content_view.answer}
 		                </div>
 		            </td>
 		        </tr>

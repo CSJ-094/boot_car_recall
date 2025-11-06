@@ -19,11 +19,15 @@
     </resultMap>
 
     <select id="complain_list" resultMap="Map">
-        select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain
+        select REPORT_ID, REPORTER_NAME, PASSWORD, PHONE, TITLE, COMPLAIN_TYPE, CARNUM, IS_PUBLIC, CONTENT, ANSWER, TO_CHAR(COMPLAINDATE, 'YYYY-MM-DD HH24:MI') AS COMPLAINDATE
+        from ONLINE_COMPLAIN
+        order by REPORT_ID desc
     </select>
    
-    <select id="find_modify_content" resultMap="Map">
-        select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain where report_id=#{report_id}
+    <select id="find_modify_content" parameterType="hashmap" resultMap="Map">
+        select REPORT_ID, REPORTER_NAME, PASSWORD, PHONE, TITLE, COMPLAIN_TYPE, CARNUM, IS_PUBLIC, CONTENT, ANSWER, TO_CHAR(COMPLAINDATE, 'YYYY-MM-DD HH24:MI') AS COMPLAINDATE
+        from ONLINE_COMPLAIN
+        where REPORT_ID = #{report_id}
     </select>
     
      <insert id="complain_write">
@@ -32,8 +36,10 @@
     	#{complain_type, jdbcType=VARCHAR}, #{carNum, jdbcType=VARCHAR}, #{is_public, jdbcType=VARCHAR}, #{content, jdbcType=VARCHAR})
     </insert>
     
-      <select id="contentView" resultMap="Map">
-    	select report_id, reporter_name, title, content, COMPLAIN_TYPE, TO_CHAR(complainDate, 'YYYY-MM-DD HH24:MI') AS complainDate from online_complain where report_id=#{report_id}
+      <select id="contentView" parameterType="hashmap" resultMap="Map">
+    	select REPORT_ID, REPORTER_NAME, PASSWORD, PHONE, TITLE, COMPLAIN_TYPE, CARNUM, IS_PUBLIC, CONTENT, ANSWER, TO_CHAR(COMPLAINDATE, 'YYYY-MM-DD HH24:MI') AS COMPLAINDATE
+        from ONLINE_COMPLAIN
+        where REPORT_ID = #{report_id}
     </select>
     
     <update id="complain_modify">
@@ -44,5 +50,11 @@
     <delete id="complain_delete">
     	delete from online_complain where report_id=#{report_id}
     </delete>
+
+    <update id="updateAnswer" parameterType="hashmap">
+        UPDATE ONLINE_COMPLAIN
+        SET ANSWER = #{answer}
+        WHERE REPORT_ID = #{report_id}
+    </update>
 
 </mapper>

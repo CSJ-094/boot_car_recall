@@ -9,8 +9,10 @@
 <main class="fq">
   <section class="fq-wrap">
     <header class="fq-head">
-      <h1 class="fq-title">자주 묻는 질문 (FAQ)</h1>
-      <p class="fq-desc">자주 받는 질문을 모았습니다. 질문을 클릭하면 답변이 펼쳐집니다.</p>
+      <div class="fq-head-text">
+        <h1 class="fq-title">자주 묻는 질문 (FAQ)</h1>
+        <p class="fq-desc">자주 받는 질문을 모았습니다. 질문을 클릭하면 답변이 펼쳐집니다.</p>
+      </div>
     </header>
 
     <!-- 아코디언 목록 -->
@@ -36,23 +38,30 @@
       </c:forEach>
     </div>
 
-    <!-- 페이지네이션 (공지와 동일 스타일) -->
-    <nav class="fq-paging" aria-label="FAQ 페이지 이동">
-      <ul>
-        <c:if test="${pageMaker.prev}">
-          <li><a class="fq-page" href="${ctx}/faq/list?pageNum=${pageMaker.startPage - 1}">이전</a></li>
-        </c:if>
-        <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-          <li>
-            <a class="fq-page ${pageMaker.cri.pageNum == num ? 'is-active' : ''}"
-               href="${ctx}/faq/list?pageNum=${num}">${num}</a>
-          </li>
-        </c:forEach>
-        <c:if test="${pageMaker.next}">
-          <li><a class="fq-page" href="${ctx}/faq/list?pageNum=${pageMaker.endPage + 1}">다음</a></li>
-        </c:if>
-      </ul>
-    </nav>
+    <!-- 하단 영역: 페이지네이션 및 문의하기 버튼 -->
+    <div class="fq-footer">
+      <!-- 페이지네이션 -->
+      <nav class="fq-paging" aria-label="FAQ 페이지 이동">
+        <ul>
+          <c:if test="${pageMaker.prev}">
+            <li><a class="fq-page" href="${ctx}/faq/list?pageNum=${pageMaker.startPage - 1}">이전</a></li>
+          </c:if>
+          <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+            <li>
+              <a class="fq-page ${pageMaker.cri.pageNum == num ? 'is-active' : ''}"
+                 href="${ctx}/faq/list?pageNum=${num}">${num}</a>
+            </li>
+          </c:forEach>
+          <c:if test="${pageMaker.next}">
+            <li><a class="fq-page" href="${ctx}/faq/list?pageNum=${pageMaker.endPage + 1}">다음</a></li>
+          </c:if>
+        </ul>
+      </nav>
+      <!-- 문의하기 버튼 -->
+      <div class="fq-footer-action">
+        <a href="${ctx}/complain_list" class="fq-btn">문의하기</a>
+      </div>
+    </div>
   </section>
 </main>
 

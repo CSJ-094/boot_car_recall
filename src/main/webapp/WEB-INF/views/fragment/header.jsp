@@ -47,11 +47,7 @@
 
                 <!-- 관리자 -->
                 <li class="menu-item has-sub">
-                    <a href="/admin" class="menu-link">관리자</a>
-                    <ul class="submenu">
-                        <li><a href="/admin/notice/list">공지사항 관리</a></li>
-                        <li><a href="/admin/review">결함신고 검수</a></li>
-                    </ul>
+                    <a href="/admin/login" class="menu-link">관리자</a>
                 </li>
             </ul>
         </nav>

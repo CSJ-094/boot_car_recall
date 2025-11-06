@@ -45,6 +45,7 @@
                 <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-info mx-2">공지사항 관리</a>
                 <a href="${pageContext.request.contextPath}/admin/press/list" class="btn btn-info mx-2">보도자료 관리</a>
                 <a href="${pageContext.request.contextPath}/admin/faq/list" class="btn btn-info mx-2">FAQ 관리</a>
+                <a href="${pageContext.request.contextPath}/admin/complain/list" class="btn btn-info mx-2">고객 문의 관리</a>
             </div>
         </div>
 
