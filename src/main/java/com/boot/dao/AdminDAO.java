@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface AdminDAO {
-    AdminDTO login(@Param("admin_id") String admin_id); // This line is already correct based on the instruction.
+    AdminDTO login(@Param("admin_id") String admin_id);
 }

@@ -23,20 +23,24 @@
         )
     </insert>
 
-    <select id="list" resultType="com.boot.dto.BoardDTO">
-        SELECT *
+    <resultMap id="boardResultMap" type="com.boot.dto.BoardDTO">
+        <result property="boardNo" column="BOARD_NO"/>
+        <result property="boardTitle" column="BOARD_TITLE"/>
+        <result property="boardContent" column="BOARD_CONTENT"/>
+        <result property="boardName" column="BOARD_NAME"/>
+        <result property="boardDate" column="BOARD_DATE"/>
+        <result property="hit" column="HIT"/>
+    </resultMap>
+
+    <select id="list" resultMap="boardResultMap">
+        SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_NAME, BOARD_DATE, HIT
         FROM RECALL_BOARD
         ORDER BY BOARD_NO DESC
     </select>
 
-    <select id="contentView" parameterType="int" resultType="com.boot.dto.BoardDTO">
+    <select id="contentView" parameterType="int" resultMap="boardResultMap">
         SELECT
-        BOARD_NO AS boardNo,
-        BOARD_TITLE AS boardTitle,
-        BOARD_CONTENT AS boardContent,
-        BOARD_NAME AS boardName,
-        BOARD_DATE AS boardDate,
-        HIT AS boardHit
+            BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_NAME, BOARD_DATE, HIT
         FROM RECALL_BOARD
         WHERE BOARD_NO = #{boardNo}
     </select>

@@ -23,13 +23,16 @@
 		)
 	</insert>
 
-	<!-- 첨부파일 목록 조회 -->
-	<select id="getFileList" resultType="com.boot.dto.BoardAttachDTO">
-		SELECT UUID AS uuid,
-		UPLOADPATH AS uploadPath,
-		FILENAME AS fileName,
-		IMAGE AS image,
-		BOARDNO AS boardNo
+	<resultMap id="boardAttachResultMap" type="com.boot.dto.BoardAttachDTO">
+		<result property="uuid" column="UUID"/>
+		<result property="uploadPath" column="UPLOADPATH"/>
+		<result property="fileName" column="FILENAME"/>
+		<result property="image" column="IMAGE"/>
+		<result property="boardNo" column="BOARDNO"/>
+	</resultMap>
+
+	<select id="getFileList" resultMap="boardAttachResultMap">
+		SELECT UUID, UPLOADPATH, FILENAME, IMAGE, BOARDNO
 		FROM BOARD_ATTACH
 		WHERE BOARDNO = #{boardNo}
 	</select>

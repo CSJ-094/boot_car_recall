@@ -4,7 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
-        <!-- 데이터베이스의 언더스코어(_)로 구분된 컬럼명을 Java의 카멜케이스(camelCase) 필드명에 자동으로 매핑 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 

@@ -4,19 +4,14 @@
 
 <mapper namespace="com.boot.dao.PageDAO">
 
-    <select id="listWithPaging" resultType="com.boot.dto.BoardDTO">
+    <select id="listWithPaging" resultMap="com.boot.dao.BoardDAO.boardResultMap">
         <![CDATA[
-        SELECT BOARD_NO AS boardNo,
-               BOARD_NAME AS boardName,
-               BOARD_TITLE AS boardTitle,
-               BOARD_CONTENT AS boardContent,
-               BOARD_DATE AS boardDate,
-               HIT AS hit
+        SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_NAME, BOARD_DATE, HIT
         FROM (
             SELECT ROWNUM AS rnum,
-                   b.BOARD_NO, b.BOARD_NAME, b.BOARD_TITLE, b.BOARD_CONTENT, b.BOARD_DATE, b.HIT
+                   b.BOARD_NO, b.BOARD_TITLE, b.BOARD_CONTENT, b.BOARD_NAME, b.BOARD_DATE, b.HIT
             FROM (
-                SELECT BOARD_NO, BOARD_NAME, BOARD_TITLE, BOARD_CONTENT, BOARD_DATE, HIT
+                SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_NAME, BOARD_DATE, HIT
                 FROM RECALL_BOARD
                 ORDER BY BOARD_NO DESC
             ) b

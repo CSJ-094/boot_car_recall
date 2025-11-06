@@ -4,70 +4,50 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boot.dao.FaqDAO">
+    <resultMap id="faqResultMap" type="com.boot.dto.FaqDTO">
+        <result property="faq_id" column="faqNo"/>
+        <result property="category" column="faqCategory"/>
+        <result property="question" column="faqTitle"/>
+        <result property="answer" column="faqContent"/>
+        <result property="created_at" column="created_at"/>
+    </resultMap>
 
-  <!-- 컬럼 ↔ DTO 필드 1:1 매핑 -->
-  <resultMap id="FaqMap" type="com.boot.dto.FaqDTO">
-    <id     column="FAQNO"        property="faq_id"/>
-    <result column="FAQCATEGORY"  property="category"/>
-    <result column="FAQTITLE"     property="question"/>
-    <result column="FAQCONTENT"   property="answer"/>
-    <result column="CREATED_AT"   property="created_at"/>
-  </resultMap>
+    <select id="listWithPaging" resultMap="faqResultMap">
+        SELECT faqNo, faqCategory, faqTitle, TO_CHAR(faqDate, 'YYYY-MM-DD') as created_at
+        FROM (
+            SELECT faqNo, faqCategory, faqTitle, faqDate, ROWNUM as rnum,
+                   TO_CHAR(faqDate, 'YYYY-MM-DD') as created_at
+            FROM (
+                SELECT faqNo, faqCategory, faqTitle, faqDate
+                FROM tbl_faq
+                ORDER BY faqNo DESC
+            )
+            WHERE ROWNUM &lt;= #{pageNum} * #{amount}
+        )
+        WHERE rnum > (#{pageNum} - 1) * #{amount}
+    </select>
 
-  <!-- 목록 -->
-  <select id="listWithPaging" resultMap="FaqMap">
-  SELECT faqNo,      
-         faqCategory, 
-         faqTitle,   
-         faqContent,               
-         TO_CHAR(FAQDATE, 'YYYY-MM-DD') AS CREATED_AT
-  FROM (
-      SELECT FAQNO, FAQCATEGORY, FAQTITLE, FAQCONTENT, FAQDATE, ROWNUM AS rnum
-    FROM (
-      SELECT FAQNO, FAQCATEGORY, FAQTITLE, FAQCONTENT, FAQDATE
-      FROM TBL_FAQ
-      ORDER BY FAQNO DESC
-    )
-    WHERE ROWNUM &lt;= #{pageNum} * #{amount}
-  )
-  WHERE rnum > (#{pageNum} - 1) * #{amount}
-</select>
+    <select id="getTotalCount" resultType="int">
+        SELECT count(*) FROM tbl_faq
+    </select>
 
+    <select id="getFaq" resultMap="faqResultMap">
+        SELECT faqNo, faqCategory, faqTitle, faqContent, TO_CHAR(faqDate, 'YYYY-MM-DD HH24:MI') as created_at FROM tbl_faq WHERE faqNo = #{faq_id}
+    </select>
 
-  <select id="getTotalCount" resultType="int">
-    SELECT COUNT(*) FROM TBL_FAQ
-  </select>
+    <insert id="write">
+        <selectKey keyProperty="faq_id" resultType="long" order="BEFORE">
+            SELECT faq_seq.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO tbl_faq (faqNo, faqCategory, faqTitle, faqContent)
+        VALUES (#{faq_id}, #{category}, #{question}, #{answer})
+    </insert>
 
-  <!-- 상세 (단일 파라미터는 value로 받거나 @Param 사용) -->
-  <select id="getFaq" resultMap="FaqMap">
-    SELECT FAQNO,
-           FAQCATEGORY,
-           FAQTITLE,
-           FAQCONTENT,
-           TO_CHAR(FAQDATE, 'YYYY-MM-DD HH24:MI') AS CREATED_AT
-    FROM TBL_FAQ
-    WHERE FAQNO = #{value}   <!-- getFaq(..)의 단일 인자 -->
-  </select>
+    <update id="modify">
+        UPDATE tbl_faq SET faqCategory = #{category}, faqTitle = #{question}, faqContent = #{answer}, faqDate = SYSDATE WHERE faqNo = #{faq_id}
+    </update>
 
-  <insert id="write" parameterType="com.boot.dto.FaqDTO">
-    <selectKey keyProperty="faq_id" resultType="long" order="BEFORE">
-      SELECT FAQ_SEQ.NEXTVAL FROM DUAL
-    </selectKey>
-    INSERT INTO TBL_FAQ (FAQNO, FAQCATEGORY, FAQTITLE, FAQCONTENT)
-    VALUES (#{faq_id}, #{category}, #{question}, #{answer})
-  </insert>
-
-  <update id="modify" parameterType="com.boot.dto.FaqDTO">
-    UPDATE TBL_FAQ
-    SET FAQCATEGORY = #{category},
-        FAQTITLE    = #{question},
-        FAQCONTENT  = #{answer},
-        FAQDATE     = SYSDATE
-    WHERE FAQNO = #{faq_id}
-  </update>
-
-  <delete id="delete">
-    DELETE FROM TBL_FAQ WHERE FAQNO = #{value}   <!-- 단일 인자 -->
-  </delete>
-
+    <delete id="delete">
+        DELETE FROM tbl_faq WHERE faqNo = #{faq_id}
+    </delete>
 </mapper>
