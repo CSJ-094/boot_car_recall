@@ -1,99 +1,89 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+
 <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/centers-about.css" />
+<link rel="stylesheet" href="/css/notice_user.css" />
 
-<style>
-    /* 전체 콘텐츠 영역의 최대 너비 및 중앙 정렬 */
-    .content-wrapper {
-        max-width: 1200px; 
-        margin: 50px auto; 
-        padding: 0 15px; 
-    }
-    /* 테이블 행에 마우스 오버 시 커서 변경 */
-    .table-hover tbody tr:hover { 
-        cursor: pointer; 
-        background-color: #f5f5f5; /* 마우스 오버 시 배경색 변경 */
-    }
-    /* 테이블 제목 (<th>) 텍스트를 가운데로 정렬 */
-    .notice-table thead th {
-        text-align: center;
-        vertical-align: middle;
-    }
-    /* 번호, 작성일, 조회수 컬럼은 가운데 정렬 */
-    .notice-table tbody td:nth-child(1), /* 번호 */
-    .notice-table tbody td:nth-child(3), /* 작성일 */
-    .notice-table tbody td:nth-child(4) { /* 조회수 */
-        text-align: center;
-        vertical-align: middle;
-    }
-    /* 제목 컬럼은 왼쪽 정렬 */
-    .notice-table tbody td:nth-child(2) {
-        text-align: left;
-    }
-    /* 페이지네이션 중앙 정렬 */
-    .pagination-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-    /* 사이드바 스타일 (기존 CSS 사용 시 이 부분은 삭제 가능) */
-    .sidebar .list-group-item.active {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: white;
-    }
-</style>
+<main class="nu">
+  <section class="nu-wrap">
+    <header class="nu-head">
+      <h1 class="nu-title">공지사항</h1>
+      <p class="nu-desc">리콜센터의 중요한 안내를 빠르게 확인하세요.</p>
+    </header>
 
-<div class="container">
-    <h3 class="mt-5 mb-4 text-center">공지사항</h3>
-
-    <table class="table table-hover text-center">
-        <thead class="thead-light">
-            <tr origin="center">
-                <th style="width: 10%;">번호</th>
-                <th style="width: 50%;">제목</th>
-                <th style="width: 20%;">작성일</th>
-                <th style="width: 10%;">조회수</th>
-            </tr>
+    <div class="nu-table-wrap">
+      <table class="nu-table">
+        <colgroup>
+          <col style="width:110px"/>
+          <col/>
+          <col style="width:160px"/>
+          <col style="width:110px"/>
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성일</th>
+            <th scope="col">조회수</th>
+          </tr>
         </thead>
         <tbody>
+        <c:if test="${empty list}">
+          <tr class="nu-empty">
+            <td colspan="4">등록된 공지사항이 없습니다.</td>
+          </tr>
+        </c:if>
+
         <c:forEach var="item" items="${list}">
-            <tr onclick="location.href='${pageContext.request.contextPath}/notice/${item.notice_id}'" style="cursor: pointer;">
-                <td>${item.notice_id}</td>
-                <td class="text-left">
-                    <c:if test="${item.is_urgent == 'Y'}"><span class="badge badge-danger mr-2">필독</span></c:if>
-                    ${item.title}
-                </td>
-                <td>${item.created_at}</td>
-                <td>${item.views}</td>
-            </tr>
+          <tr class="nu-row" data-href="${ctx}/notice/${item.notice_id}">
+            <td class="nu-cell--center">${item.notice_id}</td>
+            <td class="nu-cell--left">
+              <c:if test="${item.is_urgent == 'Y'}">
+                <span class="nu-chip nu-chip--danger" aria-label="필독">필독</span>
+              </c:if>
+              <a href="${ctx}/notice/${item.notice_id}" class="nu-link">
+                ${item.title}
+              </a>
+            </td>
+            <td class="nu-cell--center">${item.created_at}</td>
+            <td class="nu-cell--center">${item.views}</td>
+          </tr>
         </c:forEach>
         </tbody>
-    </table>
-    
-    <div class="d-flex justify-content-center">
-        <ul class="pagination">
-            <c:if test="${pageMaker.prev}">
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/notice/list?pageNum=${pageMaker.startPage - 1}">이전</a>
-                </li>
-            </c:if>
-            <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                <li class="page-item ${pageMaker.cri.pageNum == num ? 'active' : ''}">
-                    <a class="page-link" href="${pageContext.request.contextPath}/notice/list?pageNum=${num}">${num}</a>
-                </li>
-            </c:forEach>
-            <c:if test="${pageMaker.next}">
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/notice/list?pageNum=${pageMaker.endPage + 1}">다음</a>
-                </li>
-            </c:if>
-        </ul>
+      </table>
     </div>
-</div>
+
+    <nav class="nu-paging" aria-label="공지 목록 페이지 이동">
+      <ul>
+        <c:if test="${pageMaker.prev}">
+          <li><a class="nu-page" href="${ctx}/notice/list?pageNum=${pageMaker.startPage - 1}">이전</a></li>
+        </c:if>
+
+        <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+          <li>
+            <a class="nu-page ${pageMaker.cri.pageNum == num ? 'is-active' : ''}"
+               href="${ctx}/notice/list?pageNum=${num}">${num}</a>
+          </li>
+        </c:forEach>
+
+        <c:if test="${pageMaker.next}">
+          <li><a class="nu-page" href="${ctx}/notice/list?pageNum=${pageMaker.endPage + 1}">다음</a></li>
+        </c:if>
+      </ul>
+    </nav>
+  </section>
+</main>
 
 <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
 
-<script src="${ctx}/resources/js/centers-about.js"></script>
+<script>
+  // 행 클릭으로 상세 이동
+  document.querySelectorAll('.nu-row').forEach(tr=>{
+    tr.addEventListener('click', ()=> {
+      const href = tr.getAttribute('data-href');
+      if(href){ location.href = href; }
+    });
+  });
+</script>
