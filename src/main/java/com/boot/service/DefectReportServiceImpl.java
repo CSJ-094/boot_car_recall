@@ -84,7 +84,8 @@ public class DefectReportServiceImpl implements DefectReportService {
 
     @Override
     public List<DefectReportDTO> getAllReports(Criteria cri) {
-        List<DefectReportDTO> reports = defectReportDAO.selectAll(cri.getOffset(), cri.getAmount(), cri.getKeyword());
+        // defectReportDAO.selectAll 메서드 호출 시 pageNum과 amount를 직접 전달
+        List<DefectReportDTO> reports = defectReportDAO.selectAll(cri.getPageNum(), cri.getAmount(), cri.getKeyword());
         // 각 신고에 이미지 목록을 추가
         for (DefectReportDTO report : reports) {
             report.setImages(defectImageDAO.selectImagesByReportId(report.getId()));

@@ -30,17 +30,23 @@
 
 
     <select id="selectAll" resultType="com.boot.dto.RecallDTO">
-        SELECT
-        ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
-        FROM RECALL
-        <where>
-            <if test="keyword != null and keyword != ''">
-                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
-                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
-            </if>
-        </where>
-        ORDER BY ID DESC
-        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
+        SELECT ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+        FROM (
+            SELECT ROWNUM AS rn, ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+            FROM (
+                SELECT ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+                FROM RECALL
+                <where>
+                    <if test="keyword != null and keyword != ''">
+                        UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                        OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+                    </if>
+                </where>
+                ORDER BY ID DESC
+            )
+            WHERE ROWNUM &lt;= #{pageNum} * #{amount}
+        )
+        WHERE rn > (#{pageNum} - 1) * #{amount}
     </select>
 
     <select id="count" resultType="int">
