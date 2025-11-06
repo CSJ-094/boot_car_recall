@@ -1,79 +1,74 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<!-- 공통 헤더 -->
 <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
-<!-- 페이지 전용 CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/centers-about.css" />
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>자주 묻는 질문 (FAQ)</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 1000px; margin-top: 50px; }
-        .card-header-faq { background-color: #ffffff; cursor: pointer; border-bottom: 1px solid #dee2e6; }
-        .card-header-faq h5 { margin-bottom: 0; }
-        .faq-category { font-size: 0.8em; }
-        .card-body-faq { background-color: #f1f1f1; }
-        .pagination { justify-content: center; }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h3 class="mt-5 mb-4 text-center">자주 묻는 질문 (FAQ)</h3>
-    
-    <div id="faqAccordion">
-        <c:forEach var="item" items="${list}" varStatus="status">
-            <div class="card mb-1">
-                <div class="card-header-faq" id="heading-${item.faq_id}" data-toggle="collapse" data-target="#collapse-${item.faq_id}" aria-expanded="false" aria-controls="collapse-${item.faq_id}">
-                    <h5 class="mb-0 d-flex justify-content-between align-items-center py-2">
-                        <span class="faq-category badge badge-info mr-3">${item.category}</span>
-                        <span class="text-dark font-weight-bold flex-grow-1 text-left">${item.question}</span>
-                        <span class="text-muted"><i class="fas fa-chevron-down"></i></span>
-                    </h5>
-                </div>
-                
-                <div id="collapse-${item.faq_id}" class="collapse" aria-labelledby="heading-${item.faq_id}" data-parent="#faqAccordion">
-                    <div class="card-body-faq p-4">
-                        <p style="white-space: pre-wrap;">${item.answer}</p>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-    <div class="pull-right mt-4">
-        <ul class="pagination">
-            <c:if test="${pageMaker.prev}">
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/faq/list?pageNum=${pageMaker.startPage - 1}">이전</a>
-                </li>
-            </c:if>
-            <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                <li class="page-item ${pageMaker.cri.pageNum == num ? 'active' : ''}">
-                    <a class="page-link" href="${pageContext.request.contextPath}/faq/list?pageNum=${num}">${num}</a>
-                </li>
-            </c:forEach>
-            <c:if test="${pageMaker.next}">
-                <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/faq/list?pageNum=${pageMaker.endPage + 1}">다음</a>
-                </li>
-            </c:if>
-        </ul>
-    </div>
-</div>
-</body>
-</html>
+<link rel="stylesheet" href="/css/faq.css" />
 
-<!-- 공통 푸터 -->
+<main class="fq">
+  <section class="fq-wrap">
+    <header class="fq-head">
+      <h1 class="fq-title">자주 묻는 질문 (FAQ)</h1>
+      <p class="fq-desc">자주 받는 질문을 모았습니다. 질문을 클릭하면 답변이 펼쳐집니다.</p>
+    </header>
+
+    <!-- 아코디언 목록 -->
+    <div class="fq-accordion" id="faqList">
+      <c:if test="${empty list}">
+        <div class="fq-empty">등록된 FAQ가 없습니다.</div>
+      </c:if>
+
+      <c:forEach var="item" items="${list}">
+        <article class="fq-item" data-id="${item.faq_id}">
+          <button type="button" class="fq-q" aria-expanded="false" aria-controls="fq-a-${item.faq_id}">
+            <span class="fq-chip">${item.category}</span>
+            <span class="fq-q-text">${item.question}</span>
+            <span class="fq-arrow" aria-hidden="true">▾</span>
+          </button>
+          <div id="fq-a-${item.faq_id}" class="fq-a" role="region" aria-hidden="true">
+            <div class="fq-a-inner">
+              <pre class="fq-a-text"><c:out value="${item.answer}"/></pre>
+              <div class="fq-meta"><strong>작성일</strong> <span>${item.created_at}</span></div>
+            </div>
+          </div>
+        </article>
+      </c:forEach>
+    </div>
+
+    <!-- 페이지네이션 (공지와 동일 스타일) -->
+    <nav class="fq-paging" aria-label="FAQ 페이지 이동">
+      <ul>
+        <c:if test="${pageMaker.prev}">
+          <li><a class="fq-page" href="${ctx}/faq/list?pageNum=${pageMaker.startPage - 1}">이전</a></li>
+        </c:if>
+        <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+          <li>
+            <a class="fq-page ${pageMaker.cri.pageNum == num ? 'is-active' : ''}"
+               href="${ctx}/faq/list?pageNum=${num}">${num}</a>
+          </li>
+        </c:forEach>
+        <c:if test="${pageMaker.next}">
+          <li><a class="fq-page" href="${ctx}/faq/list?pageNum=${pageMaker.endPage + 1}">다음</a></li>
+        </c:if>
+      </ul>
+    </nav>
+  </section>
+</main>
+
 <jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
 
-<!-- 페이지 전용 JS -->
-<script src="${ctx}/resources/js/centers-about.js"></script>
+<script>
+  // 접근성 고려한 순수 JS 아코디언
+  document.querySelectorAll('.fq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const panel = document.getElementById(btn.getAttribute('aria-controls'));
 
+      // 토글
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel.setAttribute('aria-hidden', String(expanded));
+      btn.parentElement.classList.toggle('is-open', !expanded);
+    });
+  });
+</script>
