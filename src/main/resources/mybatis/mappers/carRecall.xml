@@ -4,7 +4,19 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boot.dao.CarRecallDAO">
-    <select id="findById" resultType="com.boot.dto.CarRecallDTO">
+
+    <resultMap id="carRecallResultMap" type="com.boot.dto.CarRecallDTO">
+            <result property="report_id" column="report_id"/>
+            <result property="reporter_name" column="reporter_name"/>
+           <result property="reporter_phone" column="reporter_phone"/>
+            <result property="car_reg_num" column="car_reg_num"/>
+            <result property="car_model" column="car_model"/>
+            <result property="defect_detail" column="defect_detail"/>
+           <result property="is_public" column="is_public"/>
+            <result property="reviewed" column="reviewed"/>
+            <result property="reported_at" column="reported_at"/>
+     </resultMap>
+    <select id="findById" parameterType="long" resultMap="carRecallResultMap">
         SELECT
             report_id,
             reporter_name,

@@ -22,8 +22,19 @@
         )
     </insert>
 
+    <resultMap id="defectReportResultMap" type="com.boot.dto.DefectReportDTO">
+        <result property="id" column="ID"/>
+        <result property="reporterName" column="REPORTER_NAME"/>
+        <result property="contact" column="CONTACT"/>
+        <result property="carModel" column="CAR_MODEL"/>
+        <result property="vin" column="VIN"/>
+        <result property="defectDetails" column="DEFECT_DETAILS"/>
+        <result property="reportDate" column="REPORT_DATE"/>
+        <result property="password" column="PASSWORD"/>
+    </resultMap>
+
     <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->
-    <select id="selectAll" resultType="com.boot.dto.DefectReportDTO">
+    <select id="selectAll" resultMap="defectReportResultMap">
         SELECT
             ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         FROM DEFECT_REPORT
@@ -51,7 +62,7 @@
     </select>
 
     <!-- ID로 단일 결함 신고 조회 -->
-    <select id="selectById" parameterType="long" resultType="com.boot.dto.DefectReportDTO">
+    <select id="selectById" parameterType="long" resultMap="defectReportResultMap">
         SELECT
             ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
         FROM DEFECT_REPORT

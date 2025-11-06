@@ -28,8 +28,18 @@
         SELECT * FROM DUAL
     </insert>
 
+    <resultMap id="recallResultMap" type="com.boot.dto.RecallDTO">
+        <result property="id" column="ID"/>
+        <result property="maker" column="MAKER"/>
+        <result property="modelName" column="MODEL_NAME"/>
+        <result property="makeStart" column="MAKE_START"/>
+        <result property="makeEnd" column="MAKE_END"/>
+        <result property="recallDate" column="RECALL_DATE"/>
+        <result property="recallReason" column="RECALL_REASON"/>
+    </resultMap>
 
-    <select id="selectAll" resultType="com.boot.dto.RecallDTO">
+
+    <select id="selectAll" resultMap="recallResultMap">
         SELECT
         ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
         FROM RECALL
@@ -53,7 +63,7 @@
         </where>
     </select>
 
-    <select id="searchByModelName" parameterType="string" resultType="com.boot.dto.RecallDTO">
+    <select id="searchByModelName" parameterType="string" resultMap="recallResultMap">
         SELECT
         ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
         FROM RECALL
