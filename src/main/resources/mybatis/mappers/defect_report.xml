@@ -35,19 +35,30 @@
 
     <!-- 페이징 및 검색 처리를 위한 selectAll 쿼리 수정 -->
     <select id="selectAll" resultMap="defectReportResultMap">
-        SELECT
-            ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
-        FROM DEFECT_REPORT
-        <where>
-            <if test="keyword != null and keyword != ''">
-                UPPER(REPORTER_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
-                OR UPPER(CAR_MODEL) LIKE '%' || UPPER(#{keyword}) || '%'
-                OR UPPER(VIN) LIKE '%' || UPPER(#{keyword}) || '%'
-            </if>
-        </where>
-        ORDER BY ID DESC
-        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
-    </select>
+  SELECT
+      ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
+  FROM (
+      SELECT ROWNUM AS rnum, t.*
+      FROM (
+          SELECT
+              ID, REPORTER_NAME, CONTACT, CAR_MODEL, VIN, DEFECT_DETAILS, REPORT_DATE, PASSWORD
+          FROM DEFECT_REPORT
+          <where>
+              <if test="keyword != null and keyword != ''">
+                  (
+                    UPPER(REPORTER_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+                    OR UPPER(CAR_MODEL)   LIKE '%' || UPPER(#{keyword}) || '%'
+                    OR UPPER(VIN)         LIKE '%' || UPPER(#{keyword}) || '%'
+                  )
+              </if>
+          </where>
+          ORDER BY ID DESC
+      ) t
+      WHERE ROWNUM &lt;= #{pageNum} * #{amount}
+  )
+ WHERE rnum &gt; (#{pageNum}-1) * #{amount}
+</select>
+
 
     <!-- 검색 조건에 따른 전체 데이터 수 조회 쿼리 수정 -->
     <select id="count" resultType="int">

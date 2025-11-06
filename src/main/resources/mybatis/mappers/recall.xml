@@ -40,17 +40,27 @@
 
 
     <select id="selectAll" resultMap="recallResultMap">
-        SELECT
-        ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
-        FROM RECALL
-        <where>
-            <if test="keyword != null and keyword != ''">
-                UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
-                OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
-            </if>
-        </where>
-        ORDER BY ID DESC
-        OFFSET #{offset} ROWS FETCH NEXT #{amount} ROWS ONLY
+       SELECT
+      ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+  FROM (
+      SELECT ROWNUM AS rnum, t.*
+      FROM (
+          SELECT
+              ID, MAKER, MODEL_NAME, MAKE_START, MAKE_END, RECALL_DATE, RECALL_REASON
+          FROM RECALL
+          <where>
+              <if test="keyword != null and keyword != ''">
+                  (
+                    UPPER(MAKER) LIKE '%' || UPPER(#{keyword}) || '%'
+                    OR UPPER(MODEL_NAME) LIKE '%' || UPPER(#{keyword}) || '%'
+                  )
+              </if>
+          </where>
+          ORDER BY ID DESC
+      ) t
+      WHERE ROWNUM &lt;= #{pageNum} * #{amount}
+  )
+  WHERE rnum &gt; (#{pageNum}-1) * #{amount}
     </select>
 
     <select id="count" resultType="int">
