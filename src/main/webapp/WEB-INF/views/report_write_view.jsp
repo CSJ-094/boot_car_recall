@@ -2,45 +2,156 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>글쓰기</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>리콜 보도자료 작성</title>
+
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css" />
+        <script src="${pageContext.request.contextPath}/js/jquery.js"></script>
+
+        <style>
+            body {
+                font-family: "Noto Sans KR", sans-serif;
+                margin: 0;
+                background-color: #f8f9fa;
+            }
+
+            .container {
+                width: 80%;
+                margin: 40px auto;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                padding: 40px 50px;
+            }
+
+            h2 {
+                text-align: center;
+                font-size: 26px;
+                margin-bottom: 30px;
+                color: #333;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            label {
+                font-weight: 600;
+                color: #444;
+                margin-bottom: 5px;
+            }
+
+            input[type="text"], textarea {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 15px;
+                resize: none;
+                box-sizing: border-box;
+            }
+
+            textarea {
+                min-height: 300px;
+            }
+
+            input[type="file"] {
+                margin-top: 5px;
+            }
+
+            .uploadResult {
+                margin-top: 10px;
+            }
+
+            .uploadResult ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .uploadResult li {
+                margin: 6px 0;
+                font-size: 14px;
+                color: #007bff;
+            }
+
+            .btn-area {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 30px;
+            }
+
+            .btn-area button, .btn-area a {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 25px;
+                border: none;
+                border-radius: 6px;
+                font-size: 15px;
+                text-decoration: none;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+            }
+
+            .btn-area button:hover, .btn-area a:hover {
+                background-color: #0056b3;
+            }
+
+            hr {
+                border: none;
+                border-top: 1px solid #ddd;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp"/>
+<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
 <div class="container">
-    <h2>게시글 작성</h2>
+    <h2>리콜 보도자료 작성</h2>
+    <hr>
+
     <form id="frm">
         <div>
-            <label>작성자</label>
-            <input type="text" name="boardName" required>
-        </div>
-        <div>
-            <label>제목</label>
-            <input type="text" name="boardTitle" required>
-        </div>
-        <div>
-            <label>내용</label><br>
-            <textarea name="boardContent" rows="6" cols="60" required></textarea>
+            <label for="boardTitle">제목</label>
+            <input type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요" required>
         </div>
 
-        <div class="uploadDiv">
-            <label>파일 첨부</label>
-            <input type="file" name="uploadFile" multiple>
+        <div>
+            <label for="boardName">작성자</label>
+            <input type="text" id="boardName" name="boardName" placeholder="작성자명을 입력하세요" required>
+        </div>
+
+        <div>
+            <label for="boardContent">내용</label>
+            <textarea id="boardContent" name="boardContent" placeholder="내용을 입력하세요" required></textarea>
+        </div>
+
+        <div>
+            <label for="uploadFile">첨부 파일</label>
+            <input type="file" name="uploadFile" id="uploadFile" multiple>
         </div>
 
         <div class="uploadResult">
             <ul></ul>
         </div>
 
-        <button type="submit">등록</button>
-        <button type="button" onclick="location.href='report_recallInfo'">목록으로</button>
+        <div class="btn-area">
+            <button type="submit">등록</button>
+            <button type="button" onclick="location.href='report_recallInfo'">목록으로</button>
+        </div>
     </form>
 </div>
 
+
 <script>
     $(document).ready(function() {
-        // 업로드 확장자 및 용량 제한
+
         const regex = new RegExp("(.*?)\.(exe|sh|js|alz)$");
         const maxSize = 5242880; // 5MB
 
@@ -56,7 +167,6 @@
             return true;
         }
 
-        // 파일 선택 시 즉시 미리보기
         $("input[type='file']").change(function(e) {
             const uploadUL = $(".uploadResult ul");
             uploadUL.empty();
@@ -101,7 +211,6 @@
             uploadUL.append(str);
         }
 
-        // 폼 제출 (DB에 게시글 저장 후 업로드)
         $("button[type='submit']").on("click", function(e) {
             e.preventDefault();
 
@@ -112,7 +221,14 @@
                 url: "write",
                 data: formData,
                 success: function(result) {
-                    uploadFolder(); // 파일 저장
+                    const files = $("input[name='uploadFile']")[0].files;
+                    // ✅ 파일이 있을 때만 업로드 함수 호출
+                    if (files.length > 0) {
+                        uploadFolder();
+                    } else {
+                        alert("게시글 등록 완료!");
+                        location.href = "report_recallInfo";
+                    }
                 },
                 error: function() {
                     alert("게시글 저장 실패");
