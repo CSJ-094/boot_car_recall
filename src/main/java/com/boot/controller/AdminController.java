@@ -2,6 +2,7 @@ package com.boot.controller;
 
 import com.boot.dto.AdminDTO;
 import com.boot.dto.BoardDTO;
+import com.boot.dto.ComplainDTO;
 import com.boot.dto.Criteria;
 import com.boot.dto.DailyStatsDTO;
 import com.boot.dto.DefectReportDTO;
@@ -10,6 +11,7 @@ import com.boot.dto.NoticeDTO;
 import com.boot.dto.PageDTO;
 import com.boot.service.AdminService;
 import com.boot.service.BoardService;
+import com.boot.service.ComplainService;
 import com.boot.service.DefectReportService;
 import com.boot.service.StatsService;
 import com.boot.service.FaqService;
@@ -55,6 +57,9 @@ public class AdminController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private ComplainService complainService;
 
     @GetMapping("/login")
     public String loginForm() {
@@ -303,5 +308,37 @@ public class AdminController {
         boardService.delete(param);
         rttr.addFlashAttribute("result", "delete_success");
         return "redirect:/admin/press/list";
+    }
+
+    // 고객 문의 목록
+    @GetMapping("/complain/list")
+    public String complainList(Model model) {
+        log.info("@# admin complain list");
+        ArrayList<ComplainDTO> list = complainService.complain_list();
+        model.addAttribute("list", list);
+        return "admin/complain_list";
+    }
+
+    // 고객 문의 상세 및 답변 폼
+    @GetMapping("/complain/detail")
+    public String complainDetail(@RequestParam("report_id") String report_id, Model model) {
+        log.info("@# complain detail: {}", report_id);
+        HashMap<String, String> param = new HashMap<>();
+        param.put("report_id", report_id);
+        ComplainDTO complain = complainService.contentView(param);
+        model.addAttribute("complain", complain);
+        return "admin/complain_detail";
+    }
+
+    // 고객 문의 답변 등록 처리
+    @PostMapping("/complain/answer")
+    public String complainAnswer(@RequestParam("report_id") String report_id, @RequestParam("answer") String answer, RedirectAttributes rttr) {
+        log.info("@# complain answer process: report_id={}, answer={}", report_id, answer);
+        HashMap<String, String> param = new HashMap<>();
+        param.put("report_id", report_id);
+        param.put("answer", answer);
+        complainService.addAnswer(param);
+        rttr.addFlashAttribute("result", "answer_success");
+        return "redirect:/admin/complain/detail?report_id=" + report_id;
     }
 }

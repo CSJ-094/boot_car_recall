@@ -13,12 +13,12 @@
     </resultMap>
 
     <select id="listWithPaging" resultMap="faqResultMap">
-        SELECT faqNo, faqCategory, faqTitle, TO_CHAR(faqDate, 'YYYY-MM-DD') as created_at
+        SELECT faqNo, faqCategory, faqTitle, faqContent, TO_CHAR(faqDate, 'YYYY-MM-DD') as created_at
         FROM (
-            SELECT faqNo, faqCategory, faqTitle, faqDate, ROWNUM as rnum,
+            SELECT faqNo, faqCategory, faqTitle, faqContent, faqDate, ROWNUM as rnum,
                    TO_CHAR(faqDate, 'YYYY-MM-DD') as created_at
             FROM (
-                SELECT faqNo, faqCategory, faqTitle, faqDate
+                SELECT faqNo, faqCategory, faqTitle, faqContent, faqDate
                 FROM tbl_faq
                 ORDER BY faqNo DESC
             )

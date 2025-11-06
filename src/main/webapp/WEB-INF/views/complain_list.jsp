@@ -113,34 +113,52 @@
                 <thead>
                     <tr>
                         <th>no.</th>
-                        <th>신청인</th>
                         <th>제목</th>
                         <th>상담구분</th>
+                        <th>신청인</th>
                         <th>문의날짜</th>
+                        <th>답변상태</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <c:choose>
-                        <c:when test="${not empty complain_list}">
-                            <c:forEach var="dto" items="${complain_list}">
+                        <c:when test="${not empty list}">
+                            <c:forEach var="dto" items="${list}">
                                 <tr>
                                     <td>${dto.report_id}</td>
-                                    <td>${dto.reporter_name}</td>
                                     <td>
-                                        <a href="complain_content_view?report_id=${dto.report_id}">
-                                            ${dto.title}
+                                        <a href="${pageContext.request.contextPath}/complain_content_view?report_id=${dto.report_id}">
+                                            <c:choose>
+                                                <c:when test="${dto.is_public == 'N'}">
+                                                    <span class="lock-icon">🔒</span> 비공개 글입니다.
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${dto.title}
+                                                </c:otherwise>
+                                            </c:choose>
                                         </a>
                                     </td>
                                     <td>${dto.complain_type}</td>
+                                    <td>${dto.reporter_name}</td>
                                     <td>${dto.complainDate}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty dto.answer}">
+                                                <span class="badge badge-success">답변 완료</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge badge-warning">답변 대기</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </c:when>
 
                         <c:otherwise>
                             <tr>
-                                <td colspan="5" class="no-data">등록된 신청 내역이 없습니다.</td>
+                                <td colspan="6" class="no-data">등록된 신청 내역이 없습니다.</td>
                             </tr>
                         </c:otherwise>
                     </c:choose>
@@ -148,7 +166,7 @@
             </table>
 
             <div class="btn-box">
-                <a href="complain_write_view" class="btn">글작성</a>
+                <a href="${pageContext.request.contextPath}/complain_write_view" class="btn">글작성</a>
             </div>
         </div>
     </div>

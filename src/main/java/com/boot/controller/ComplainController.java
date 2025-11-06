@@ -60,8 +60,8 @@ public class ComplainController {
 		log.info("@# complain_list");
 		
 			
-		ArrayList<ComplainDTO> complain_list = service.complain_list();
-		model.addAttribute("complain_list", complain_list);
+		ArrayList<ComplainDTO> list = service.complain_list();
+		model.addAttribute("list", list);
 		
 		return "complain_list";
 	}
@@ -101,11 +101,3 @@ public class ComplainController {
 	}
 
 }
-
-
-
-
-
-
-
-
