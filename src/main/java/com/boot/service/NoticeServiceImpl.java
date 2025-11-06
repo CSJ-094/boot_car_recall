@@ -3,44 +3,54 @@ package com.boot.service;
 import com.boot.dao.NoticeDAO;
 import com.boot.dto.Criteria;
 import com.boot.dto.NoticeDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
+
     private final NoticeDAO noticeDAO;
 
     @Override
-    public ArrayList<NoticeDTO> getNoticeList(Criteria cri) {
+    public List<NoticeDTO> listWithPaging(Criteria cri) {
         return noticeDAO.listWithPaging(cri);
     }
 
     @Override
-    public int getTotal() {
+    public int getTotalCount() {
         return noticeDAO.getTotalCount();
     }
 
     @Override
-    public void writeNotice(NoticeDTO noticeDTO) {
-        noticeDAO.write(noticeDTO);
+    public void write(NoticeDTO notice) {
+        noticeDAO.write(notice);
     }
 
+    @Transactional
     @Override
-    public NoticeDTO getNotice(long notice_id) {
+    public NoticeDTO getNotice(Long notice_id) {
         noticeDAO.incrementViews(notice_id);
         return noticeDAO.getNotice(notice_id);
     }
 
     @Override
-    public void modifyNotice(NoticeDTO noticeDTO) {
-        noticeDAO.modify(noticeDTO);
+    public NoticeDTO getNoticeWithoutViews(Long notice_id) {
+        return noticeDAO.getNotice(notice_id);
     }
 
     @Override
-    public void deleteNotice(long notice_id) {
+    public void modify(NoticeDTO notice) {
+        noticeDAO.modify(notice);
+    }
+
+    @Override
+    public void delete(Long notice_id) {
         noticeDAO.delete(notice_id);
     }
 }

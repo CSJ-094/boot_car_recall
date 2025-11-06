@@ -3,13 +3,14 @@ package com.boot.service;
 import com.boot.dto.Criteria;
 import com.boot.dto.NoticeDTO;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface NoticeService {
-    public ArrayList<NoticeDTO> getNoticeList(Criteria cri);
-    public int getTotal();
-    public void writeNotice(NoticeDTO noticeDTO);
-    public NoticeDTO getNotice(long notice_id);
-    public void modifyNotice(NoticeDTO noticeDTO);
-    public void deleteNotice(long notice_id);
+        List<NoticeDTO> listWithPaging(Criteria cri);
+    int getTotalCount();
+    void write(NoticeDTO notice);
+    NoticeDTO getNotice(Long notice_id);
+    NoticeDTO getNoticeWithoutViews(Long notice_id);
+    void modify(NoticeDTO notice);
+    void delete(Long notice_id);
 }

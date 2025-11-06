@@ -143,7 +143,7 @@
 
         <div class="btn-area">
             <button type="submit">등록</button>
-            <button type="button" onclick="location.href='report_recallInfo'">목록으로</button>
+            <button type="button" onclick="location.href='/admin/press/list'">목록으로</button>
         </div>
     </form>
 </div>
@@ -181,7 +181,7 @@
 
             $.ajax({
                 type: "post",
-                url: "uploadAjaxAction",
+                url: "/uploadAjaxAction",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -218,16 +218,17 @@
 
             $.ajax({
                 type: "post",
-                url: "write",
+                url: "/admin/press/write",
                 data: formData,
                 success: function(result) {
+                    // ✅ 서버로부터 새로 생성된 게시글의 boardNo를 받아옴 (서버 응답이 boardNo라고 가정)
+                    const boardNo = result; 
                     const files = $("input[name='uploadFile']")[0].files;
-                    // ✅ 파일이 있을 때만 업로드 함수 호출
-                    if (files.length > 0) {
-                        uploadFolder();
+                    if (files.length > 0) { // 파일이 있을 때만 업로드 함수 호출
+                        uploadFolder(boardNo);
                     } else {
-                        alert("게시글 등록 완료!");
-                        location.href = "report_recallInfo";
+                        alert("게시글이 성공적으로 등록되었습니다.");
+                        location.href = "/admin/press/list";
                     }
                 },
                 error: function() {
@@ -236,24 +237,26 @@
             });
         });
 
-        function uploadFolder() {
+        function uploadFolder(boardNo) {
             const formData = new FormData();
             const inputFile = $("input[name='uploadFile']");
             const files = inputFile[0].files;
 
-            for (let i = 0; i < files.length; i++) {
+            // FormData에 파일과 boardNo를 함께 추가
+            formData.append("boardNo", boardNo);
+            for (let i = 0; i < files.length; i++) { 
                 formData.append("uploadFile", files[i]);
             }
 
             $.ajax({
                 type: "post",
-                url: "uploadFolder",
+                url: "/uploadFolder",
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(result) {
-                    alert("게시글 및 파일 업로드 완료!");
-                    location.href = "report_recallInfo";
+                    alert("게시글과 파일이 성공적으로 등록되었습니다.");
+                    location.href = "/admin/press/list";
                 },
                 error: function() {
                     alert("파일 업로드 실패");

@@ -116,50 +116,37 @@
 	<h2>리콜 보도자료 수정</h2>
 	<hr>
 
-	<form method="post" action="report_modify">
-		<input type="hidden" name="boardNo" value="${content_view.boardNo}">
-		<input type="hidden" name="pageNum" value="${pageNum}">
-		<input type="hidden" name="amount" value="${amount}">
+	<form method="post" action="/admin/press/modify">
+		<input type="hidden" name="boardNo" value="${board.boardNo}">
+		<input type="hidden" name="pageNum" value="${cri.pageNum}">
+		<input type="hidden" name="amount" value="${cri.amount}">
 
 		<div class="form-group">
 			<label>작성자</label>
-			<input type="text" name="boardName" value="${content_view.boardName}" readonly>
+			<input type="text" name="boardName" value="${board.boardName}" readonly>
 		</div>
 
 		<hr>
 
 		<div class="form-group">
 			<label>제목</label>
-			<input type="text" name="boardTitle" value="${content_view.boardTitle}">
+			<input type="text" name="boardTitle" value="${board.boardTitle}">
 		</div>
 
 		<hr>
 
 		<div class="form-group">
 			<label>내용</label>
-			<textarea name="boardContent">${content_view.boardContent}</textarea>
+			<textarea name="boardContent">${board.boardContent}</textarea>
 		</div>
 
 		<hr>
 
 		<div class="btn-area">
 			<input type="submit" value="수정완료" class="btn-primary">
-			<a href="report_content_view?boardNo=${content_view.boardNo}&pageNum=${pageNum}&amount=${amount}" class="btn-secondary">취소</a>
+			<a href="/admin/press/detail?boardNo=${board.boardNo}&pageNum=${cri.pageNum}&amount=${cri.amount}" class="btn-secondary">취소</a>
 		</div>
 	</form>
 </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

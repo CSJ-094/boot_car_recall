@@ -1,11 +1,13 @@
 package com.boot.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.boot.dto.Criteria;
@@ -17,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/notice")
+@RequestMapping
 @RequiredArgsConstructor
 @Slf4j
 public class NoticeController {
@@ -29,20 +31,20 @@ public class NoticeController {
         log.info("@# User Notice list requested: {}", cri);
         
         // **[Service 호출]**: NoticeService의 목록 조회 및 전체 개수 메서드 재사용
-        ArrayList<NoticeDTO> list = noticeService.getNoticeList(cri);
-        int total = noticeService.getTotal();
+        List<NoticeDTO> list = noticeService.listWithPaging(cri);
+        int total = noticeService.getTotalCount();
 
         model.addAttribute("list", list);
         model.addAttribute("pageMaker", new PageDTO(cri, total));
 
         // **[View 지정]**: /WEB-INF/views/notice/notice_list.jsp 로 연결
-        return "notice_list_user"; 
+ return "notice/notice_list_user";
     }
 
     // 2. 공지사항 상세 페이지
     // URL: /notice/123
     @GetMapping("/{notice_id}")
-    public String noticeDetail(@PathVariable("notice_id") long notice_id, Model model) {
+    public String noticeDetail(@PathVariable("notice_id") long notice_id, @ModelAttribute("cri") Criteria cri, Model model) {
         log.info("@# User Notice detail requested: {}", notice_id);
         
         // **[Service 호출]**: 상세 정보 조회 (NoticeServiceImpl에서 조회수 증가 로직 포함)
@@ -51,6 +53,6 @@ public class NoticeController {
         model.addAttribute("notice", notice);
         
         // **[View 지정]**: /WEB-INF/views/notice/notice_detail.jsp 로 연결
-        return "notice_detail_user";
+ return "notice/notice_detail_user";
     }
 }
