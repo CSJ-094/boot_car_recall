@@ -23,7 +23,10 @@
     </select>
 
     <insert id="write">
-        INSERT INTO RECALL_NOTICE_DB (title, content, is_urgent) VALUES (#{title}, #{content}, NVL(#{is_urgent, jdbcType=CHAR}, 'N'))
+        <selectKey keyProperty="notice_id" resultType="int" order="BEFORE">
+            SELECT RECALL_NOTICE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO RECALL_NOTICE_DB (notice_id, title, content, is_urgent) VALUES (#{notice_id}, #{title}, #{content}, NVL(#{is_urgent, jdbcType=CHAR}, 'N'))
     </insert>
 
     <select id="getNotice" resultType="com.boot.dto.NoticeDTO">

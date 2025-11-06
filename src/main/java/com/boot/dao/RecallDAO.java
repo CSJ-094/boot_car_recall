@@ -8,7 +8,16 @@ import java.util.List;
 
 @Mapper
 public interface RecallDAO {
-    void insertRecall(@Param("recall") RecallDTO recall);
-    List<RecallDTO> selectAll();
-    int count();
+
+    // 1. 단일 리콜 정보 삽입
+    void insertRecall(RecallDTO recallDTO);
+
+    // 2. 전체 목록 조회 (페이징 및 검색 기능 포함)
+    List<RecallDTO> selectAll(@Param("offset") int offset, @Param("amount") int amount, @Param("keyword") String keyword);
+
+    // 3. 전체 데이터 수 조회 (검색 기능 포함)
+    int count(@Param("keyword") String keyword);
+
+    // 4. 모델명으로 검색
+    List<RecallDTO> searchByModelName(@Param("modelName") String modelName);
 }
