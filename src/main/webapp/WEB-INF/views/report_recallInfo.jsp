@@ -117,7 +117,7 @@
 </head>
 
 <body>
-<jsp:include page="/WEB-INF/views/header.jsp" />
+<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
 <div class="container">
     <h2>리콜 보도자료</h2>
@@ -136,13 +136,12 @@
             </div>
         </div>
     </c:forEach>
-
+    <%----%>
     <a href="write_view" class="write-btn">글쓰기</a>
 
     <!-- 페이징 -->
     <ul class="pagination">
         <c:if test="${pageMaker.prev}">
-            <%--				<li class="paginate_button">[Previous]</li>--%>
             <li class="paginate_button">
                 <a href="${pageMaker.startPage - 1}">
                     [Previous]
@@ -150,8 +149,6 @@
             </li>
         </c:if>
         <c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-            <%--				<li>[${num}]</li>--%>
-            <%--				pagemaker안의 criteria의 pagenum이 현재 페이지면 스타일을 줌--%>
             <li class="paginate_button" ${pageMaker.cri.pageNum == num ? "style='color: red'" : ""}>
                 <a href="${num}">
                     [${num}]
@@ -167,7 +164,6 @@
         </c:if>
     </ul>
 
-    <!-- hidden form -->
     <form method="get" id="actionForm">
         <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
         <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
@@ -204,14 +200,11 @@
         }
 
 
-        //기존 conten t_view로 가던 것을 actionForm으로 처리
+
         actionForm.append("<input type='hidden' name='boardNo' value='"+targetBno+"'>");
         //컨트롤러에 content_view 로 찾아감
         //버그 처리(게시글 클릭 후 뒤로가기 누른 후 다른페이지 클릭할 때 content_view로 가는걸 해결
         actionForm.attr("action","report_content_view").submit();
 
-
-        // actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-        // actionForm.submit();
     }); //end of paginate_button click
 </script>

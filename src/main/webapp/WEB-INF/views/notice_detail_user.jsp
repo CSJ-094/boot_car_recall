@@ -1,42 +1,43 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>공지사항 상세</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 900px; margin-top: 50px; }
-        .card-header { background-color: #f1f1f1; }
-        .card-body { min-height: 300px; white-space: pre-wrap; }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h4>
-                <c:if test="${notice.is_urgent == 'Y'}"><span class="badge badge-danger mr-2">긴급</span></c:if>
-                ${notice.title}
-            </h4>
-            <div class="d-flex justify-content-between text-muted small">
-                <span>조회수: ${notice.views}</span>
-                <span>작성일: ${notice.created_at}</span>
-            </div>
-        </div>
-        <div class="card-body">
-            ${notice.content}
-        </div>
-        <div class="card-footer text-right">
-            <%-- ✅ 관리자 링크 /admin/notice/list 를 유저용 링크 /notice/list 로 변경합니다. --%>
-            <a href="${pageContext.request.contextPath}/notice/list" class="btn btn-secondary">목록으로</a>
-            
-            <%-- ⚠️ 수정, 삭제 버튼 및 관련 스크립트 제거됨 --%>
-        </div>
-    </div>
-</div>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-</body>
-</html>
+<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
+<link rel="stylesheet" href="/css/notice_user.css" />
+
+<main class="nu">
+  <section class="nu-wrap">
+    <nav class="nu-breadcrumb" aria-label="경로">
+      <a href="${ctx}/" class="nu-crumb">홈</a>
+      <span class="nu-crumb-sep">/</span>
+      <a href="${ctx}/notice/list" class="nu-crumb">공지사항</a>
+    </nav>
+
+    <article class="nu-card">
+      <header class="nu-card-head">
+        <div class="nu-card-top">
+          <h1 class="nu-card-title">
+            <c:if test="${notice.is_urgent == 'Y'}">
+              <span class="nu-chip nu-chip--danger">긴급</span>
+            </c:if>
+            ${notice.title}
+          </h1>
+        </div>
+        <ul class="nu-meta">
+          <li><strong>작성일</strong> <span>${notice.created_at}</span></li>
+          <li><strong>조회수</strong> <span>${notice.views}</span></li>
+        </ul>
+      </header>
+
+      <div class="nu-content">
+        ${notice.content}
+      </div>
+
+      <footer class="nu-card-foot">
+        <a href="${ctx}/notice/list" class="nu-btn">목록으로</a>
+      </footer>
+    </article>
+  </section>
+</main>
+
+<jsp:include page="/WEB-INF/views/fragment/footer.jsp"/>
