@@ -8,4 +8,6 @@ public interface UploadService {
 	public void insertFile(BoardAttachDTO vo);
 	public List<BoardAttachDTO> getFileList(int boardNo);
 	public void deleteFile(List<BoardAttachDTO> fileList);
+	public void deleteFileDB(String uuid);
+	public BoardAttachDTO findByUuid(String uuid);
 }

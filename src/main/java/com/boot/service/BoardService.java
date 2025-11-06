@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.boot.dto.BoardDTO;
+import org.apache.ibatis.annotations.Param;
 
 public interface BoardService {
     // 첫 번째 인터페이스에만 있던 목록 조회 메서드
@@ -22,4 +23,6 @@ public interface BoardService {
 
     // 두 인터페이스 모두에 있던 삭제 메서드 (동일)
     public void delete(HashMap<String, String> param);
+
+    public void hitUp(@Param("boardNo") int boardNo);
 }

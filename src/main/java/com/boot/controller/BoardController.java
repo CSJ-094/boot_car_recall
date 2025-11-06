@@ -45,6 +45,7 @@ public class BoardController {
 
         log.info("@# report_content_view()");
 
+        service.hitUp(boardNo);
         BoardDTO dto = service.contentView(boardNo);
         log.info("@# boardNo => " + boardNo);
         model.addAttribute("content_view", dto);
