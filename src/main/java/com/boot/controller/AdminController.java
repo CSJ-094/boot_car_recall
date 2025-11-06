@@ -1,16 +1,16 @@
 package com.boot.controller;
 
 import com.boot.dto.AdminDTO;
-import com.boot.dto.CarRecallDTO;
 import com.boot.dto.BoardDTO;
 import com.boot.dto.Criteria;
 import com.boot.dto.DailyStatsDTO;
+import com.boot.dto.DefectReportDTO;
 import com.boot.dto.FaqDTO;
 import com.boot.dto.NoticeDTO;
 import com.boot.dto.PageDTO;
 import com.boot.service.AdminService;
 import com.boot.service.BoardService;
-import com.boot.service.CarRecallService;
+import com.boot.service.DefectReportService;
 import com.boot.service.StatsService;
 import com.boot.service.FaqService;
 import com.boot.service.NoticeService;
@@ -45,7 +45,7 @@ public class AdminController {
     private StatsService statsService;
 
     @Autowired
-    private CarRecallService carRecallService;
+    private DefectReportService defectReportService;
 
     @Autowired
     private NoticeService noticeService;
@@ -91,26 +91,20 @@ public class AdminController {
     public String adminMain(Model model) {
         log.info("@# Admin main page");
         ArrayList<DailyStatsDTO> dailyStats = statsService.getDailyReportStats();
-        ArrayList<CarRecallDTO> recentReports = statsService.getRecentReports();
+        // StatsService에서 DefectReportDTO를 반환하도록 수정되었다고 가정합니다.
+        ArrayList<DefectReportDTO> recentReports = statsService.getRecentReports();
         model.addAttribute("dailyStats", dailyStats);
         model.addAttribute("recentReports", recentReports);
         return "admin/main";
     }
 
-    @GetMapping("/report/{report_id}")
-    public String reportDetail(@PathVariable("report_id") long report_id, Model model) {
-        log.info("@# Get report detail: {}", report_id);
-        CarRecallDTO report = carRecallService.getReportById(report_id);
+    // 결함 신고 상세 페이지
+    @GetMapping("/defect_report/{id}")
+    public String defectReportDetail(@PathVariable("id") Long id, Model model) {
+        log.info("@# Get defect report detail: {}", id);
+        DefectReportDTO report = defectReportService.getReportById(id);
         model.addAttribute("report", report);
-        return "admin/report_detail";
-    }
-
-    @PostMapping("/report/updateStatus")
-    public String updateReviewStatus(@RequestParam("report_id") long report_id,
-                                     @RequestParam("reviewed") boolean reviewed) {
-        log.info("@# Update review status for report_id: {}, to: {}", report_id, reviewed);
-        carRecallService.updateReviewStatus(report_id, reviewed);
-        return "redirect:/admin/report/" + report_id;
+        return "admin/defect_report_detail"; // 상세 페이지 뷰
     }
 
     // 공지사항 목록

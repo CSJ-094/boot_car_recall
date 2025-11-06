@@ -60,22 +60,31 @@
                 <thead class="thead-light text-center">
                 <tr>
                     <th>#</th>
-                    <th>차량 모델</th>
                     <th>신고인</th>
-                    <th>검수 여부</th>
-                    <th>신고 시간</th>
+                    <th>차량 모델</th>
+                    <th>차대번호(VIN)</th>
+                    <th>접수일</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="report" items="${recentReports}">
-                    <tr onclick="location.href='${pageContext.request.contextPath}/admin/report/${report.report_id}'">
-                        <td>${report.report_id}</td>
-                        <td>${report.car_model}</td>
-                        <td class="text-center">${report.reporter_name}</td>
-                        <td><span class="badge ${report.reviewed ? 'badge-success' : 'badge-warning'}">${report.reviewed ? '완료' : '대기'}</span></td>
-                        <td>${report.reported_at}</td>
-                    </tr>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${not empty recentReports}">
+                        <c:forEach var="report" items="${recentReports}">
+                            <tr onclick="location.href='${pageContext.request.contextPath}/admin/defect_report/${report.id}'">
+                                <td><c:out value="${report.id}"/></td>
+                                <td><c:out value="${report.reporterName}"/></td>
+                                <td><c:out value="${report.carModel}"/></td>
+                                <td><c:out value="${report.vin}"/></td>
+                                <td><fmt:formatDate value="${report.reportDate}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="5" class="text-center">최근 7일간 접수된 결함 신고가 없습니다.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
                 </tbody>
             </table>
         </div>

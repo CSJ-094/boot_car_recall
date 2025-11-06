@@ -1,7 +1,7 @@
 package com.boot.service;
 
-import com.boot.dto.CarRecallDTO;
 import com.boot.dao.StatsDAO;
+import com.boot.dto.DefectReportDTO;
 import com.boot.dto.DailyStatsDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public ArrayList<CarRecallDTO> getRecentReports() {
+    public ArrayList<DefectReportDTO> getRecentReports() {
         return statsDAO.getRecentReports();
     }
 }
