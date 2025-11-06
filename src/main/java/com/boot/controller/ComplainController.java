@@ -2,10 +2,8 @@ package com.boot.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.boot.dto.BoardDTO;
 import com.boot.dto.ComplainDTO;
 import com.boot.service.ComplainService;
 
@@ -68,20 +65,20 @@ public class ComplainController {
 		
 		return "complain_list";
 	}
-	
+
 	@RequestMapping("/complain_content_modify")
-//	public String modify(@RequestParam HashMap<String, String> param, Model model) {
 	public String complain_content_modify(@RequestParam HashMap<String, String> param, RedirectAttributes rttr, Model model) {
 		log.info("@# complain_content_modify()");
-		log.info("@# param=>"+param.get("report_id"));
+		log.info("@# param=>"+param);
 		
-		model.addAttribute("modify", param);
+		ArrayList<ComplainDTO> find_modify_content = service.find_modify_content(param);
+		model.addAttribute("m_param", find_modify_content);
 		
 		
 		return "complain_content_modify";
 	}
+	
 	@RequestMapping("/complain_modify")
-//	public String modify(@RequestParam HashMap<String, String> param, Model model) {
 		public String complain_modify(@RequestParam HashMap<String, String> param, RedirectAttributes rttr) {
 			log.info("@# complain_modify()");
 			log.info("@# param=>"+param);
@@ -92,13 +89,11 @@ public class ComplainController {
 	}
 	
 	@RequestMapping("/complain_delete")
-//	public String delete(@RequestParam HashMap<String, String> param, Model model) {
 	public String complain_delete(@RequestParam HashMap<String, String> param, RedirectAttributes rttr) {
 		log.info("@# comp;ain_delete()");
 		log.info("@# report_id=>"+param.get("report_id"));
 
 
-//		게시글 삭제
 		service.complain_delete(param);
 		
 		
