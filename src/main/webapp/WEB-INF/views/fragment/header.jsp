@@ -31,7 +31,7 @@
                     <a href="/recall-status" class="menu-link">리콜정보</a>
                     <ul class="submenu">
                         <li><a href="/recall-status">리콜현황</a></li>
-                        <li><a href="/report_recallInfo">리콜 보도자료</a></li>
+                        <li><a href="board/report_recallInfo">리콜 보도자료</a></li>
                     </ul>
                 </li>
 
@@ -45,7 +45,7 @@
                     </ul>
                 </li>
 
-                <!-- 관리자 -->
+                <!-- 관리자 로그인페이지 이동 -->
                 <li class="menu-item has-sub">
                     <a href="/admin/login" class="menu-link">관리자</a>
                 </li>

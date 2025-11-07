@@ -2,10 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
 <link rel="stylesheet" href="/css/notice_user.css" />
+<link rel="stylesheet" href="/css/main.css" />
+<link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/footer.css" />
 
+
+<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 <main class="nu">
   <section class="nu-wrap">
     <header class="nu-head">

@@ -123,7 +123,7 @@
 
 		<div class="form-group">
 			<label>작성자</label>
-			<input type="text" name="boardName" value="${content_view.boardName}" readonly>
+			<input type="text" name="boardName" value="${board.boardName}" readonly>
 		</div>
 
 		<hr>
@@ -166,7 +166,7 @@
 </html>
 <script>
 	$(document).ready(function() {
-		const boardNo = "${content_view.boardNo}";
+		const boardNo = "${board.boardNo}";
 
 		$.getJSON("/getFileList", { boardNo: boardNo }, function(arr) {
 			let str = "";
