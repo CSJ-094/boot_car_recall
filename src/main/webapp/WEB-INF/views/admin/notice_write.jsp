@@ -6,17 +6,23 @@
     <title>공지사항 작성</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .container-main { max-width: 800px; margin: 50px auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+        }
     </style>
 </head>
 <body>
-<div class="container-main">
+<%@ include file="../fragment/adminheader.jsp" %>
+
+<div class="container admin-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>공지사항 작성</h3>
     </div>
     <hr>
     <form action="${pageContext.request.contextPath}/admin/notice/write" method="post">
+        <input type="hidden" name="writer" value="${adminId}">
         <div class="form-group">
             <label for="title">제목</label>
             <input type="text" class="form-control" id="title" name="title" required>
@@ -31,9 +37,10 @@
         </div>
         <div class="text-right">
             <a href="${pageContext.request.contextPath}/admin/notice/list" class="btn btn-secondary">취소</a>
-            <button type="submit" class="btn btn-primary">등록</button>
+            <button type="submit" class="btn btn-primary ml-2">등록</button>
         </div>
     </form>
 </div>
+<%@ include file="../fragment/footer.jsp" %>
 </body>
 </html>

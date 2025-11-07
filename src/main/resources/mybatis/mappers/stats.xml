@@ -12,7 +12,7 @@
     <select id="getDailyReportStats" resultMap="dailyStatsResultMap">
         SELECT TO_CHAR(REPORT_DATE, 'YYYY-MM-DD') AS REPORT_DAY, COUNT(*) AS count
         FROM DEFECT_REPORT
-        WHERE REPORT_DATE >= TRUNC(SYSDATE) - 7
+        WHERE REPORT_DATE >= TRUNC(SYSDATE) - 6 AND REPORT_DATE &lt; TRUNC(SYSDATE) + 1
         GROUP BY TO_CHAR(REPORT_DATE, 'YYYY-MM-DD')
         ORDER BY REPORT_DAY ASC
     </select>
@@ -27,7 +27,10 @@
 
     <select id="getRecentReports" resultMap="defectReportResultMap">
         SELECT * FROM (
-            SELECT ID, REPORTER_NAME, CAR_MODEL, VIN, REPORT_DATE FROM DEFECT_REPORT WHERE REPORT_DATE >= SYSDATE - 7 ORDER BY REPORT_DATE DESC
+            SELECT ID, REPORTER_NAME, CAR_MODEL, VIN, REPORT_DATE
+            FROM DEFECT_REPORT
+            WHERE REPORT_DATE >= SYSDATE - 7
+            ORDER BY REPORT_DATE DESC
         ) WHERE ROWNUM &lt;= 5
     </select>
 </mapper>

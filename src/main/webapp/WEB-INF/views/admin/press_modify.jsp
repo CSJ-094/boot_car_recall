@@ -110,7 +110,7 @@
 </head>
 
 <body>
-<jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
+<jsp:include page="/WEB-INF/views/fragment/adminheader.jsp"/>
 
 <div class="container">
 	<h2>리콜 보도자료 수정</h2>

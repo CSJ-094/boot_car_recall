@@ -4,32 +4,40 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Admin Login</title>
+    <title>관리자 로그인</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .login-container {
             max-width: 400px;
             margin: 100px auto;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
         }
         .login-container h2 {
             margin-bottom: 30px;
             text-align: center;
-            color: #343a40;
+            color: #2c3e50;
         }
         .form-group label {
             font-weight: bold;
+            color: #555;
         }
         .btn-primary {
             width: 100%;
             padding: 10px;
             font-size: 1.1em;
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
         }
         .alert {
             margin-top: 20px;
@@ -39,7 +47,7 @@
 <body>
     <div class="container">
         <div class="login-container">
-            <h2>Admin Login</h2>
+            <h2>관리자 로그인</h2>
             <c:if test="${not empty error}">
                 <div class="alert alert-danger">${error}</div>
             </c:if>

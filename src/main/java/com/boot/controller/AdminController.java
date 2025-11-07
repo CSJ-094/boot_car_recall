@@ -95,21 +95,36 @@ public class AdminController {
     @GetMapping("/main")
     public String adminMain(Model model) {
         log.info("@# Admin main page");
+
+        // 최근 7일간 결함 신고 통계 데이터 조회
         ArrayList<DailyStatsDTO> dailyStats = statsService.getDailyReportStats();
-        // StatsService에서 DefectReportDTO를 반환하도록 수정되었다고 가정합니다.
-        ArrayList<DefectReportDTO> recentReports = statsService.getRecentReports();
         model.addAttribute("dailyStats", dailyStats);
+
+        // 최근 7일간 신고 목록 조회
+        ArrayList<DefectReportDTO> recentReports = statsService.getRecentReports();
         model.addAttribute("recentReports", recentReports);
+
         return "admin/main";
     }
 
     // 결함 신고 상세 페이지
-    @GetMapping("/defect_report/{id}")
+    @GetMapping("/report_detail/{id}")
     public String defectReportDetail(@PathVariable("id") Long id, Model model) {
         log.info("@# Get defect report detail: {}", id);
         DefectReportDTO report = defectReportService.getReportById(id);
         model.addAttribute("report", report);
-        return "admin/defect_report_detail"; // 상세 페이지 뷰
+        return "admin/report_detail"; // 상세 페이지 뷰
+    }
+
+    // 결함 신고 목록 페이지
+    @GetMapping("/defect_report/list")
+    public String defectReportList(Criteria cri, Model model) {
+        log.info("@# Get defect report list");
+        List<DefectReportDTO> list = defectReportService.getAllReports(cri);
+        int total = defectReportService.getTotalCount(cri);
+        model.addAttribute("list", list);
+        model.addAttribute("pageMaker", new PageDTO(cri, total));
+        return "admin/defect_report_list"; // 결함 신고 목록 뷰
     }
 
     // 공지사항 목록

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,22 +8,21 @@
     <title>FAQ 관리</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .container-main { max-width: 1000px; margin: 50px auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .table th, .table td { vertical-align: middle; text-align: center; }
-        .table thead th { background-color: #e9ecef; }
-        .faq-question { text-align: left; }
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+        }
+        .table-hover tbody tr:hover { cursor: pointer; }
         .pagination { justify-content: center; }
     </style>
 </head>
 <body>
-<div class="container-main">
+<%@ include file="../fragment/adminheader.jsp" %>
+<div class="container admin-container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>FAQ 관리</h3>
-        <div>
-            <a href="${pageContext.request.contextPath}/admin/main" class="btn btn-outline-secondary">관리자 홈</a>
-            <a href="${pageContext.request.contextPath}/admin/faq/write" class="btn btn-primary">새 FAQ 작성</a>
-        </div>
+        <a href="${pageContext.request.contextPath}/admin/faq/write" class="btn btn-primary">새 FAQ 작성</a>
     </div>
 
     <table class="table table-hover text-center">
@@ -40,7 +40,10 @@
                 <td>${item.faq_id}</td>
                 <td><span class="badge badge-info">${item.category}</span></td>
                 <td class="text-left">${item.question}</td>
-                <td><fmt:formatDate value="${item.created_at}" pattern="yyyy-MM-dd"/></td>
+                <td>
+                    <fmt:parseDate value="${item.created_at}" pattern="yyyy-MM-dd" var="parsedDate" type="date"/>
+                    <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/>
+                </td>
             </tr>
         </c:forEach>
         <c:if test="${empty list}">
@@ -75,5 +78,6 @@
     </nav>
     <!-- /Pagination -->
 </div>
+<%@ include file="../fragment/footer.jsp" %>
 </body>
 </html>

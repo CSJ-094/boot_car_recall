@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,20 +8,21 @@
     <title>공지사항 관리</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 1000px; margin-top: 50px; }
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+        }
         .table-hover tbody tr:hover { cursor: pointer; }
         .pagination { justify-content: center; }
     </style>
 </head>
 <body>
-<div class="container">
+<%@ include file="../fragment/adminheader.jsp" %>
+<div class="container admin-container">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>공지사항 관리</h3>
-        <div>
-            <a href="${pageContext.request.contextPath}/admin/main" class="btn btn-outline-secondary">관리자 홈</a>
-            <a href="${pageContext.request.contextPath}/admin/notice/write" class="btn btn-primary">글쓰기</a>
-        </div>
+        <a href="${pageContext.request.contextPath}/admin/notice/write" class="btn btn-primary">글쓰기</a>
     </div>
 
     <table class="table table-hover text-center">
@@ -35,13 +37,16 @@
         <tbody>
         <c:forEach var="item" items="${list}">
             <tr onclick="location.href='${pageContext.request.contextPath}/admin/notice/detail?notice_id=${item.notice_id}&pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}'" style="cursor: pointer;">
-                <td>${item.notice_id}</td>
+                <td><c:out value="${item.notice_id}"/></td>
                 <td class="text-left">
                     <c:if test="${item.is_urgent == 'Y'}"><span class="badge badge-danger mr-2">긴급</span></c:if>
-                    ${item.title}
+                    <c:out value="${item.title}"/>
                 </td>
-                <td>${item.views}</td>
-                <td>${item.created_at}</td>
+                <td><c:out value="${item.views}"/></td>
+                <td>
+                    <fmt:parseDate value="${item.created_at}" pattern="yyyy-MM-dd" var="parsedDate" type="date"/>
+                    <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd"/>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
@@ -71,5 +76,6 @@
     </div>
     <!-- /Pagination -->
 </div>
+<%@ include file="../fragment/footer.jsp" %>
 </body>
 </html>

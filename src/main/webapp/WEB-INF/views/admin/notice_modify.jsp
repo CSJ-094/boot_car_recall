@@ -7,35 +7,41 @@
     <title>공지사항 수정</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 800px; margin-top: 50px; }
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
+<%@ include file="../fragment/adminheader.jsp" %>
+<div class="container admin-container">
     <h3>공지사항 수정</h3>
     <hr>
     <form action="${pageContext.request.contextPath}/admin/notice/modify" method="post">
-        <input type="hidden" name="notice_id" value="${notice.notice_id}">
+        <input type="hidden" name="notice_id" value="<c:out value='${notice.notice_id}'/>">
+        <input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}'/>">
+        <input type="hidden" name="amount" value="<c:out value='${cri.amount}'/>">
         <div class="form-group">
             <label for="title">제목</label>
-            <input type="text" class="form-control" id="title" name="title" value="${notice.title}" required>
+            <input type="text" class="form-control" id="title" name="title" value="<c:out value='${notice.title}'/>" required>
         </div>
         <div class="form-group">
             <label for="content">내용</label>
-            <textarea class="form-control" id="content" name="content" rows="15" required>${notice.content}</textarea>
+            <textarea class="form-control" id="content" name="content" rows="15" required><c:out value='${notice.content}'/></textarea>
         </div>
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="is_urgent" name="is_urgent" value="Y" ${notice.is_urgent == 'Y' ? 'checked' : ''}>
             <label class="form-check-label" for="is_urgent">긴급 공지</label>
         </div>
-        <input type="hidden" name="is_urgent" value="N" /> <%-- 체크 안됐을 때 'N' 전송 --%>
 
         <div class="text-right">
-            <a href="${pageContext.request.contextPath}/admin/notice/${notice.notice_id}" class="btn btn-secondary">취소</a>
+            <a href="${pageContext.request.contextPath}/admin/notice/detail?notice_id=${notice.notice_id}&pageNum=${cri.pageNum}&amount=${cri.amount}" class="btn btn-secondary">취소</a>
             <button type="submit" class="btn btn-primary">저장</button>
         </div>
     </form>
 </div>
+<%@ include file="../fragment/footer.jsp" %>
 </body>
 </html>

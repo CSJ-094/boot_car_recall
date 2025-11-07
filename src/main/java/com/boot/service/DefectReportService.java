@@ -4,6 +4,7 @@ import com.boot.dto.Criteria;
 import com.boot.dto.DefectReportDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface DefectReportService {

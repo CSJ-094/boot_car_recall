@@ -7,15 +7,20 @@
     <title>FAQ 수정</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .container { max-width: 800px; margin-top: 50px; }
+        .admin-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h3>FAQ 수정</h3>
-    <hr>
-    <form action="${pageContext.request.contextPath}/admin/faq/modify/${faq.faq_id}" method="post">
+<%@ include file="../fragment/adminheader.jsp" %>
+<div class="container admin-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>FAQ 수정</h3>
+    </div>
+    <form action="${pageContext.request.contextPath}/admin/faq/modify" method="post">
         <input type="hidden" name="faq_id" value="${faq.faq_id}">
         <div class="form-group">
             <label for="category">카테고리</label>
@@ -35,10 +40,11 @@
             <textarea class="form-control" id="answer" name="answer" rows="15" required>${faq.answer}</textarea>
         </div>
         <div class="text-right">
-            <a href="${pageContext.request.contextPath}/admin/faq/${faq.faq_id}" class="btn btn-secondary">취소</a>
-            <button type="submit" class="btn btn-primary">저장</button>
+            <a href="${pageContext.request.contextPath}/admin/faq/list" class="btn btn-secondary">목록</a>
+            <button type="submit" class="btn btn-primary ml-2">저장</button>
         </div>
     </form>
 </div>
+<%@ include file="../fragment/footer.jsp" %>
 </body>
 </html>
