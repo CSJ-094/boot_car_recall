@@ -123,7 +123,7 @@
     <h2>리콜 보도자료</h2>
     <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:20px;">
 <%--        검색창부분 --%>
-        <form method="get" id="searchForm">
+        <form method="get" id="searchForm" action="${pageContext.request.contextPath}/board/report_recallInfo">
             <select name="type">
                 <option value=""  <c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
                 <option value="T"  <c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>

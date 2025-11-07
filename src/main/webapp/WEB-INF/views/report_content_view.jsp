@@ -161,7 +161,7 @@
 
 
     <div class="actions">
-		<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로</a>		
+		<a href="report_recallInfo?pageNum=${pageNum}&amount=${amount}">목록으로</a>
     </div>
 
     <%--    BoardController에 report_delete 메소드 호출용--%>

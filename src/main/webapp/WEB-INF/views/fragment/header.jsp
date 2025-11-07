@@ -31,7 +31,7 @@
                     <a href="/recall-status" class="menu-link">리콜정보</a>
                     <ul class="submenu">
                         <li><a href="/recall-status">리콜현황</a></li>
-                        <li><a href="/report_recallInfo">리콜 보도자료</a></li>
+                        <li><a href="board/report_recallInfo">리콜 보도자료</a></li>
                     </ul>
                 </li>
 

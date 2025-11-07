@@ -19,7 +19,7 @@ public class pageController {
     @Autowired
     private PageService service;
 
-    @RequestMapping("/report_recallInfo")
+    @RequestMapping("/board/report_recallInfo")
     public String recallInfo(Criteria cri, Model model) {
         log.info("@# recallInfo()");
         log.info("@# cri => " + cri);

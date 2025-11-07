@@ -29,7 +29,7 @@ public class BoardController {
 
         service.write(param);
 
-        return "redirect:/report_recallInfo";
+        return "redirect:/board/report_recallInfo";
     }
 
     @GetMapping("/write_view")
