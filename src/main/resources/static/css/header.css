@@ -184,11 +184,12 @@ body.nav-open{ overflow: hidden; }
 }
 
 .brand-logo {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   vertical-align: middle;
 }
+
 
 .brand-text {
   display: inline-block;
