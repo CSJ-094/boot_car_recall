@@ -1,6 +1,8 @@
 package com.boot.controller;
 
 import com.boot.dto.BoardDTO;
+import com.boot.dto.Criteria;
+import com.boot.dto.PageDTO;
 import com.boot.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,19 @@ public class BoardController {
     @Autowired
     private BoardService service;
 
+    @GetMapping("/list")
+    public String list(Criteria cri, Model model) {
+        log.info("@# Board list");
+        log.info("@# cri => " + cri);
+
+        ArrayList<BoardDTO> list = service.listWithPaging(cri);
+        int total = service.getTotalCount(cri);
+
+        model.addAttribute("list", list);
+        model.addAttribute("pageMaker", new PageDTO(cri, total));
+        return "report_recallInfo";
+    }
+
     @PostMapping("/write")
     public String write(@RequestParam HashMap<String, String> param) {
         log.info("@# write()");
@@ -29,7 +44,7 @@ public class BoardController {
 
         service.write(param);
 
-        return "redirect:/board/report_recallInfo";
+        return "redirect:/board/list";
     }
 
     @GetMapping("/write_view")
@@ -72,7 +87,7 @@ public class BoardController {
         service.modify(param);
         rttr.addAttribute("pageNum", param.get("pageNum"));
         rttr.addAttribute("amount", param.get("amount"));
-        return "redirect:/report_recallInfo";
+        return "redirect:/board/list";
     }
 
     @PostMapping("/report_delete")
@@ -81,6 +96,6 @@ public class BoardController {
         service.delete(param);
         rttr.addAttribute("pageNum", param.get("pageNum"));
         rttr.addAttribute("amount", param.get("amount"));
-        return "redirect:/report_recallInfo";
+        return "redirect:/board/list";
     }
 }

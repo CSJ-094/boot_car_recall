@@ -1,11 +1,15 @@
 package com.boot.controller;
 
 import com.boot.dto.Criteria;
+import com.boot.dto.NoticeDTO;
+import com.boot.dto.BoardDTO;
 import com.boot.dto.DefectReportDTO;
 import com.boot.dto.PageDTO;
 import com.boot.dto.RecallDTO;
 import com.boot.dto.SearchResultsDTO;
 import com.boot.service.DefectReportService;
+import com.boot.service.NoticeService;
+import com.boot.service.BoardService;
 import com.boot.service.RecallService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,12 +35,25 @@ public class MainController {
     private final ResourceLoader resourceLoader;
     private final RecallService recallService;
     private final DefectReportService defectReportService;
+    private final NoticeService noticeService;
+    private final BoardService boardService;
 
     // -------------------------------------------------------------------
     // 1. 메인 페이지 (리콜 검색 기능 포함)
     // -------------------------------------------------------------------
     @GetMapping("/")
     public String main(Model model, @RequestParam(value = "query", required = false) String query) {
+        // 최근 공지사항 5개 조회
+        Criteria noticeCri = new Criteria(1, 5);
+        List<NoticeDTO> noticeList = noticeService.listWithPaging(noticeCri);
+        model.addAttribute("noticeList", noticeList);
+
+        // 최근 보도자료 5개 조회
+        Criteria pressCri = new Criteria(1, 5);
+        List<BoardDTO> pressList = boardService.listWithPaging(pressCri);
+        model.addAttribute("pressList", pressList);
+
+
         if (query != null && !query.trim().isEmpty()) {
             List<RecallDTO> searchResults = recallService.searchRecallsByModelName(query.trim());
             model.addAttribute("searchQuery", query);

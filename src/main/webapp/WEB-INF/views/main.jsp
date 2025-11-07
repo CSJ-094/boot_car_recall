@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -196,11 +197,35 @@
             <a class="news-more" href="/notice/list">전체 보기</a>
         </div>
         <ul id="newsList" class="news-list" aria-live="polite">
-            <li class="news-item">
-                <span class="tag">공지</span>
-                <a href="/notice/list">시스템 점검 안내 (예시)</a>
-                <time datetime="2025-11-01">2025-11-01</time>
-            </li>
+            <c:forEach var="notice" items="${noticeList}" varStatus="status">
+                <c:if test="${status.index < 5}">
+                    <li class="news-item">
+                        <span class="tag notice">공지</span>
+                        <a href="/notice/detail?notice_id=${notice.notice_id}">${notice.title}</a>
+                        <time datetime="${notice.created_at}">
+                            <fmt:parseDate value="${notice.created_at}" pattern="yyyy-MM-dd" var="parsedNoticeDate" type="date"/>
+                            <fmt:formatDate value="${parsedNoticeDate}" pattern="yyyy-MM-dd"/>
+                        </time>
+                    </li>
+                </c:if>
+            </c:forEach>
+            <c:forEach var="press" items="${pressList}" varStatus="status">
+                <c:if test="${status.index < 5}">
+                    <li class="news-item">
+                        <span class="tag press">보도자료</span>
+                        <a href="/press/detail?boardNo=${press.boardNo}">${press.boardTitle}</a>
+                        <time datetime="${press.boardDate}">
+                            <fmt:parseDate value="${press.boardDate}" pattern="yyyy-MM-dd" var="parsedPressDate" type="date"/>
+                            <fmt:formatDate value="${parsedPressDate}" pattern="yyyy-MM-dd"/>
+                        </time>
+                    </li>
+                </c:if>
+            </c:forEach>
+            <c:if test="${empty noticeList and empty pressList}">
+                <li class="news-item no-items">
+                    최신 소식이 없습니다.
+                </li>
+            </c:if>
         </ul>
     </div>
 </section>
