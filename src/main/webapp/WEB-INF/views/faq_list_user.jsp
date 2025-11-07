@@ -5,6 +5,9 @@
 <jsp:include page="/WEB-INF/views/fragment/header.jsp"/>
 
 <link rel="stylesheet" href="/css/faq.css" />
+<link rel="stylesheet" href="/css/main.css" />
+<link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/footer.css" />
 
 <main class="fq">
   <section class="fq-wrap">

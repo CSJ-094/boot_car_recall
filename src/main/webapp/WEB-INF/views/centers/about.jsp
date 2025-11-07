@@ -7,6 +7,9 @@
 
 <!-- 페이지 전용 CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/centers-about.css" />
+<link rel="stylesheet" href="/css/main.css" />
+<link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/footer.css" />
 
 <main class="center-intro">
 	<!-- 1) 풀-블리드 히어로(영상) -->
